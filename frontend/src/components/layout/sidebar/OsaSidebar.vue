@@ -1,10 +1,10 @@
 <template>
     <aside class="sidebar">
-        <h2>Organization</h2>
+        <h2>ISKONEK</h2>
 
         <RouterLink to="/dashboard">Dashboard</RouterLink>
-        <RouterLink to="/events">Manage Events</RouterLink>
-        <RouterLink to="/applicants">Applicants</RouterLink>
+        <RouterLink to="/organizations">Organizations</RouterLink>
+        <RouterLink to="/approvals">Approvals</RouterLink>
     </aside>
 </template>
 

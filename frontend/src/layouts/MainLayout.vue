@@ -1,41 +1,45 @@
 <template>
-  <div class="layout">
-    <component :is="sidebarComponent" />
+<div class="layout">
 
-    <div class="main">
-      <Navbar />
+  <component :is="sidebarComponent" />
+
+  <div class="main">
+    <Navbar />
+    <div class="content">
       <router-view />
     </div>
   </div>
+
+</div>
 </template>
 
 <script setup>
-import { computed } from "vue";
-import { useAuthStore } from "../stores/auth";
+import { computed } from "vue"
 
-import StudentSidebar from "../components/layout/sidebars/StudentSidebar.vue";
-import OrgSidebar from "../components/layout/sidebars/OrgSidebar.vue";
-import OsaSidebar from "../components/layout/sidebars/OsaSidebar.vue";
+import Navbar from "@/components/layout/Navbar.vue"
+import StudentSidebar from "@/components/layout/sidebar/StudentSidebar.vue"
+import OrgSidebar from "@/components/layout/sidebar/OrgSidebar.vue"
 
-import Navbar from "../components/layout/Navbar.vue";
-
-const auth = useAuthStore();
+const role = localStorage.getItem("role") || "student"
 
 const sidebarComponent = computed(() => {
-  if (auth.role === "student") return StudentSidebar;
-  if (auth.role === "org") return OrgSidebar;
-  if (auth.role === "osa") return OsaSidebar;
-
-  return StudentSidebar; 
-});
+  return role === "org" ? OrgSidebar : StudentSidebar
+})
 </script>
 
 <style scoped>
 .layout {
-  display: flex;
+display: flex;
+height: 100vh;
 }
 
 .main {
-  flex: 1;
+flex: 1;
+display: flex;
+flex-direction: column;
+}
+
+.content {
+padding: 20px;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Student Dashboard</h1>
+    <h1>Dashboard</h1>
 
     <section>
       <h2>Announcements</h2>

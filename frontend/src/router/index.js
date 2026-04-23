@@ -1,88 +1,51 @@
-import { createRouter, createWebHistory } from "vue-router";
+import { createRouter, createWebHistory } from "vue-router"
 
-// AUTH
-import Landing from "../pages/auth/Landing.vue";
-import StudentLogin from "../pages/auth/StudentLogin.vue";
-import StudentRegister from "../pages/auth/StudentRegister.vue";
-import AdminLogin from "../pages/auth/AdminLogin.vue";
+/* LAYOUT */
+import MainLayout from "@/layouts/MainLayout.vue"
 
-// STUDENT
-import StudentDashboard from "../pages/student/StudentDashboard.vue";
-import Discover from "../pages/student/Discover.vue";
-import OrgProfile from "../pages/student/OrgProfile.vue";
-import ApplicationForm from "../pages/student/ApplicationForm.vue";
-import EventDetail from "../pages/student/EventDetail.vue";
-import EventParticipation from "../pages/student/EventParticipation.vue";
-import CurrentMemberships from "../pages/student/CurrentMemberships.vue";
-import ParticipationRecord from "../pages/student/ParticipationRecord.vue";
-import EventCalendar from "../pages/student/EventCalendar.vue";
+/* STUDENT PAGES */
+import StudentDashboard from "@/pages/student/StudentDashboard.vue"
+import Discover from "@/pages/student/Discover.vue"
+import CurrentMemberships from "@/pages/student/CurrentMemberships.vue"
+import ParticipationRecord from "@/pages/student/ParticipationRecord.vue"
+import EventCalendar from "@/pages/student/EventCalendar.vue"
+
+/* ORG PAGES */
+import OrgDashboard from "@/pages/org/OrgDashboard.vue"
+import ManageMembers from "@/pages/org/ManageMembers.vue"
+import ReviewApplications from "@/pages/org/ReviewApplications.vue"
+import UpcomingEvents from "@/pages/org/UpcomingEvents.vue"
+import NewEvent from "@/pages/org/NewEvent.vue"
+import EventEditor from "@/pages/org/EventEditor.vue"
+import AttendanceTracker from "@/pages/org/AttendanceTracker.vue"
 
 const routes = [
-    // AUTH
-    { path: "/", component: Landing },
-    { path: "/student-login", component: StudentLogin },
-    { path: "/student-register", component: StudentRegister },
-    { path: "/admin-login", component: AdminLogin },
+{
+path: "/",
+component: MainLayout,
+children: [
 
-    // DASHBOARD
-    {
-        path: "/dashboard",
-        component: StudentDashboard,
-        meta: { breadcrumb: "Dashboard" }
-    },
+/* STUDENT */
+{ path: "dashboard", component: StudentDashboard },
+{ path: "discover", component: Discover },
+{ path: "memberships", component: CurrentMemberships },
+{ path: "participation", component: ParticipationRecord },
+{ path: "calendar", component: EventCalendar },
 
-    // DISCOVER FLOW (IMPORTANT: NESTED)
-    {
-        path: "/discover",
-        component: Discover,
-        meta: { breadcrumb: "Discover" }
-    },
+/* ORG */
+{ path: "org/dashboard", component: OrgDashboard },
+{ path: "org/members", component: ManageMembers },
+{ path: "org/applications", component: ReviewApplications },
+{ path: "org/events", component: UpcomingEvents },
+{ path: "org/events/new", component: NewEvent },
+{ path: "org/events/edit/:id", component: EventEditor },
+{ path: "org/attendance", component: AttendanceTracker },
 
-    {
-        path: "/org/:id",
-        component: OrgProfile,
-        meta: {
-        breadcrumb: (route) => `Organization Profile`
-        }
-    },
-
-    {
-        path: "/apply/:id",
-        component: ApplicationForm,
-        meta: { breadcrumb: "Application Form" }
-    },
-
-    {
-        path: "/event/:id",
-        component: EventDetail,
-        meta: { breadcrumb: "Event Details" }
-    },
-
-    {
-        path: "/join/:id",
-        component: EventParticipation,
-        meta: { breadcrumb: "Join Event" }
-    },
-
-    // OTHER PAGES
-    {
-        path: "/memberships",
-        component: CurrentMemberships,
-        meta: { breadcrumb: "Current Memberships" }
-    },
-    {
-        path: "/participation",
-        component: ParticipationRecord,
-        meta: { breadcrumb: "Participation Record" }
-    },
-    {
-        path: "/calendar",
-        component: EventCalendar,
-        meta: { breadcrumb: "Event Calendar" }
-    }
-];
+]
+}
+]
 
 export default createRouter({
-    history: createWebHistory(),
-    routes
-});
+history: createWebHistory(),
+routes
+})
