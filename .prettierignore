@@ -1,0 +1,29 @@
+# Laravel + Vue Prettier Ignore
+/node_modules
+/vendor
+/public/build
+/public/storage
+/storage
+/bootstrap/cache
+.env
+.env.*
+*.log
+
+# Composer & NPM
+composer.lock
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Compiled/Generated Files
+public/js
+public/css
+public/mix-manifest.json
+public/hot
+
+# IDE files
+.vscode
+.idea
+
+# Git
+.git
