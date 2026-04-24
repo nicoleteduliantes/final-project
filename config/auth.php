@@ -1,7 +1,8 @@
 <?php
 
+use App\Models\Organization;
+use App\Models\Osa;
 use App\Models\User;
-
 return [
 
     /*
@@ -42,7 +43,18 @@ return [
             'driver' => 'session',
             'provider' => 'users',
         ],
+    
+    'osa' => [
+        'driver' => 'session',
+        'provider' => 'osa_provider',
     ],
+    'org' => [
+        'driver' => 'session',
+        'provider' => 'org_provider',
+    ],
+],
+
+
 
     /*
     |--------------------------------------------------------------------------
@@ -67,12 +79,17 @@ return [
             'model' => env('AUTH_MODEL', User::class),
         ],
 
-        // 'users' => [
-        //     'driver' => 'database',
-        //     'table' => 'users',
-        // ],
-    ],
+            // ... other providers
+        'osa_provider' => [
+            'driver' => 'eloquent',
+            'model' => env('AUTH_MODEL', Osa::class),
+        ],
 
+        'org_provider' => [
+            'driver' => 'eloquent',
+            'model' => env('AUTH_MODEL', Organization::class),
+        ],
+],
     /*
     |--------------------------------------------------------------------------
     | Resetting Passwords
