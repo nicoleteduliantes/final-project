@@ -19,9 +19,11 @@ return new class extends Migration
             $table->string('up_email')->unique();
             $table->date('admission_date');
 
-            $table->foreignId('course_id')
-                ->constrained('courses', 'course_id')
+            $table->foreignId('degprog_id')
+                ->constrained('degprogs', 'degprog_id')
                 ->onDelete('cascade');
+            
+            $table->string('password');
 
             $table->timestamps();
         });

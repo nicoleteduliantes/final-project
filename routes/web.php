@@ -9,3 +9,6 @@ Route::get('/', function () {
 
 Route::get('/student', [StudentController::class, 'index']);
 
+
+
+
