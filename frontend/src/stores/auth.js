@@ -7,31 +7,36 @@ export const useAuthStore = defineStore('auth', () => {
     const isAuthenticated = ref(false);
 
     // LOGIN FUNCTIONS
-    function loginStudent(data) {
+    function loginStudent(data,token) {
         user.value = data;
         role.value = 'student';
         isAuthenticated.value = true;
 
         localStorage.setItem('user', JSON.stringify(data));
         localStorage.setItem('role', 'student');
+        localStorage.setItem('AUTH_TOKEN', token);
     }
 
-    function loginOrg(data) {
+    function loginOrg(data,token) {
         user.value = data;
         role.value = 'org';
         isAuthenticated.value = true;
 
         localStorage.setItem('user', JSON.stringify(data));
         localStorage.setItem('role', 'org');
+        localStorage.setItem('AUTH_TOKEN', token);
+
     }
 
-    function loginOsa(data) {
+    function loginOsa(data, token) {
         user.value = data;
         role.value = 'osa';
         isAuthenticated.value = true;
 
         localStorage.setItem('user', JSON.stringify(data));
         localStorage.setItem('role', 'osa');
+        localStorage.setItem('AUTH_TOKEN', token);
+
     }
 
     // LOAD SESSION (REFRESH FIX)

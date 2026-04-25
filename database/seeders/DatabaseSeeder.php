@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
 {
     Osa::create([
         'osa_id'   => 220422, // Your chosen manual ID 
-        'password' => Hash::make('osa_admin_2026'), 
+        'password' => Hash::make('admin123'), 
     ]);
 }
 }

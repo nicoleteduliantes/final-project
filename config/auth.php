@@ -80,15 +80,16 @@ return [
         ],
 
             // ... other providers
-        'osa_provider' => [
-            'driver' => 'eloquent',
-            'model' => env('AUTH_MODEL', Osa::class),
+    'osa_provider' => [
+    'driver' => 'eloquent',
+    'model' => Osa::class, 
         ],
 
-        'org_provider' => [
-            'driver' => 'eloquent',
-            'model' => env('AUTH_MODEL', Organization::class),
+    'org_provider' => [
+    'driver' => 'eloquent',
+    'model' => Organization::class, 
         ],
+        
 ],
     /*
     |--------------------------------------------------------------------------
