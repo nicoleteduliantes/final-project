@@ -29,10 +29,10 @@ const auth = useAuthStore();
 const login = () => {
     if (type.value === 'org') {
         auth.loginOrg({ email: email.value });
+        router.push('/org/dashboard');
     } else {
         auth.loginOsa({ email: email.value });
+        router.push('/osa/dashboard');
     }
-
-    router.push('/dashboard');
 };
 </script>
