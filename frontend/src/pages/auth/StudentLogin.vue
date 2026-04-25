@@ -1,11 +1,19 @@
+<template>
+    <div class="auth">
+        <h2>Student Login</h2>
+
+        <input placeholder="UP Email" v-model="email" />
+
+        <button @click="login">Login</button>
+    </div>
+</template>
+
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '../../stores/auth';
 
 const email = ref('');
-const password = ref('');
-
 const router = useRouter();
 const auth = useAuthStore();
 
