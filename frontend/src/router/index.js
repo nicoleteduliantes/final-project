@@ -32,9 +32,7 @@ import GlobalOrgManager from '@/pages/osa/GlobalOrgManager.vue';
 import StudentManager from '@/pages/osa/StudentManager.vue';
 
 const routes = [
-    /* =========================
-   AUTH ROUTES (NO SIDEBAR)
-========================= */
+    // AUTH ROUTES (NO SIDEBAR)
     {
         path: '/',
         component: Landing,
@@ -52,9 +50,7 @@ const routes = [
         component: AdminLogin,
     },
 
-    /* =========================
-   APP ROUTES (WITH SIDEBAR)
-========================= */
+    // APP ROUTES (WITH SIDEBAR)
     {
         path: '/',
         component: MainLayout,
