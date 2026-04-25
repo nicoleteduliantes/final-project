@@ -1,17 +1,13 @@
 <template>
     <div class="search">
-        <input 
-        type="text" 
-        placeholder="Search..."
-        v-model="query"
-        />
+        <input type="text" placeholder="Search..." v-model="query" />
     </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref } from 'vue';
 
-const query = ref("");
+const query = ref('');
 </script>
 
 <style scoped>
