@@ -37,4 +37,10 @@ class OsaController extends Controller
             ]
         ], 201);
     }
+
+    public function test() {
+        return response()->json([
+            'message' => 'hello world'
+        ]);
+    }
 }
