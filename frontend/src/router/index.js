@@ -32,13 +32,29 @@ import GlobalOrgManager from '@/pages/osa/GlobalOrgManager.vue';
 import StudentManager from '@/pages/osa/StudentManager.vue';
 
 const routes = [
-    /* AUTH PAGES (NO SIDEBAR) */
-    { path: '/', component: Landing },
-    { path: '/student-login', component: StudentLogin },
-    { path: '/student-register', component: StudentRegister },
-    { path: '/admin-login', component: AdminLogin },
+    /* =========================
+   AUTH ROUTES (NO SIDEBAR)
+========================= */
+    {
+        path: '/',
+        component: Landing,
+    },
+    {
+        path: '/student-login',
+        component: StudentLogin,
+    },
+    {
+        path: '/student-register',
+        component: StudentRegister,
+    },
+    {
+        path: '/admin-login',
+        component: AdminLogin,
+    },
 
-    /* APP (WITH SIDEBAR) */
+    /* =========================
+   APP ROUTES (WITH SIDEBAR)
+========================= */
     {
         path: '/',
         component: MainLayout,

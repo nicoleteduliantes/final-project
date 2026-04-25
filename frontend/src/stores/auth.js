@@ -3,40 +3,40 @@ import { ref } from 'vue';
 
 export const useAuthStore = defineStore('auth', () => {
     const user = ref(null);
-    const role = ref('student'); // 👈 IMPORTANT DEFAULT
+    const role = ref('student');
     const isAuthenticated = ref(false);
 
-    const loginStudent = (data) => {
+    function setUser(data, userRole) {
         user.value = data;
-        role.value = 'student';
+        role.value = userRole;
         isAuthenticated.value = true;
-    };
 
-    const loginOrg = (data) => {
-        user.value = data;
-        role.value = 'org';
-        isAuthenticated.value = true;
-    };
+        localStorage.setItem('user', JSON.stringify(data));
+        localStorage.setItem('role', userRole);
+    }
 
-    const loginOsa = (data) => {
-        user.value = data;
-        role.value = 'osa';
-        isAuthenticated.value = true;
-    };
+    function loadUser() {
+        const savedUser = localStorage.getItem('user');
+        const savedRole = localStorage.getItem('role');
 
-    const logout = () => {
+        if (savedUser) user.value = JSON.parse(savedUser);
+        if (savedRole) role.value = savedRole;
+    }
+
+    function logout() {
         user.value = null;
-        role.value = 'student'; // reset safely
+        role.value = 'student';
         isAuthenticated.value = false;
-    };
+
+        localStorage.clear();
+    }
 
     return {
         user,
         role,
         isAuthenticated,
-        loginStudent,
-        loginOrg,
-        loginOsa,
+        setUser,
+        loadUser,
         logout,
     };
 });

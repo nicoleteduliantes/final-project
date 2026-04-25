@@ -2,22 +2,19 @@
     <div class="auth">
         <h2>Student Register</h2>
 
-        <input placeholder="Student ID" v-model="form.student_id" />
-
-        <input placeholder="First Name" v-model="form.first_name" />
-
-        <input placeholder="Last Name" v-model="form.last_name" />
-
+        <input v-model="form.student_id" placeholder="Student ID" />
+        <input v-model="form.first_name" placeholder="First Name" />
+        <input v-model="form.last_name" placeholder="Last Name" />
         <input type="date" v-model="form.admission_date" />
 
         <select v-model="form.course_id">
             <option disabled value="">Select Degree Program</option>
             <option value="1">BS Computer Science</option>
-            <option value="2">BS Information Systems</option>
+            <option value="2">BS Information Technology</option>
             <option value="3">BS Mathematics</option>
         </select>
 
-        <input type="email" placeholder="UP Email" v-model="form.up_email" />
+        <input v-model="form.up_email" placeholder="UP Email" />
 
         <button @click="register">Register</button>
     </div>
@@ -39,8 +36,7 @@ const form = reactive({
 });
 
 const register = () => {
-    // no API yet
-    console.log(form);
+    console.log('REGISTER DATA:', form);
 
     router.push('/student-login');
 };

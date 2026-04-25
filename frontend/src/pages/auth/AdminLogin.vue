@@ -7,8 +7,7 @@
             <option value="osa">OSA Admin</option>
         </select>
 
-        <input placeholder="Email" v-model="email" />
-        <input type="password" placeholder="Password" v-model="password" />
+        <input v-model="email" placeholder="Email" />
 
         <button @click="login">Login</button>
     </div>
@@ -17,21 +16,20 @@
 <script setup>
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
-import { useAuthStore } from '../../stores/auth';
+import { useAuthStore } from '@/stores/auth';
 
 const email = ref('');
-const password = ref('');
 const type = ref('org');
 
 const router = useRouter();
 const auth = useAuthStore();
 
 const login = () => {
+    auth.setUser({ email: email.value }, type.value);
+
     if (type.value === 'org') {
-        auth.loginOrg({ email: email.value });
         router.push('/org/dashboard');
     } else {
-        auth.loginOsa({ email: email.value });
         router.push('/osa/dashboard');
     }
 };
