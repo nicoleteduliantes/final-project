@@ -1,32 +1,40 @@
 <template>
-<div :class="['sidebar', { collapsed }]">
+    <div :class="['sidebar', { collapsed }]">
+        <!-- HEADER -->
+        <div class="top">
+            <h2 v-if="!collapsed">ISKONEK</h2>
 
-    <!-- HEADER -->
-    <div class="top">
-        <h2 v-if="!collapsed">ISKONEK</h2>
+            <button class="toggle" @click="collapsed = !collapsed">☰</button>
+        </div>
 
-        <button class="toggle" @click="collapsed = !collapsed">
-        ☰
-        </button>
+        <!-- LINKS -->
+        <nav>
+            <router-link to="/org/dashboard"
+                >📊 <span v-if="!collapsed">Dashboard</span></router-link
+            >
+            <router-link to="/org/members"
+                >👥 <span v-if="!collapsed">Members</span></router-link
+            >
+            <router-link to="/org/applications"
+                >📄 <span v-if="!collapsed">Applications</span></router-link
+            >
+            <router-link to="/org/events"
+                >🎉 <span v-if="!collapsed">Events</span></router-link
+            >
+            <router-link to="/org/events/new"
+                >➕ <span v-if="!collapsed">New Event</span></router-link
+            >
+            <router-link to="/org/attendance"
+                >📌 <span v-if="!collapsed">Attendance</span></router-link
+            >
+        </nav>
     </div>
-
-    <!-- LINKS -->
-    <nav>
-        <router-link to="/org/dashboard">📊 <span v-if="!collapsed">Dashboard</span></router-link>
-        <router-link to="/org/members">👥 <span v-if="!collapsed">Members</span></router-link>
-        <router-link to="/org/applications">📄 <span v-if="!collapsed">Applications</span></router-link>
-        <router-link to="/org/events">🎉 <span v-if="!collapsed">Events</span></router-link>
-        <router-link to="/org/events/new">➕ <span v-if="!collapsed">New Event</span></router-link>
-        <router-link to="/org/attendance">📌 <span v-if="!collapsed">Attendance</span></router-link>
-    </nav>
-
-</div>
 </template>
 
 <script setup>
-import { ref } from "vue"
+import { ref } from 'vue';
 
-const collapsed = ref(false)
+const collapsed = ref(false);
 </script>
 
 <style scoped>
