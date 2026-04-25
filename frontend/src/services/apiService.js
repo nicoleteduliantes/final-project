@@ -5,6 +5,8 @@ export async function post(endpoint, data) {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
+            'Accept': 'application/json', //tells Laravel to talk in JSON
+            'Authorization': `Bearer ${localStorage.getItem('AUTH_TOKEN')}` // sends "key" once a user logs in
         },
         body: JSON.stringify(data),
     });
@@ -13,6 +15,11 @@ export async function post(endpoint, data) {
 }
 
 export async function get(endpoint) {
-    const res = await fetch(`${API_BASE_URL}${endpoint}`);
-    return res.json();
+const res = await fetch(`${API_BASE_URL}${endpoint}`, {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('AUTH_TOKEN')}`
+        }
+    });    return res.json();
 }
