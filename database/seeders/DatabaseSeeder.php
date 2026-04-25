@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Organization;
 use App\Models\Osa;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -17,5 +18,14 @@ class DatabaseSeeder extends Seeder
         'osa_id'   => 220422, // Your chosen manual ID 
         'password' => Hash::make('admin123'), 
     ]);
+
+    //Seeded org account for testing
+    Organization::create([
+    'org_name' => 'Test Org',
+    'password' => Hash::make('pass123'),
+    'category' => 'Academic'
+    ]);
 }
+
+
 }

@@ -21,7 +21,7 @@ return new class extends Migration
                 'Academic', 'Civic', 'Cultural', 'Sports', 'Fraternities/Sororities', 'Other'
             ]);
 
-            $table->text('description');
+            $table->text('description')->nullable();
             $table->string('password');
 
             $table->timestamps();
