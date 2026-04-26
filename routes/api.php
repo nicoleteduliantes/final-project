@@ -13,5 +13,8 @@ Route::get('/user', function (Request $request) {
 Route::post('/admin/login', [AdminLoginController::class, 'adminLogin']);
 
 Route::middleware(['auth:sanctum', 'abilities:osa'])->group(function () {
-    Route::post('/osa/register-org', [OsaController::class, 'registerOrganization']);
+    Route::controller(OsaController::class)->group(function() {
+        Route::post('/osa/register-org', 'registerOrganization');
+        Route::get('/osa', 'test');
+    });
 });

@@ -7,34 +7,29 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Student extends Model
 {
-    // The primary key associated with the table
     protected $primaryKey = 'student_id';
-
-    // Indicates if the IDs are auto-incrementing
     public $incrementing = false;
-
-    // The "type" of the primary key ID
     protected $keyType = 'string';
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
     protected $fillable = [
         'student_id',
-        'first_name',
         'last_name',
+        'first_name',
         'up_email',
         'admission_date',
-        'course_id',
+        'degprog_id', 
+        'password',
     ];
 
+    protected $hidden = ['password'];
+
     /**
-     * Get the course that the student belongs to.
+     * Relationship to the DegreeProgram model
      */
-    public function course(): BelongsTo
+    public function degreeProgram(): BelongsTo
     {
-        return $this->belongsTo(Course::class, 'course_id', 'course_id');
+        // Foreign Key: degprog_id (on students table)
+        // Owner Key: degprog_id (on degree_programs table)
+        return $this->belongsTo(DegreeProgram::class, 'degprog_id', 'degprog_id');
     }
 }
