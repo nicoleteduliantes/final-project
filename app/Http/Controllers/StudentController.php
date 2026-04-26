@@ -18,7 +18,8 @@ class StudentController extends Controller
             'last_name'      => 'required|string|max:255',
             'up_email'       => 'required|email|unique:students,up_email',
             'admission_date' => 'required|date',
-            'course_id'      => 'required|exists:courses,course_id',
+            'degprog_id'      => 'required|exists:degprogs,degprog_id',
+            'password'      => 'required|string|max:255',
         ]);
 
         // 2. Create the student record
@@ -63,6 +64,7 @@ class StudentController extends Controller
             'degprog_id' => 1,
             'degprog_name' => 'BS Compsci'
             ]
+            
         ], 200);
     }
 }

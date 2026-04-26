@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminLoginController;
 use App\Http\Controllers\OsaController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\DegreeProgramController;
 
 
 Route::get('/user', function (Request $request) {
@@ -21,7 +22,7 @@ Route::middleware(['auth:sanctum', 'abilities:osa'])->group(function () {
 });
 
 Route::controller(StudentController::class)->group(function() {
-        Route::post('/register-student', 'registerStudent');
+        Route::post('/register-student', 'store');
         Route::post('/student-login', 'login');
     });
 

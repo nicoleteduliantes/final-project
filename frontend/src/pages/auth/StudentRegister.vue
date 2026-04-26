@@ -33,7 +33,7 @@
 <script setup>
 import { reactive, ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { get } from '@/services/apiService';
+import { get, post } from '@/services/apiService';
 
 const router = useRouter();
 
@@ -65,20 +65,23 @@ onMounted(() => {
 
 const register = async () => {
     try {
-        const response = await post('/register-student', JSON.stringify(form)
-);
-
-        const result = await response.json();
-
-        if (response.ok) {
+        const response = await post('/register-student', form);
+    
+        if (!response.errors) {
             alert('Registration Successful!');
             router.push('/student-login');
         } else {
-            // This will alert validation errors (like email already taken)
-            alert(result.message || 'Registration failed');
+            // handle updating the UI to display the error messages for each field
+            // response.errors is in the form of 
+            // {
+            //     fieldKey: ['msg1', 'msg2', ...]
+            // }
+            
+            alert('Registration failed');
         }
     } catch (err) {
         console.error("Network error:", err);
+        debugger;
         alert('Could not connect to the server.');
     }
 };
