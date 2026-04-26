@@ -24,6 +24,7 @@ class DegreeProgram extends Model
     public $incrementing = true;
 
     /**
+     * 
      * The attributes that are mass assignable.
      */
     protected $fillable = [

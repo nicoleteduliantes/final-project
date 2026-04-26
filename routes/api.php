@@ -20,9 +20,13 @@ Route::middleware(['auth:sanctum', 'abilities:osa'])->group(function () {
     });
 });
 
+Route::controller(StudentController::class)->group(function() {
+        Route::post('/register-student', 'registerStudent');
+        Route::post('/student-login', 'login');
+    });
 
-Route::get('/degree-programs', [StudentController::class, 'index']); //temporaryy only since wala pa nag make ug degrpog controller
 
-Route::post('/register-student', [StudentController::class, 'registerStudent']);
+Route::get('/degree-programs', [DegreeProgramController::class, 'getAll']); //temporary only since wala pa nag make ug degrpog controller
 
-Route::post('/student-login', [StudentController::class, 'login']);
+
+

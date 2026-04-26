@@ -58,6 +58,11 @@ class StudentController extends Controller
 
     public function index()
     {
-        return "Hello World";
+        return response()->json([
+            [
+            'degprog_id' => 1,
+            'degprog_name' => 'BS Compsci'
+            ]
+        ], 200);
     }
 }
