@@ -1,6 +1,5 @@
 <template>
     <div class="split">
-        <!-- LEFT: FORM -->
         <div class="form-side">
             <h2>Student Register</h2>
 
@@ -10,23 +9,23 @@
 
             <input type="date" v-model="form.admission_date" />
 
-            <select v-model="form.course_id">
+            <select v-model="form.degprog_id">
                 <option disabled value="">Select Degree Program</option>
                 <option
-                    v-for="course in courses"
-                    :key="course.id"
-                    :value="course.id"
+                    v-for="program in degreePrograms"
+                    :key="program.degprog_id"
+                    :value="program.degprog_id"
                 >
-                    {{ course.name }}
+                    {{ program.degprog_name }}
                 </option>
             </select>
 
             <input v-model="form.up_email" placeholder="UP Email" />
+            <input v-model="form.password" type="password" placeholder="Password" />
 
             <button @click="register">Register</button>
         </div>
 
-        <!-- RIGHT: IMAGE -->
         <div class="image-side"></div>
     </div>
 </template>
@@ -34,10 +33,12 @@
 <script setup>
 import { reactive, ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
+import { useAuthStore } from '@/stores/auth';
 
 const router = useRouter();
+const auth = useAuthStore();
 
-const courses = ref([]);
+const degreePrograms = ref([]);
 
 const form = reactive({
     student_id: '',
@@ -45,24 +46,26 @@ const form = reactive({
     last_name: '',
     up_email: '',
     admission_date: '',
-    course_id: '',
+    degprog_id: '',
+    password: '',
 });
 
-const fetchCourses = async () => {
+const fetchDegreePrograms = async () => {
     try {
-        const res = await fetch('http://127.0.0.1:8000/api/courses');
-        courses.value = await res.json();
+        const res = await fetch('http://127.0.0.1:8000/api/degree-programs');
+        degreePrograms.value = await res.json();
     } catch (err) {
         console.error(err);
     }
 };
 
 onMounted(() => {
-    fetchCourses();
+    fetchDegreePrograms();
 });
 
-const register = () => {
+const register = async () => {
     console.log('REGISTER DATA:', form);
+    await auth.registerStudent(form);
     router.push('/student-login');
 };
 </script>

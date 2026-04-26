@@ -2,45 +2,82 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Organization;
+use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
-class OsaController extends Controller
+class StudentController extends Controller
 {
-    public function registerOrganization(Request $request)
+    public function store(Request $request)
     {
-        // Validate incoming data
+        // 1. Validate the incoming request data
         $validated = $request->validate([
-            'name'        => 'required|string|max:255|unique:organizations,name',
-            'category'    => 'required|string|max:100',
-            'description' => 'nullable|string',
+            'student_id'     => 'required|string|unique:students,student_id',
+            'first_name'     => 'required|string|max:255',
+            'last_name'      => 'required|string|max:255',
+            'up_email'       => 'required|email|unique:students,up_email',
+            'admission_date' => 'required|date',
+            'degprog_id'     => 'required|exists:degprogs,degprog_id',
+            'password'       => 'required|string|min:8',
         ]);
 
-        //Create the record
-        $organization = Organization::create([
-            'name'        => $validated['name'],
-            'category'    => $validated['category'],
-            'description' => $validated['description'] ?? null,
-            'password'    => Hash::make('org_admin_2026'),     // Default password
+        // 2. Create the student record
+        $student = Student::create([
+            'student_id'     => $validated['student_id'],
+            'first_name'     => $validated['first_name'],
+            'last_name'      => $validated['last_name'],
+            'up_email'       => $validated['up_email'],
+            'admission_date' => $validated['admission_date'],
+            'degprog_id'     => $validated['degprog_id'],
+            'password'       => Hash::make($validated['password']), 
         ]);
 
-        //Return response with the auto-generated org_id
+        // 3. Return a response in the format similar to your OsaController
         return response()->json([
             'status'  => 'success',
-            'message' => 'Organization registered successfully!',
+            'message' => 'Student registered successfully!',
             'data'    => [
-                'org_id'           => $organization->org_id, 
-                'name'             => $organization->name,
-                'category'         => $organization->category,
-                'default_password' => 'org_admin123'
+                'student_id' => $student->student_id,
+                'full_name'  => $student->first_name . ' ' . $student->last_name,
+                'email'      => $student->up_email,
             ]
         ], 201);
     }
 
-    public function test() {
+    public function login(Request $request)
+    {
+        // 1. Validate that the email was sent
+        $request->validate([
+            'email'    => 'required|email',
+            'password' => 'required|string'
+        ]);
+
+        // 2. Find the student
+        $student = Student::where('up_email', $request->email)->first();
+
+        // 3. Check if student exists AND password matches
+        if (!$student || !Hash::check($request->password, $student->password)) {
+            return response()->json([
+                'status'  => 'error',
+                'message' => 'Invalid credentials.'
+            ], 401);
+        }
+
+        // 4. Return successful response
         return response()->json([
-            'message' => 'hello world'
+            'status'  => 'success',
+            'message' => 'Login successful!',
+            'data'    => [
+                'student_id' => $student->student_id,
+                'name'       => $student->first_name
+            ]
+        ], 200);
+    }
+
+    public function index()
+    {
+        return response()->json([
+            'message' => 'Hello World'
         ]);
     }
 }
