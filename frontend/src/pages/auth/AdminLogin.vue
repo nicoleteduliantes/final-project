@@ -1,5 +1,6 @@
 <template>
     <div class="split">
+        <!-- LEFT FORM -->
         <div class="form-side">
             <h2>Admin Login</h2>
 
@@ -8,12 +9,13 @@
                 <option value="osa">OSA Admin</option>
             </select>
 
-            <input v-model="email" placeholder="Email" />
+            <input v-model="email" placeholder="Admin ID" />
             <input v-model="password" type="password" placeholder="Password" />
 
             <button @click="login">Login</button>
         </div>
 
+        <!-- RIGHT IMAGE -->
         <div class="image-side"></div>
     </div>
 </template>
@@ -22,22 +24,33 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
+import { post } from '@/services/apiService';
 
 const email = ref('');
-const password = ref('');
 const type = ref('org');
+const password = ref('');
 
 const router = useRouter();
 const auth = useAuthStore();
 
-const login = () => {
-    if (type.value === 'org') {
-        auth.loginOrg({ email: email.value });
-    } else {
-        auth.loginOsa({ email: email.value });
-    }
+const login = async () => {
+    const res = await post('/admin/login', {
+        id: email.value,
+        password: password.value,
+        type: type.value,
+    });
 
-    router.push('/dashboard');
+    if (res.token) {
+        if (type.value === 'org') {
+            auth.loginOrg(res.user, res.token);
+            router.push('/org/dashboard');
+        } else {
+            auth.loginOsa(res.user, res.token);
+            router.push('/osa/dashboard');
+        }
+    } else {
+        alert('Login failed! Check your credentials.');
+    }
 };
 </script>
 
@@ -64,7 +77,8 @@ h2 {
 }
 
 /* INPUTS */
-input {
+input,
+select {
     padding: 12px;
     margin-bottom: 12px;
     border: 1px solid #ddd;
@@ -74,7 +88,7 @@ input {
 /* BUTTON */
 button {
     padding: 12px;
-    background: #7f1d1d; /* maroon */
+    background: #7f1d1d;
     color: white;
     border: none;
     border-radius: 6px;
