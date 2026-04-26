@@ -19,33 +19,32 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
-import { get, post } from '@/services/apiService';
+import { post } from '@/services/apiService';
 
+// 1. We use simple refs, matching your Admin Login style
 const email = ref('');
 const password = ref('');
 
 const router = useRouter();
 const auth = useAuthStore();
 
-const form = reactive({
-    email: '',
-    password: '', 
-});
-
 const login = async () => {
     try {
-        const response = await post('/student-login', form);
-        if (!response.errors) {
-            auth.loginStudent({ email: email.value });
+        // 2. We send an object containing the ref values, matching the backend keys
+        const res = await post('/student-login', {
+            email: email.value,
+            password: password.value
+        });
+
+        // 3. Check for the data/status, similar to how Admin checks for res.token
+        if (res.status === 'success') {
+            // Use the loginStudent function from your auth store
+            // We pass res.data (the student object) and res.token
+            auth.loginStudent(res.data, res.token || 'student-token');
+            
             router.push('/dashboard');
         } else {
-            // handle updating the UI to display the error messages for each field
-            // response.errors is in the form of 
-            // {
-            //     fieldKey: ['msg1', 'msg2', ...]
-            // }
-            
-            alert('Log in failed');
+            alert(res.message || 'Login failed! Check your credentials.');
         }
     } catch (err) {
         console.error("Network error:", err);

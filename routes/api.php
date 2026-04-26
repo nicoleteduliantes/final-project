@@ -21,6 +21,12 @@ Route::middleware(['auth:sanctum', 'abilities:osa'])->group(function () {
     });
 });
 
+/*
+Route::middleware(['auth:sanctum', 'abilities:student'])->group(function () {
+
+});
+*/
+
 Route::controller(StudentController::class)->group(function() {
         Route::post('/register-student', 'store');
         Route::post('/student-login', 'login');
