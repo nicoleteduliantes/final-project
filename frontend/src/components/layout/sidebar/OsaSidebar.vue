@@ -20,6 +20,10 @@
                 🏢 <span v-if="!collapsed">Global Orgs</span>
             </router-link>
 
+            <router-link to="/osa/registration">
+                📝 <span v-if="!collapsed">Registration</span>
+            </router-link>
+
             <router-link to="/osa/students">
                 👨‍🎓 <span v-if="!collapsed">Students</span>
             </router-link>
