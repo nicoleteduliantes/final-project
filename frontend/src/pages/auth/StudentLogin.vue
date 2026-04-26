@@ -19,6 +19,7 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
+import { get, post } from '@/services/apiService';
 
 const email = ref('');
 const password = ref('');
@@ -26,9 +27,30 @@ const password = ref('');
 const router = useRouter();
 const auth = useAuthStore();
 
-const login = () => {
-    auth.loginStudent({ email: email.value });
-    router.push('/dashboard');
+const form = reactive({
+    email: '',
+    password: '', 
+});
+
+const login = async () => {
+    try {
+        const response = await post('/student-login', form);
+        if (!response.errors) {
+            auth.loginStudent({ email: email.value });
+            router.push('/dashboard');
+        } else {
+            // handle updating the UI to display the error messages for each field
+            // response.errors is in the form of 
+            // {
+            //     fieldKey: ['msg1', 'msg2', ...]
+            // }
+            
+            alert('Log in failed');
+        }
+    } catch (err) {
+        console.error("Network error:", err);
+        alert('Could not connect to the server.');
+    }
 };
 </script>
 
