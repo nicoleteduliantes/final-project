@@ -21,7 +21,6 @@ import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import { post } from '@/services/apiService';
 
-// 1. We use simple refs, matching your Admin Login style
 const email = ref('');
 const password = ref('');
 
@@ -30,16 +29,14 @@ const auth = useAuthStore();
 
 const login = async () => {
     try {
-        // 2. We send an object containing the ref values, matching the backend keys
+        // Send an object containing the ref values with matching the backend keys
         const res = await post('/student-login', {
             email: email.value,
             password: password.value
         });
 
-        // 3. Check for the data/status, similar to how Admin checks for res.token
+        // Check for the data/status
         if (res.status === 'success') {
-            // Use the loginStudent function from your auth store
-            // We pass res.data (the student object) and res.token
             auth.loginStudent(res.data, res.token || 'student-token');
             
             router.push('/dashboard');
