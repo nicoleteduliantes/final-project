@@ -8,9 +8,10 @@ use Illuminate\Support\Facades\Hash;
 
 class StudentController extends Controller
 {
+    // Registration function
     public function store(Request $request)
     {
-        // 1. Validate the incoming request data
+        // Validate the incoming request data
         $validated = $request->validate([
             'student_id'     => 'required|string|unique:students,student_id',
             'first_name'     => 'required|string|max:255',
@@ -21,7 +22,7 @@ class StudentController extends Controller
             'password'       => 'required|string|min:8',
         ]);
 
-        // 2. Create the student record
+        // Create student record
         $student = Student::create([
             'student_id'     => $validated['student_id'],
             'first_name'     => $validated['first_name'],
@@ -32,7 +33,7 @@ class StudentController extends Controller
             'password'       => Hash::make($validated['password']), 
         ]);
 
-        // 3. Return a response in the format similar to your OsaController
+        // Return a response 
         return response()->json([
             'status'  => 'success',
             'message' => 'Student registered successfully!',
@@ -44,35 +45,46 @@ class StudentController extends Controller
         ], 201);
     }
 
+    // Log in function
     public function login(Request $request)
-    {
-        // 1. Validate that the email was sent
-        $request->validate([
-            'email'    => 'required|email',
-            'password' => 'required|string'
-        ]);
+{
+    // Validate user input
+    $request->validate([
+        'email'    => 'required|email',
+        'password' => 'required|string'
+    ]);
 
-        // 2. Find the student
-        $student = Student::where('up_email', $request->email)->first();
+    // Prepare credentials for the guard
+    $credentials = [
+        'up_email' => $request->email,
+        'password' => $request->password
+    ];
 
-        // 3. Check if student exists AND password matches
-        if (!$student || !Hash::check($request->password, $student->password)) {
-            return response()->json([
-                'status'  => 'error',
-                'message' => 'Invalid credentials.'
-            ], 401);
-        }
+    // Attempt login using the 'student' guard
+    if (auth()->guard('student')->attempt($credentials)) {
+        $student = auth()->guard('student')->user();
 
-        // 4. Return successful response
+        // Generate Token
+        $token = $student->createToken('student_token')->plainTextToken;
+
         return response()->json([
             'status'  => 'success',
             'message' => 'Login successful!',
+            'token'   => $token,
             'data'    => [
                 'student_id' => $student->student_id,
-                'name'       => $student->first_name
+                'name'       => $student->first_name,
+                'email'      => $student->up_email
             ]
         ], 200);
     }
+
+    // Fail Response
+    return response()->json([
+        'status'  => 'error',
+        'message' => 'Invalid credentials.'
+    ], 401);
+}
 
     public function index()
     {

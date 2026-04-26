@@ -23,7 +23,7 @@ Route::middleware(['auth:sanctum', 'abilities:osa'])->group(function () {
 
 /*
 Route::middleware(['auth:sanctum', 'abilities:student'])->group(function () {
-
+    For future pani
 });
 */
 
@@ -33,7 +33,7 @@ Route::controller(StudentController::class)->group(function() {
     });
 
 
-Route::get('/degree-programs', [DegreeProgramController::class, 'getAll']); //temporary only since wala pa nag make ug degrpog controller
+Route::get('/degree-programs', [DegreeProgramController::class, 'getAll']); 
 
 
 

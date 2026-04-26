@@ -2,11 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Student extends Model
+class Student extends Authenticatable
 {
+    use HasApiTokens;
+    protected $table = 'students';
     protected $primaryKey = 'student_id';
     public $incrementing = false;
     protected $keyType = 'string';
@@ -22,6 +25,11 @@ class Student extends Model
     ];
 
     protected $hidden = ['password'];
+
+    public function getAuthPassword()
+    {
+        return $this->password;
+    }
 
     /**
      * Relationship to the DegreeProgram model
