@@ -81,7 +81,6 @@ const register = async () => {
         }
     } catch (err) {
         console.error("Network error:", err);
-        debugger;
         alert('Could not connect to the server.');
     }
 };

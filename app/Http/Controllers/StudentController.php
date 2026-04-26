@@ -1,70 +1,95 @@
 <?php
 
-namespace App\Models;
 namespace App\Http\Controllers;
 
 use App\Models\Student;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Hash;
 
 class StudentController extends Controller
 {
+    // Registration function
     public function store(Request $request)
     {
-        // 1. Validate the incoming request data
-        $validatedData = $request->validate([
+        // Validate the incoming request data
+        $validated = $request->validate([
             'student_id'     => 'required|string|unique:students,student_id',
             'first_name'     => 'required|string|max:255',
             'last_name'      => 'required|string|max:255',
             'up_email'       => 'required|email|unique:students,up_email',
             'admission_date' => 'required|date',
-            'degprog_id'      => 'required|exists:degprogs,degprog_id',
-            'password'      => 'required|string|max:255',
+            'degprog_id'     => 'required|exists:degprogs,degprog_id',
+            'password'       => 'required|string|min:8',
         ]);
 
-        // 2. Create the student record
-        // This uses the $fillable array we defined in the Model
-        $student = Student::create($validatedData);
+        // Create student record
+        $student = Student::create([
+            'student_id'     => $validated['student_id'],
+            'first_name'     => $validated['first_name'],
+            'last_name'      => $validated['last_name'],
+            'up_email'       => $validated['up_email'],
+            'admission_date' => $validated['admission_date'],
+            'degprog_id'     => $validated['degprog_id'],
+            'password'       => Hash::make($validated['password']), 
+        ]);
 
-        // 3. Return a response
+        // Return a response 
         return response()->json([
+            'status'  => 'success',
             'message' => 'Student registered successfully!',
-            'student' => $student
+            'data'    => [
+                'student_id' => $student->student_id,
+                'full_name'  => $student->first_name . ' ' . $student->last_name,
+                'email'      => $student->up_email,
+            ]
         ], 201);
     }
 
+    // Log in function
     public function login(Request $request)
-    {
-        // 1. Validate that the email was sent
-        $credentials = $request->validate([
-            'email' => 'required|email'
-        ]);
+{
+    // Validate user input
+    $request->validate([
+        'email'    => 'required|email',
+        'password' => 'required|string'
+    ]);
 
-        // 2. Find the student by the 'up_email' column
-        $student = Student::where('up_email', $credentials['email'])->first();
+    // Prepare credentials for the guard
+    $credentials = [
+        'up_email' => $request->email,
+        'password' => $request->password
+    ];
 
-        // 3. Check if student exists
-        if (!$student) {
-            return response()->json([
-                'message' => 'Student not found.'
-            ], 404);
-        }
+    // Attempt login using the 'student' guard
+    if (auth()->guard('student')->attempt($credentials)) {
+        $student = auth()->guard('student')->user();
 
-        // 4. Return the student data
+        // Generate Token
+        $token = $student->createToken('student_token')->plainTextToken;
+
         return response()->json([
+            'status'  => 'success',
             'message' => 'Login successful!',
-            'student' => $student
+            'token'   => $token,
+            'data'    => [
+                'student_id' => $student->student_id,
+                'name'       => $student->first_name,
+                'email'      => $student->up_email
+            ]
         ], 200);
     }
+
+    // Fail Response
+    return response()->json([
+        'status'  => 'error',
+        'message' => 'Invalid credentials.'
+    ], 401);
+}
 
     public function index()
     {
         return response()->json([
-            [
-            'degprog_id' => 1,
-            'degprog_name' => 'BS Compsci'
-            ]
-            
-        ], 200);
+            'message' => 'Hello World'
+        ]);
     }
 }

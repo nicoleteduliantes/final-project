@@ -19,16 +19,37 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
+import { post } from '@/services/apiService';
 
+// 1. We use simple refs, matching your Admin Login style
 const email = ref('');
 const password = ref('');
 
 const router = useRouter();
 const auth = useAuthStore();
 
-const login = () => {
-    auth.loginStudent({ email: email.value });
-    router.push('/dashboard');
+const login = async () => {
+    try {
+        // 2. We send an object containing the ref values, matching the backend keys
+        const res = await post('/student-login', {
+            email: email.value,
+            password: password.value
+        });
+
+        // 3. Check for the data/status, similar to how Admin checks for res.token
+        if (res.status === 'success') {
+            // Use the loginStudent function from your auth store
+            // We pass res.data (the student object) and res.token
+            auth.loginStudent(res.data, res.token || 'student-token');
+            
+            router.push('/dashboard');
+        } else {
+            alert(res.message || 'Login failed! Check your credentials.');
+        }
+    } catch (err) {
+        console.error("Network error:", err);
+        alert('Could not connect to the server.');
+    }
 };
 </script>
 

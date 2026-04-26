@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Student;
 use App\Models\Organization;
 use App\Models\Osa;
 use App\Models\User;
@@ -48,10 +49,16 @@ return [
         'driver' => 'session',
         'provider' => 'osa_provider',
     ],
+
     'org' => [
         'driver' => 'session',
         'provider' => 'org_provider',
     ],
+
+    'student' => [
+            'driver' => 'session',
+            'provider' => 'student_provider',
+        ],
 ],
 
 
@@ -74,21 +81,27 @@ return [
     */
 
     'providers' => [
-        'users' => [
-            'driver' => 'eloquent',
-            'model' => env('AUTH_MODEL', User::class),
-        ],
+
+    'users' => [
+        'driver' => 'eloquent',
+        'model' => env('AUTH_MODEL', User::class),
+    ],
 
             // ... other providers
     'osa_provider' => [
-    'driver' => 'eloquent',
-    'model' => Osa::class, 
-        ],
+        'driver' => 'eloquent',
+        'model' => Osa::class, 
+    ],
 
     'org_provider' => [
-    'driver' => 'eloquent',
-    'model' => Organization::class, 
-        ],
+        'driver' => 'eloquent',
+        'model' => Organization::class, 
+    ],
+
+    'student_provider' => [
+        'driver' => 'eloquent',
+        'model' => Student::class,
+    ],
         
 ],
     /*
