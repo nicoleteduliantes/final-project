@@ -14,7 +14,6 @@ import StudentDashboard from '@/pages/student/StudentDashboard.vue';
 import Discover from '@/pages/student/Discover.vue';
 import CurrentMemberships from '@/pages/student/CurrentMemberships.vue';
 import ParticipationRecord from '@/pages/student/ParticipationRecord.vue';
-import EventCalendar from '@/pages/student/EventCalendar.vue';
 import ApplicationForm from '@/pages/student/ApplicationForm.vue';
 import OrgProfile from '@/pages/student/OrgProfile.vue';
 
@@ -63,7 +62,6 @@ const routes = [
             { path: 'discover', component: Discover },
             { path: 'memberships', component: CurrentMemberships },
             { path: 'participation', component: ParticipationRecord },
-            { path: 'calendar', component: EventCalendar },
             { path: 'org/:id', component: OrgProfile },
             { path: 'apply/:id', component: ApplicationForm },
 
