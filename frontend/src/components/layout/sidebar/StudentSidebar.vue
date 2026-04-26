@@ -25,9 +25,6 @@
             <router-link to="/participation"
                 >📊 <span v-if="!collapsed">Participation</span></router-link
             >
-            <router-link to="/calendar"
-                >📅 <span v-if="!collapsed">Calendar</span></router-link
-            >
         </nav>
     </div>
 </template>
