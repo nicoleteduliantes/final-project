@@ -53,8 +53,7 @@ const form = reactive({
 // Fetches the programs we seeded from the StudentController index route
 const fetchDegreePrograms = async () => {
     try {
-        const res = await get('degree-programs');
-        degreePrograms.value = await res.json();
+        degreePrograms.value = await get('/degree-programs');
     } catch (err) {
         console.error("Failed to load programs:", err);
     }
@@ -66,7 +65,8 @@ onMounted(() => {
 
 const register = async () => {
     try {
-        const response = await post('register-student', JSON.stringify(form));
+        const response = await post('/register-student', JSON.stringify(form)
+);
 
         const result = await response.json();
 
