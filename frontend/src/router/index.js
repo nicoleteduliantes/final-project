@@ -15,6 +15,8 @@ import Discover from '@/pages/student/Discover.vue';
 import CurrentMemberships from '@/pages/student/CurrentMemberships.vue';
 import ParticipationRecord from '@/pages/student/ParticipationRecord.vue';
 import EventCalendar from '@/pages/student/EventCalendar.vue';
+import ApplicationForm from '@/pages/student/ApplicationForm.vue';
+import OrgProfile from '@/pages/student/OrgProfile.vue';
 
 /* ORG */
 import OrgDashboard from '@/pages/org/OrgDashboard.vue';
@@ -29,6 +31,7 @@ import AttendanceTracker from '@/pages/org/AttendanceTracker.vue';
 import OSAAdminDashboard from '@/pages/osa/OSAAdminDashboard.vue';
 import CollegeProgramManager from '@/pages/osa/CollegeProgramManager.vue';
 import GlobalOrgManager from '@/pages/osa/GlobalOrgManager.vue';
+import OrgRegister from '@/pages/osa/OrgRegister.vue';
 import StudentManager from '@/pages/osa/StudentManager.vue';
 
 const routes = [
@@ -61,6 +64,8 @@ const routes = [
             { path: 'memberships', component: CurrentMemberships },
             { path: 'participation', component: ParticipationRecord },
             { path: 'calendar', component: EventCalendar },
+            { path: 'org/:id', component: OrgProfile },
+            { path: 'apply/:id', component: ApplicationForm },
 
             /* ORG */
             { path: 'org/dashboard', component: OrgDashboard },
@@ -75,6 +80,7 @@ const routes = [
             { path: 'osa/dashboard', component: OSAAdminDashboard },
             { path: 'osa/colleges', component: CollegeProgramManager },
             { path: 'osa/orgs', component: GlobalOrgManager },
+            { path: 'osa/registration', component: OrgRegister },
             { path: 'osa/students', component: StudentManager },
         ],
     },

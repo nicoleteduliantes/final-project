@@ -1,35 +1,43 @@
 <template>
-    <div>
+    <div class="page">
         <h1>{{ org.name }}</h1>
 
         <p>{{ org.description }}</p>
 
-        <button @click="apply">Apply for Membership</button>
-
-        <h2>Events</h2>
-
-        <div v-for="event in events" :key="event.id">
-            <RouterLink :to="'/event/' + event.id">
-                {{ event.name }}
-            </RouterLink>
-        </div>
+        <RouterLink :to="'/apply/' + org.id" class="apply-btn">
+            Apply to Organization
+        </RouterLink>
     </div>
 </template>
 
 <script setup>
-import { useRouter } from 'vue-router';
+import { useRoute } from 'vue-router';
 
-const router = useRouter();
+const route = useRoute();
 
 const org = {
-    id: 1,
+    id: route.params.id,
     name: 'AWS Cloud Club',
-    description: 'Cloud community',
-};
-
-const events = [{ id: 1, name: 'Cloud Workshop' }];
-
-const apply = () => {
-    router.push('/apply/' + org.id);
+    description: 'Official AWS student organization',
 };
 </script>
+
+<style scoped>
+.page {
+    padding: 20px;
+}
+
+.apply-btn {
+    background: #059669;
+    color: white;
+    padding: 10px 14px;
+    border-radius: 6px;
+    text-decoration: none;
+    display: inline-block;
+    margin-top: 15px;
+}
+
+.apply-btn:hover {
+    background: #047857;
+}
+</style>
