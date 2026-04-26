@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminLoginController;
 use App\Http\Controllers\OsaController;
+use App\Http\Controllers\StudentController;
 
 
 Route::get('/user', function (Request $request) {
@@ -18,3 +19,10 @@ Route::middleware(['auth:sanctum', 'abilities:osa'])->group(function () {
         Route::get('/osa', 'test');
     });
 });
+
+
+Route::get('/degree-programs', [StudentController::class, 'index']); //temporaryy only since wala pa nag make ug degrpog controller
+
+Route::post('/register-student', [StudentController::class, 'registerStudent']);
+
+Route::post('/student-login', [StudentController::class, 'login']);

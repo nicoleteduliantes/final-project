@@ -33,11 +33,11 @@
 <script setup>
 import { reactive, ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
-import { useAuthStore } from '@/stores/auth';
+import { get } from '@/services/apiService';
 
 const router = useRouter();
-const auth = useAuthStore();
 
+// Matches the backend data structure
 const degreePrograms = ref([]);
 
 const form = reactive({
@@ -47,15 +47,15 @@ const form = reactive({
     up_email: '',
     admission_date: '',
     degprog_id: '',
-    password: '',
+    password: '', 
 });
 
+// Fetches the programs we seeded from the StudentController index route
 const fetchDegreePrograms = async () => {
     try {
-        const res = await fetch('http://127.0.0.1:8000/api/degree-programs');
-        degreePrograms.value = await res.json();
+        degreePrograms.value = await get('/degree-programs');
     } catch (err) {
-        console.error(err);
+        console.error("Failed to load programs:", err);
     }
 };
 
@@ -64,20 +64,33 @@ onMounted(() => {
 });
 
 const register = async () => {
-    console.log('REGISTER DATA:', form);
-    await auth.registerStudent(form);
-    router.push('/student-login');
+    try {
+        const response = await post('/register-student', JSON.stringify(form)
+);
+
+        const result = await response.json();
+
+        if (response.ok) {
+            alert('Registration Successful!');
+            router.push('/student-login');
+        } else {
+            // This will alert validation errors (like email already taken)
+            alert(result.message || 'Registration failed');
+        }
+    } catch (err) {
+        console.error("Network error:", err);
+        alert('Could not connect to the server.');
+    }
 };
 </script>
 
 <style scoped>
-/* SPLIT LAYOUT */
+/* CSS remains exactly as you provided */
 .split {
     display: flex;
     height: 100vh;
 }
 
-/* LEFT FORM */
 .form-side {
     flex: 1;
     display: flex;
@@ -87,13 +100,11 @@ const register = async () => {
     background: #ffffff;
 }
 
-/* TITLE */
 h2 {
     margin-bottom: 20px;
     color: #064e3b;
 }
 
-/* INPUTS */
 input,
 select {
     padding: 12px;
@@ -102,7 +113,6 @@ select {
     border-radius: 6px;
 }
 
-/* BUTTON */
 button {
     padding: 12px;
     background: #7f1d1d; /* maroon */
@@ -116,7 +126,6 @@ button:hover {
     opacity: 0.9;
 }
 
-/* RIGHT IMAGE */
 .image-side {
     flex: 1;
     background-image: url('@/assets/upmin.jpg');
@@ -124,7 +133,6 @@ button:hover {
     background-position: center;
 }
 
-/* MOBILE */
 @media (max-width: 768px) {
     .split {
         flex-direction: column;
