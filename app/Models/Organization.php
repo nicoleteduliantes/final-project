@@ -9,10 +9,9 @@ class Organization extends Authenticatable
 {
     use HasApiTokens;
 
-    protected $table = 'organizations'; 
     protected $primaryKey = 'org_id'; 
     protected $fillable = [
-        'name', 
+        'org_name', 
         'category', 
         'description', 
         'password'

@@ -14,10 +14,16 @@ return new class extends Migration
         Schema::create('events', function (Blueprint $table) {
         $table->id('event_id'); 
 
+       $table->foreignId('org_id')
+          ->constrained('organizations', 'org_id')
+          ->onDelete('cascade');
+
         $table->string('event_name');
+        $table->string('event_host');
+        $table->text('description')->nullable();
+        $table->string('event_logo')->nullable();
         $table->date('date');
         $table->string('location');
-
         $table->timestamps();
     });
     }

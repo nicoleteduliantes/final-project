@@ -6,30 +6,48 @@
             <label>Event Name</label>
             <input v-model="event.name" />
 
-            <label>Event Host/s</label>
-            <input v-model="event.hosts" />
-
             <label>Event Logo</label>
-            <input type="file" />
+            <input type="file" disabled title="Images disabled for now to simplify" />
 
             <label>Event Date</label>
             <input type="date" v-model="event.date" />
 
+            <label>Location</label>
+            <input v-model="event.location" />
+            
             <label>Description</label>
-            <textarea v-model="event.desc"></textarea>
+            <textarea v-model="event.description"></textarea>
 
-            <button class="primary">Create Event</button>
+            <button class="primary" @click="createEvent">Create Event</button>
         </div>
     </div>
 </template>
 
 <script setup>
 import { reactive } from 'vue';
+import { post } from '@/services/apiService'; 
 
 const event = reactive({
     name: '',
-    hosts: '',
     date: '',
-    desc: '',
+    location: '',
+    description: '', 
 });
+
+const createEvent = async () => {
+    const payload = {
+        event_name: event.name,
+        date: event.date,
+        location: event.location,
+        description: event.description
+    };
+
+    try {
+        await post('/org/events', payload);
+        alert('Event Created!');
+    } catch (error) {
+        console.error("Error details:", error.response?.data);
+        alert('Creation failed. Check console.');
+    }
+};
 </script>

@@ -23,3 +23,18 @@ const res = await fetch(`${API_BASE_URL}${endpoint}`, {
         }
     });    return res.json();
 }
+
+export async function put(endpoint, data) {
+    const res = await fetch(`${API_BASE_URL}${endpoint}`, {
+        method: 'PUT', // The key difference!
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('AUTH_TOKEN')}`
+        },
+        body: JSON.stringify(data),
+    });
+
+
+    return res.json();
+}
