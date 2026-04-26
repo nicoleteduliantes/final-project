@@ -1,45 +1,105 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Inter, Arial, sans-serif;
-}
+/* =========================
+   GLOBAL BASE
+========================= */
 
 body {
-    background: #f3f4f6;
-    color: #111827;
+    margin: 0;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    background: #ffffff;
+    color: #1f2937;
 }
 
-/* buttons */
-button {
-    padding: 10px 14px;
-    border: none;
-    border-radius: 6px;
-    background: #2563eb;
-    color: white;
-    cursor: pointer;
+/* =========================
+   PAGE WRAPPER
+========================= */
+
+.page {
+    min-height: 100vh;
+    padding: 30px;
+    background: #ffffff;
 }
 
-button:hover {
-    background: #1d4ed8;
-}
+/* =========================
+   HEADINGS (ACADEMIC STYLE)
+========================= */
 
-/* inputs */
-input,
-select {
-    padding: 10px;
-    border: 1px solid #d1d5db;
-    border-radius: 6px;
-    width: 100%;
+h1,
+h2,
+h3 {
+    font-family: 'Georgia', serif;
+    color: #7f1d1d; /* maroon accent */
     margin-bottom: 10px;
 }
 
-/* auth layout */
-.auth {
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
+p {
+    line-height: 1.6;
+}
+
+/* =========================
+   CARD STYLE (SUBTLE)
+========================= */
+
+.card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* =========================
+   INPUTS
+========================= */
+
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 10px;
+    margin-top: 6px;
+    margin-bottom: 12px;
+    border-radius: 6px;
+    border: 1px solid #d1d5db;
+    font-family: 'Georgia', serif;
+    background: #ffffff;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: #7f1d1d;
+}
+
+/* =========================
+   BUTTONS
+========================= */
+
+button {
+    background: #7f1d1d; /* maroon */
+    color: white;
+    border: none;
+    padding: 10px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: 'Georgia', serif;
+    transition: 0.2s;
+}
+
+button:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+}
+
+/* =========================
+   LINKS
+========================= */
+
+a {
+    color: #064e3b; /* dark green */
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
 }
