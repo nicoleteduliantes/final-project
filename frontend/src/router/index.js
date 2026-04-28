@@ -33,23 +33,28 @@ import GlobalOrgManager from '@/pages/osa/GlobalOrgManager.vue';
 import OrgRegister from '@/pages/osa/OrgRegister.vue';
 import StudentManager from '@/pages/osa/StudentManager.vue';
 
+/* CREATE ROUTER */
 const routes = [
     // AUTH ROUTES (NO SIDEBAR)
     {
         path: '/',
         component: Landing,
+        meta: { public: true },
     },
     {
         path: '/student-login',
         component: StudentLogin,
+        meta: { public: true },
     },
     {
         path: '/student-register',
         component: StudentRegister,
+        meta: { public: true },
     },
     {
         path: '/admin-login',
         component: AdminLogin,
+        meta: { public: true },
     },
 
     // APP ROUTES (WITH SIDEBAR)
@@ -58,31 +63,125 @@ const routes = [
         component: MainLayout,
         children: [
             /* STUDENT */
-            { path: 'dashboard', component: StudentDashboard },
-            { path: 'discover', component: Discover },
-            { path: 'memberships', component: CurrentMemberships },
-            { path: 'participation', component: ParticipationRecord },
-            { path: 'org/:id', component: OrgProfile },
-            { path: 'apply/:id', component: ApplicationForm },
+            {
+                path: 'dashboard',
+                component: StudentDashboard,
+                meta: { role: 'student' },
+            },
+            {
+                path: 'discover',
+                component: Discover,
+                meta: { role: 'student' },
+            },
+            {
+                path: 'memberships',
+                component: CurrentMemberships,
+                meta: { role: 'student' },
+            },
+            {
+                path: 'participation',
+                component: ParticipationRecord,
+                meta: { role: 'student' },
+            },
+            {
+                path: 'org/:id',
+                component: OrgProfile,
+                meta: { role: 'student' },
+            },
+            {
+                path: 'apply/:id',
+                component: ApplicationForm,
+                meta: { role: 'student' },
+            },
 
             /* ORG */
-            { path: 'org/dashboard', component: OrgDashboard },
-            { path: 'org/members', component: ManageMembers },
-            { path: 'org/applications', component: ReviewApplications },
-            { path: 'org/events', component: UpcomingEvents },
-            { path: 'org/events/new', component: NewEvent },
-            { path: 'org/events/edit/:id', component: EventEditor },
-            { path: 'org/attendance', component: AttendanceTracker },
+            {
+                path: 'org/dashboard',
+                component: OrgDashboard,
+                meta: { role: 'org' },
+            },
+            {
+                path: 'org/members',
+                component: ManageMembers,
+                meta: { role: 'org' },
+            },
+            {
+                path: 'org/applications',
+                component: ReviewApplications,
+                meta: { role: 'org' },
+            },
+            {
+                path: 'org/events',
+                component: UpcomingEvents,
+                meta: { role: 'org' },
+            },
+            {
+                path: 'org/events/new',
+                component: NewEvent,
+                meta: { role: 'org' },
+            },
+            {
+                path: 'org/events/edit/:id',
+                component: EventEditor,
+                meta: { role: 'org' },
+            },
+            {
+                path: 'org/attendance',
+                component: AttendanceTracker,
+                meta: { role: 'org' },
+            },
 
             /* OSA */
-            { path: 'osa/dashboard', component: OSAAdminDashboard },
-            { path: 'osa/colleges', component: CollegeProgramManager },
-            { path: 'osa/orgs', component: GlobalOrgManager },
-            { path: 'osa/registration', component: OrgRegister },
-            { path: 'osa/students', component: StudentManager },
+            {
+                path: 'osa/dashboard',
+                component: OSAAdminDashboard,
+                meta: { role: 'osa' },
+            },
+            {
+                path: 'osa/colleges',
+                component: CollegeProgramManager,
+                meta: { role: 'osa' },
+            },
+            {
+                path: 'osa/orgs',
+                component: GlobalOrgManager,
+                meta: { role: 'osa' },
+            },
+            {
+                path: 'osa/registration',
+                component: OrgRegister,
+                meta: { role: 'osa' },
+            },
+            {
+                path: 'osa/students',
+                component: StudentManager,
+                meta: { role: 'osa' },
+            },
         ],
     },
 ];
+
+/* ROUTE GUARDS */
+router.beforeEach((to, from, next) => {
+    const auth = useAuthStore();
+
+    /* allow public routes */
+    if (to.meta.public) {
+        return next();
+    }
+
+    /* must be logged in */
+    if (!auth.isAuthenticated) {
+        return next('/');
+    }
+
+    /* role restriction */
+    if (to.meta.role && to.meta.role !== auth.role) {
+        return next('/dashboard');
+    }
+
+    next();
+});
 
 export default createRouter({
     history: createWebHistory(),
