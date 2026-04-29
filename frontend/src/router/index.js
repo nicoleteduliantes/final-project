@@ -161,28 +161,6 @@ const routes = [
     },
 ];
 
-/* ROUTE GUARDS */
-router.beforeEach((to, from, next) => {
-    const auth = useAuthStore();
-
-    /* allow public routes */
-    if (to.meta.public) {
-        return next();
-    }
-
-    /* must be logged in */
-    if (!auth.isAuthenticated) {
-        return next('/');
-    }
-
-    /* role restriction */
-    if (to.meta.role && to.meta.role !== auth.role) {
-        return next('/dashboard');
-    }
-
-    next();
-});
-
 export default createRouter({
     history: createWebHistory(),
     routes,
