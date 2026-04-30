@@ -27,7 +27,7 @@ return new class extends Migration
             $table->timestamps();
         });
         // set the auto-increment of org_id starting point to 202601
-    // DB::statement("ALTER TABLE organizations AUTO_INCREMENT = 202601;");
+    DB::statement("ALTER TABLE organizations AUTO_INCREMENT = 202601;");
     }
 
     /**
