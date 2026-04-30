@@ -4,32 +4,51 @@
 
         <div class="form">
             <label>Event Name</label>
-            <input v-model="event.name" />
-
-            <label>Event Host/s</label>
-            <input v-model="event.hosts" />
+            <input v-model="event.event_name" />
 
             <label>Event Logo</label>
-            <input type="file" />
+            <input type="file" disabled title="Images disabled for now to simplify"/>
 
             <label>Event Date</label>
             <input type="date" v-model="event.date" />
 
-            <label>Description</label>
-            <textarea v-model="event.desc"></textarea>
+            <label>Location</label>
+            <input v-model="event.location" />
 
-            <button class="primary">Create Event</button>
+            <label>Description</label>
+            <textarea v-model="event.description"></textarea>
+
+            <button class="primary" @click = "createEvent">Create Event</button>
         </div>
     </div>
 </template>
 
 <script setup>
 import { reactive } from 'vue';
+import { post } from '@/services/apiService'; 
 
 const event = reactive({
-    name: '',
-    hosts: '',
+    event_name: '',
     date: '',
-    desc: '',
+    location: '',
+    description: '',
 });
+
+const createEvent = async () => {
+    const payload = {
+        event_name: event.event_name,
+        date: event.date,
+        location: event.location,
+        description: event.description
+    };
+
+    try {
+        await post('/org/events', payload);
+        alert('Event Created!');
+        fetchEvents(); //the list will update immediately after creating an event
+    } catch (error) {
+        console.error("Error details:", error.response?.data);
+        alert('Creation failed. Check console.');
+    }
+};
 </script>

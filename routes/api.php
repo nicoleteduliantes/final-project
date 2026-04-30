@@ -1,11 +1,12 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminLoginController;
+use App\Http\Controllers\DegreeProgramController;
+use App\Http\Controllers\EventController;
 use App\Http\Controllers\OsaController;
 use App\Http\Controllers\StudentController;
-use App\Http\Controllers\DegreeProgramController;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
 
 Route::get('/user', function (Request $request) {
@@ -19,6 +20,13 @@ Route::middleware(['auth:sanctum', 'abilities:osa'])->group(function () {
         Route::post('/osa/register-org', 'registerOrganization');
         Route::get('/osa', 'test');
     });
+});
+
+//ORG PAGES
+Route::middleware('auth:sanctum', 'abilities:org')->group(function () {
+    Route::post('/org/events', [EventController::class, 'store']);
+    Route::get('/org/events', [EventController::class, 'index']);
+    Route::put('/org/events/{id}', [EventController::class, 'update']);
 });
 
 /*
