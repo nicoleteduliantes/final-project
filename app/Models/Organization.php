@@ -12,7 +12,7 @@ class Organization extends Authenticatable
     protected $table = 'organizations'; 
     protected $primaryKey = 'org_id'; 
     protected $fillable = [
-        'name', 
+        'org_name', 
         'category', 
         'description', 
         'password'
