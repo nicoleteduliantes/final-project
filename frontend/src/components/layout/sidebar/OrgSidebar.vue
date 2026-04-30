@@ -45,7 +45,7 @@ const collapsed = ref(false);
 /* SIDEBAR BASE */
 .sidebar {
     width: 200px;
-    height: 100vh;
+    height: 100%;
     background: #7f1d1d; /* maroon */
     color: white;
     display: flex;
@@ -64,12 +64,12 @@ const collapsed = ref(false);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 10px;
+    padding: 7px;
     margin-bottom: 15px;
 
     /* WHITE BACKGROUND FOR LOGO AREA */
     background: #ffffff;
-    border-radius: 10px;
+    border-radius: 15px;
 }
 
 .logo {
@@ -89,14 +89,14 @@ const collapsed = ref(false);
     color: #7f1d1d; /* maroon icon */
     font-size: 22px;
     cursor: pointer;
-    padding: 4px;
-
+    padding: 8px;
     transition: 0.2s;
 }
 
 .toggle:hover {
     opacity: 0.7;
-    transform: scale(1.1);
+    transform: scale(1.2);
+    color: rgb(3, 74, 46);
 }
 
 /* NAV */
@@ -110,7 +110,7 @@ const collapsed = ref(false);
 a {
     color: white;
     text-decoration: none;
-    padding: 10px;
+    padding: 9px;
     border-radius: 6px;
     display: flex;
     align-items: center;
@@ -120,21 +120,24 @@ a {
 }
 
 a:hover {
-    background: rgba(255, 255, 255, 0.15);
+    background: white;
+    color: #7f1d1d;
 }
 
 a.router-link-active {
-    background: rgba(255, 255, 255, 0.25);
+    background: rgb(3, 74, 46);
+    color: gold;
+    border: 2px solid gold;
 }
 
 /* COLLAPSED ALIGNMENT */
 .sidebar.collapsed a {
     justify-content: center;
-    padding: 12px 0;
+    padding: 11px 0;
 }
 
 /* ICON ALIGNMENT */
 .sidebar.collapsed a span {
-    display: none;
+    display: center;
 }
 </style>
