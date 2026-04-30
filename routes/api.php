@@ -6,6 +6,7 @@ use App\Http\Controllers\AdminLoginController;
 use App\Http\Controllers\OsaController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\DegreeProgramController;
+use App\Http\Controllers\OrganizationController;
 
 
 Route::get('/user', function (Request $request) {
@@ -34,6 +35,8 @@ Route::controller(StudentController::class)->group(function() {
 
 
 Route::get('/degree-programs', [DegreeProgramController::class, 'getAll']); 
+
+Route::get('/organizations', [OrganizationController::class, 'index']);
 
 
 
