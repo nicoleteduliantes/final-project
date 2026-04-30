@@ -6,7 +6,7 @@
 
         <div class="grid">
             <div class="card" v-for="org in orgs" :key="org.org_id">
-                <h3>{{ org.name }}</h3>
+                <h3>{{ org.org_name }}</h3>
 
                 <p class="category">
                     {{ org.category }}
