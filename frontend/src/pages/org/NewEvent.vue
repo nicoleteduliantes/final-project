@@ -23,6 +23,10 @@
 <script setup>
 import { reactive } from 'vue';
 import { post } from '@/services/apiService'; 
+import { useRoute, useRouter } from 'vue-router';
+
+const route = useRoute();
+const router = useRouter();
 
 const event = reactive({
     event_name: '',
@@ -42,12 +46,8 @@ const createEvent = async () => {
     try {
         await post('/org/events', payload);
         alert('Event Created!');
+        router.push('/org/events'); // naviagates automatically to View Events page after a succesful event creation
 
-        event.event_name = '';
-        event.date = '';
-        event.location = '';
-        event.description = '';
-        
     } catch (error) {
         alert('Creation failed. Check console.');
     }

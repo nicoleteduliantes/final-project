@@ -53,7 +53,7 @@ const updateEvent = async () => {
     try {
         await put(`/org/events/${eventId}`, event);
         alert('Event updated successfully!');
-        router.push('/org/events'); 
+        router.push('/org/events'); // naviagates automatically to View Events page after a succesful event update.
     } catch (error) {
         console.error("Update failed:", error);
         alert('Failed to update event.');
