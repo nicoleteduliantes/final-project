@@ -6,10 +6,6 @@
             <label>Event Name</label>
             <input v-model="event.event_name" />
 
-            
-            <label>Event Logo</label>
-            <input type="file" disabled title="Images disabled for now to simplify"/>
-
             <label>Event Date</label>
             <input type="date" v-model="event.date" />
 

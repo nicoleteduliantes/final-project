@@ -6,9 +6,6 @@
             <label>Event Name</label>
             <input v-model="event.event_name" />
 
-            <label>Event Logo</label>
-            <input type="file" disabled title="Images disabled for now to simplify"/>
-
             <label>Event Date</label>
             <input type="date" v-model="event.date" />
 
@@ -45,6 +42,12 @@ const createEvent = async () => {
     try {
         await post('/org/events', payload);
         alert('Event Created!');
+
+        event.event_name = '';
+        event.date = '';
+        event.location = '';
+        event.description = '';
+        
     } catch (error) {
         alert('Creation failed. Check console.');
     }

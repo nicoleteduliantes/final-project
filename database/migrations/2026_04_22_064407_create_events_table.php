@@ -21,7 +21,6 @@ return new class extends Migration
         $table->string('event_name');
         $table->string('event_host');
         $table->text('description')->nullable();
-        $table->string('event_logo')->nullable();
         $table->date('date');
         $table->string('location');
         $table->timestamps();

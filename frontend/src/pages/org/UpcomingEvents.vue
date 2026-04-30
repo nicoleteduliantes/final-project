@@ -19,6 +19,8 @@
                     <td>{{ event.date }}</td>
                     <td>
                         <button @click="edit(event.event_id)">Edit</button>
+
+                        <button @click="handleDelete(event.event_id)">Delete</button>
                     </td>
                 </tr>
             </tbody>
@@ -29,7 +31,7 @@
 <script setup>
 import { useRouter } from 'vue-router';
 import { ref, onMounted } from 'vue';
-import { get } from '@/services/apiService'; 
+import { get, del } from '@/services/apiService'; 
 
 const router = useRouter();
 const events = ref([]);
@@ -46,6 +48,22 @@ const fetchEvents = async () => {
 
 const edit = (id) => {
     router.push(`/org/events/edit/${id}`);
+};
+
+const handleDelete = async (id) => {
+    
+    if (confirm("Are you sure you want to delete this event?")) {
+        try {
+            await del(`/org/events/${id}`);
+            alert('Event deleted successfully!');
+            
+            // Refresh the list so the deleted event disappears immediately
+            await fetchEvents(); 
+        } catch (error) {
+            console.error("Delete failed:", error);
+            alert('Failed to delete event.');
+        }
+    }
 };
 
 // Automatically run the list of events when the user lands on the "Upcoming Events" page

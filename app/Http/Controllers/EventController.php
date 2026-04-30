@@ -16,13 +16,11 @@ class EventController extends Controller
             'date'       => 'required|date',
             'location'   => 'required|string',
             'description' => 'nullable|string',
-            'event_logo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048', 
         ]);
 
        
         $user = $request->user();
         $org = Organization::find($user->org_id);
-
         $org_name = $org ? $org->org_name : 'Official Host'; 
 
         $event = Event::create([
@@ -32,7 +30,6 @@ class EventController extends Controller
             'date'        => $request->date,
             'location'    => $request->location,
             'description' => $request->description,
-            'event_logo'  => null,
         ]);
 
         return response()->json([
@@ -41,52 +38,53 @@ class EventController extends Controller
         ], 201);
     }
 
-    //GET EVENT
+    //GET ALL EVENTS
     public function index(Request $request)
-{
-    //double check if the user exists
-    $user = $request->user();
+    {
     
-    if (!$user) {
-        return response()->json(['error' => 'User not authenticated'], 401);
-    }
-
-    // Fetch the events
-    try {
-        $events = Event::where('org_id', $user->org_id)
+    $events = Event::where('org_id', $request->user()->org_id)
                        ->orderBy('date', 'asc')
                        ->get();
 
         return response()->json($events);
-    } catch (\Exception $e) {
-        // This will show the real error in your logs
-        return response()->json(['error' => $e->getMessage()], 500);
-    }
 }
 
-// Get a single event for the editor
-public function show($id)
-{
-    return Event::findOrFail($id);
-}
-
-// Save the changes
-public function update(Request $request, $id)
-{
-    $event = Event::findOrFail($id);
-    
-    // Ensure the user owns this event before updating!
-    if ($event->org_id !== $request->user()->org_id) {
-        return response()->json(['error' => 'Unauthorized'], 403);
+    // GET A SINGLE EVENT (for the editor)
+    public function show(Request $request, $id)
+    {
+        //Ensures organizations only sees their own event
+        return Event::where ('event_id', $id)
+                    ->where('org_id', $request->user()->org_id)
+                    ->findOrFail($id);
     }
 
-    $event->update([
-        'event_name'  => $request->event_name,
-        'date'        => $request->date,
-        'location'    => $request->location,
-        'description' => $request->description,
-    ]);
+    // UPDATE EVENT
+    public function update(Request $request, $id)
+    {
+        //Ensures organizations  can edit only their own event
+        $event = Event::where ('event_id', $id)
+                    ->where('org_id', $request->user()->org_id)
+                    ->findOrFail($id);
 
-    return response()->json(['message' => 'Updated!']);
-}
+        $event->update([
+            'event_name'  => $request->event_name,
+            'date'        => $request->date,
+            'location'    => $request->location,
+            'description' => $request->description,
+        ]);
+
+        return response()->json(['message' => 'Updated!']);
+    }
+
+    // DELETE EVENT
+    public function destroy(Request $request, $id)
+    {
+        $event = Event::where('event_id', $id)
+                    ->where('org_id', $request->user()->org_id)
+                    ->firstOrFail();
+
+        $event->delete();
+
+        return response()->json(['message' => 'Event deleted successfully']);
+    }
 }

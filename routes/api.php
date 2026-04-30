@@ -28,6 +28,7 @@ Route::middleware('auth:sanctum', 'abilities:org')->group(function () {
     Route::get('/org/events', [EventController::class, 'index']);
     Route::get('/org/events/{id}', [EventController::class, 'show']);
     Route::put('/org/events/{id}', [EventController::class, 'update']);
+    Route::delete('/org/events/{id}', [EventController::class, 'destroy']);
 });
 
 /*
