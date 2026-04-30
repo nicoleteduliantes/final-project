@@ -34,10 +34,6 @@ const go = (path) => {
     if (path) router.push(path);
 };
 
-/**
- * 🔥 FINAL WORKING BREADCRUMB SYSTEM
- * (NO route.matched, NO nesting dependency)
- */
 const orgNames = {
     1: 'AWS Cloud Club',
     2: 'Google Developer Group',
@@ -50,41 +46,40 @@ const eventNames = {
 
 const trail = computed(() => {
     const path = route.path;
+    const id = route.params.id;
 
-    // DASHBOARD FLOW
+    // DASHBOARD EVENT DETAIL
     if (path.startsWith('/dashboard/event/')) {
-        const id = route.params.id;
-
         return [
             { label: 'Dashboard', path: '/dashboard' },
-            { label: eventNames[id] || 'Event Details', path: null },
+            { label: eventNames[id] || `Event #${id}`, path: null },
         ];
     }
 
-    // DISCOVER → ORG → APPLY FLOW
+    // APPLY FLOW
     if (path.startsWith('/apply/')) {
-        const id = route.params.id;
-
         return [
             { label: 'Discover', path: '/discover' },
             {
-                label: orgNames[id] || 'Organization Profile',
+                label: orgNames[id] || `Org #${id}`,
                 path: `/org/${id}`,
             },
             { label: 'Application Form', path: null },
         ];
     }
 
-    if (path.startsWith('/org/')) {
-        const id = route.params.id;
-
+    // ORG PROFILE (strict match)
+    if (path.startsWith('/org/') && id) {
         return [
             { label: 'Discover', path: '/discover' },
-            { label: orgNames[id] || 'Organization Profile', path: null },
+            {
+                label: orgNames[id] || `Org #${id}`,
+                path: null,
+            },
         ];
     }
 
-    if (path.startsWith('/discover')) {
+    if (path === '/discover') {
         return [{ label: 'Discover', path: null }];
     }
 
@@ -104,20 +99,5 @@ const trail = computed(() => {
     align-items: center;
     padding: 0 20px;
     border-bottom: 1px solid #eee;
-}
-
-.breadcrumb {
-    display: flex;
-    gap: 6px;
-    font-size: 14px;
-}
-
-.link {
-    cursor: pointer;
-    color: #2563eb;
-}
-
-.link:hover {
-    text-decoration: underline;
 }
 </style>

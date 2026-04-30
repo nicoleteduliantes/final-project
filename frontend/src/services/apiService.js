@@ -5,8 +5,8 @@ export async function post(endpoint, data) {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
-            'Accept': 'application/json', //tells Laravel to talk in JSON
-            'Authorization': `Bearer ${localStorage.getItem('AUTH_TOKEN')}` // sends "key" once a user logs in
+            Accept: 'application/json', //tells Laravel to talk in JSON
+            Authorization: `Bearer ${localStorage.getItem('AUTH_TOKEN')}`, // sends "key" once a user logs in
         },
         body: JSON.stringify(data),
     });
@@ -18,10 +18,11 @@ export async function get(endpoint) {
     const res = await fetch(`${API_BASE_URL}${endpoint}`, {
         method: 'GET',
         headers: {
-            'Accept': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('AUTH_TOKEN')}`
-        }
-    });    return res.json();
+            Accept: 'application/json',
+            Authorization: `Bearer ${localStorage.getItem('AUTH_TOKEN')}`,
+        },
+    });
+    return res.json();
 }
 
 export async function put(endpoint, data) {
@@ -29,8 +30,8 @@ export async function put(endpoint, data) {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
-            'Accept': 'application/json', 
-            'Authorization': `Bearer ${localStorage.getItem('AUTH_TOKEN')}` 
+            Accept: 'application/json',
+            Authorization: `Bearer ${localStorage.getItem('AUTH_TOKEN')}`,
         },
         body: JSON.stringify(data),
     });
@@ -42,9 +43,9 @@ export async function del(endpoint) {
     const res = await fetch(`${API_BASE_URL}${endpoint}`, {
         method: 'DELETE',
         headers: {
-            'Accept': 'application/json',
-            'Authorization': `Bearer ${localStorage.getItem('AUTH_TOKEN')}`
-        }
+            Accept: 'application/json',
+            Authorization: `Bearer ${localStorage.getItem('AUTH_TOKEN')}`,
+        },
     });
     return res.json();
 }

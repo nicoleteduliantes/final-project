@@ -33,129 +33,121 @@ import GlobalOrgManager from '@/pages/osa/GlobalOrgManager.vue';
 import OrgRegister from '@/pages/osa/OrgRegister.vue';
 import StudentManager from '@/pages/osa/StudentManager.vue';
 
-/* CREATE ROUTER */
 const routes = [
-    // AUTH ROUTES (NO SIDEBAR)
-    {
-        path: '/',
-        component: Landing,
-        meta: { public: true },
-    },
-    {
-        path: '/student-login',
-        component: StudentLogin,
-        meta: { public: true },
-    },
+    /* AUTH */
+    { path: '/', component: Landing, meta: { public: true } },
+    { path: '/student-login', component: StudentLogin, meta: { public: true } },
     {
         path: '/student-register',
         component: StudentRegister,
         meta: { public: true },
     },
-    {
-        path: '/admin-login',
-        component: AdminLogin,
-        meta: { public: true },
-    },
+    { path: '/admin-login', component: AdminLogin, meta: { public: true } },
 
-    // APP ROUTES (WITH SIDEBAR)
+    /* APP */
     {
         path: '/',
         component: MainLayout,
         children: [
+            {
+                path: '',
+                redirect: '/dashboard',
+            },
+
             /* STUDENT */
             {
                 path: 'dashboard',
                 component: StudentDashboard,
-                meta: { role: 'student' },
+                meta: { role: 'student', breadcrumb: 'Dashboard' },
             },
             {
                 path: 'discover',
                 component: Discover,
-                meta: { role: 'student' },
+                meta: { role: 'student', breadcrumb: 'Discover' },
             },
             {
                 path: 'memberships',
                 component: CurrentMemberships,
-                meta: { role: 'student' },
+                meta: { role: 'student', breadcrumb: 'Memberships' },
             },
             {
                 path: 'participation',
                 component: ParticipationRecord,
-                meta: { role: 'student' },
+                meta: { role: 'student', breadcrumb: 'Participation' },
             },
             {
                 path: 'org/:id',
                 component: OrgProfile,
-                meta: { role: 'student' },
+                meta: { role: 'student', breadcrumb: 'Organization' },
             },
             {
                 path: 'apply/:org_id',
                 component: ApplicationForm,
-                meta: { role: 'student' },
+                meta: { role: 'student', breadcrumb: 'Apply' },
             },
 
             /* ORG */
             {
                 path: 'org/dashboard',
                 component: OrgDashboard,
-                meta: { role: 'org' },
+                meta: { role: 'org', breadcrumb: 'Dashboard' },
             },
             {
                 path: 'org/members',
                 component: ManageMembers,
-                meta: { role: 'org' },
+                meta: { role: 'org', breadcrumb: 'Members' },
             },
             {
                 path: 'org/applications',
                 component: ReviewApplications,
-                meta: { role: 'org' },
+                meta: { role: 'org', breadcrumb: 'Applications' },
             },
             {
                 path: 'org/events',
                 component: UpcomingEvents,
-                meta: { role: 'org' },
+                meta: { role: 'org', breadcrumb: 'Events' },
             },
             {
                 path: 'org/events/new',
                 component: NewEvent,
-                meta: { role: 'org' },
+                meta: { role: 'org', breadcrumb: 'New Event' },
             },
             {
                 path: 'org/events/edit/:id',
                 component: EventEditor,
-                meta: { role: 'org' },
+                meta: { role: 'org', breadcrumb: 'Edit Event' },
             },
             {
                 path: 'org/attendance',
                 component: AttendanceTracker,
-                meta: { role: 'org' },
+                meta: { role: 'org', breadcrumb: 'Attendance' },
             },
 
             /* OSA */
             {
                 path: 'osa/dashboard',
                 component: OSAAdminDashboard,
-                meta: { role: 'osa' },
+                meta: { role: 'osa', breadcrumb: 'Dashboard' },
             },
             {
                 path: 'osa/colleges',
                 component: CollegeProgramManager,
-                meta: { role: 'osa' },
+                meta: { role: 'osa', breadcrumb: 'Colleges' },
             },
             {
                 path: 'osa/orgs',
                 component: GlobalOrgManager,
-                meta: { role: 'osa' },
+                meta: { role: 'osa', breadcrumb: 'Organizations' },
             },
             {
                 path: 'osa/registration',
                 component: OrgRegister,
-                meta: { role: 'osa' },
+                meta: { role: 'osa', breadcrumb: 'Registration' },
             },
             {
                 path: 'osa/students',
                 component: StudentManager,
-                meta: { role: 'osa' },
+                meta: { role: 'osa', breadcrumb: 'Students' },
             },
         ],
     },

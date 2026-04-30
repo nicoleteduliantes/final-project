@@ -14,9 +14,10 @@ body {
 ========================= */
 
 .page {
-    min-height: 100vh;
-    padding: 30px;
-    background: #ffffff;
+    width: 90%; /* Occupies 90% of the screen on small devices */
+    max-width: 1200px; /* Caps the width at 1200px for large screens */
+    margin: 0 auto; /* Centers the wrapper horizontally */
+    padding: 0 20px; /* Optional: inside spacing for mobile gutters */
 }
 
 /* =========================
@@ -59,7 +60,7 @@ textarea {
     margin-top: 6px;
     margin-bottom: 12px;
     border-radius: 6px;
-    border: 1px solid #d1d5db;
+    border: 2px solid #d1d5db;
     font-family: 'Georgia', serif;
     background: #ffffff;
 }
@@ -97,9 +98,9 @@ button:hover {
 
 a {
     color: #064e3b; /* dark green */
-    text-decoration: none;
+    text-decoration-color: none;
 }
 
 a:hover {
-    text-decoration: underline;
+    text-decoration-color: color(srgb rgba(255, 217, 0, 0.797) green blue);
 }

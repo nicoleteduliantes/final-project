@@ -1,27 +1,40 @@
 export function buildBreadcrumb(route, metaResolver) {
-    const matched = route.matched;
+    const crumbs = [];
 
-    return matched
-        .map((r) => {
-            let label = r.meta?.breadcrumb;
+    for (const r of route.matched) {
+        // ignore layout / empty records
+        if (!r.components) continue;
 
-            // function-based breadcrumb support
-            if (typeof label === 'function') {
-                label = label(route);
-            }
+        let label = r.meta?.breadcrumb;
 
-            // fallback to resolver (dynamic names like org/event)
-            if (!label) {
-                const segments = route.path.split('/').filter(Boolean);
-                const last = segments[segments.length - 1];
+        if (typeof label === 'function') {
+            label = label(route);
+        }
 
-                label = metaResolver?.(last, route) || '';
-            }
+        // fallback
+        if (!label) {
+            const segments = route.path.split('/').filter(Boolean);
+            const last = segments[segments.length - 1];
 
-            return {
-                label,
-                path: r.path,
-            };
-        })
-        .filter((c) => c.label);
+            label = metaResolver?.(last, route) || last;
+        }
+
+        crumbs.push({
+            label,
+            path: r.path,
+        });
+    }
+
+    // INAL FIX: remove duplicates like "Dashboard / Dashboard"
+    const cleaned = [];
+
+    for (const c of crumbs) {
+        const last = cleaned[cleaned.length - 1];
+
+        if (!last || last.label !== c.label) {
+            cleaned.push(c);
+        }
+    }
+
+    return cleaned;
 }

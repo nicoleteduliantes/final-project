@@ -4,6 +4,9 @@
 
         <div class="main">
             <Navbar />
+
+            <Breadcrumb />
+
             <div class="content">
                 <router-view />
             </div>
@@ -15,6 +18,8 @@
 import { computed } from 'vue';
 
 import Navbar from '@/components/layout/Navbar.vue';
+import Breadcrumb from '@/components/layout/Breadcrumb.vue';
+
 import StudentSidebar from '@/components/layout/sidebar/StudentSidebar.vue';
 import OrgSidebar from '@/components/layout/sidebar/OrgSidebar.vue';
 import OSASidebar from '@/components/layout/sidebar/OsaSidebar.vue';
@@ -38,9 +43,13 @@ const sidebarComponent = computed(() => {
     flex: 1;
     display: flex;
     flex-direction: column;
+
+    padding: 20px 24px;
+    margin-left: 8px;
+    background: #f9fafb;
 }
 
 .content {
-    padding: 20px;
+    padding-top: 8px;
 }
 </style>
