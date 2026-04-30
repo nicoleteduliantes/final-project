@@ -51,7 +51,7 @@ class EventController extends Controller
         return response()->json(['error' => 'User not authenticated'], 401);
     }
 
-    // 2. Fetch the events
+    // Fetch the events
     try {
         $events = Event::where('org_id', $user->org_id)
                        ->orderBy('date', 'asc')

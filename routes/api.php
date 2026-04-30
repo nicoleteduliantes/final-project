@@ -26,6 +26,7 @@ Route::middleware(['auth:sanctum', 'abilities:osa'])->group(function () {
 Route::middleware('auth:sanctum', 'abilities:org')->group(function () {
     Route::post('/org/events', [EventController::class, 'store']);
     Route::get('/org/events', [EventController::class, 'index']);
+    Route::get('/org/events/{id}', [EventController::class, 'show']);
     Route::put('/org/events/{id}', [EventController::class, 'update']);
 });
 

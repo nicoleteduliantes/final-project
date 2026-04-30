@@ -49,7 +49,5 @@ const edit = (id) => {
 };
 
 // Automatically run the list of events when the user lands on the "Upcoming Events" page
-onMounted(() => {
-    fetchEvents();
-})
+onMounted(fetchEvents);
 </script>

@@ -4,31 +4,67 @@
 
         <div class="form">
             <label>Event Name</label>
-            <input v-model="event.name" />
+            <input v-model="event.event_name" />
 
-            <label>Event Host/s</label>
-            <input v-model="event.hosts" />
+            
+            <label>Event Logo</label>
+            <input type="file" disabled title="Images disabled for now to simplify"/>
 
             <label>Event Date</label>
             <input type="date" v-model="event.date" />
 
+            <label>Location</label>
+            <input v-model="event.location" />
+
             <label>Description</label>
             <textarea v-model="event.description"></textarea>
 
-            <button class="save">Save Changes</button>
+            <button class="save" @click = "updateEvent">Save Changes</button>
         </div>
     </div>
 </template>
 
 <script setup>
-import { reactive } from 'vue';
+import { reactive, onMounted } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
+import { get, put } from '@/services/apiService'; 
 
+const route = useRoute();
+const router = useRouter();
+const eventId = route.params.id;
 const event = reactive({
-    name: '',
-    hosts: '',
+    event_name: '',
     date: '',
+    location: '',
     description: '',
 });
+
+// Load the event data into the form for event editing
+const loadEvent = async () => {
+    try {
+        const data = await get(`/org/events/${eventId}`);
+        event.event_name = data.event_name;
+        event.date = data.date;
+        event.location = data.location;
+        event.description = data.description;
+    } catch (error) {
+        console.error("Failed to load event:", error);
+        alert("Could not find this event.");
+    }
+};
+
+const updateEvent = async () => {
+    try {
+        await put(`/org/events/${eventId}`, event);
+        alert('Event updated successfully!');
+        router.push('/org/events'); 
+    } catch (error) {
+        console.error("Update failed:", error);
+        alert('Failed to update event.');
+    }
+};
+
+onMounted(loadEvent); //automatically fills in the form for event editing as soon as the page refreshes
 </script>
 
 <style scoped>
