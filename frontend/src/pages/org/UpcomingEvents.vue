@@ -6,19 +6,19 @@
             <thead>
                 <tr>
                     <th>Event</th>
+                    <th>Location</th>
                     <th>Date</th>
-                    <th>Participants</th>
                     <th>Action</th>
                 </tr>
             </thead>
 
             <tbody>
                 <tr v-for="event in events" :key="event.id">
-                    <td>{{ event.name }}</td>
+                    <td>{{ event.event_name }}</td>
+                    <td>{{ event.location }}</td>
                     <td>{{ event.date }}</td>
-                    <td>{{ event.count }}</td>
                     <td>
-                        <button @click="edit(event.id)">Edit</button>
+                        <button @click="edit(event.event_id)">Edit</button>
                     </td>
                 </tr>
             </tbody>
@@ -28,11 +28,28 @@
 
 <script setup>
 import { useRouter } from 'vue-router';
+import { ref, onMounted } from 'vue';
+import { get } from '@/services/apiService'; 
+
 const router = useRouter();
+const events = ref([]);
+
+const fetchEvents = async () => {
+    try {
+      
+        const res = await get('/org/events');
+        events.value = res;
+    } catch (error) {
+        console.error("Error fetching events:", error);
+    }
+};
 
 const edit = (id) => {
     router.push(`/org/events/edit/${id}`);
 };
 
-const events = [{ id: 1, name: 'Hackathon', date: 'March 10', count: 50 }];
+// Automatically run the list of events when the user lands on the "Upcoming Events" page
+onMounted(() => {
+    fetchEvents();
+})
 </script>

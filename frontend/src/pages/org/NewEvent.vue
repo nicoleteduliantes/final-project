@@ -45,9 +45,7 @@ const createEvent = async () => {
     try {
         await post('/org/events', payload);
         alert('Event Created!');
-        fetchEvents(); //the list will update immediately after creating an event
     } catch (error) {
-        console.error("Error details:", error.response?.data);
         alert('Creation failed. Check console.');
     }
 };
