@@ -28,7 +28,7 @@ return new class extends Migration
             $table->string('position');
             $table->date('expiration')->nullable();
 
-            $table->enum('status', ['Accepted', 'Rejected', 'Expired']);
+            $table->enum('status', ['Accepted', 'Rejected', 'Expired', 'Pending']);
 
             $table->string('assigned_committee')->nullable();
 

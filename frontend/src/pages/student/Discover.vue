@@ -6,7 +6,7 @@
 
         <div class="grid">
             <div class="card" v-for="org in orgs" :key="org.org_id">
-                <h3>{{ org.name }}</h3>
+                <h3>{{ org.org_name }}</h3>
 
                 <p class="category">
                     {{ org.category }}
@@ -21,9 +21,15 @@
                         View
                     </RouterLink>
 
-                    <RouterLink :to="'/apply/' + org.org_id" class="apply">
+                    <RouterLink
+                        v-if="!org.checkMembership"
+                        :to="'/apply/' + org.org_id"
+                        class="apply"
+                    >
                         Apply
                     </RouterLink>
+
+                    <span v-else class="status-badge">Already a Member</span>
                 </div>
             </div>
         </div>

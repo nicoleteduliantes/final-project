@@ -3,14 +3,17 @@
         <h2>Application Form</h2>
 
         <div class="card">
-            <label>Organization</label>
-            <input v-model="orgName" disabled />
-
             <label>Cover Letter</label>
-            <textarea v-model="cover"></textarea>
+            <textarea v-model="cover_letter"></textarea>
+
+            <label>Skills</label>
+            <textarea v-model="skills"></textarea>
+
+            <label>Previous Experience</label>
+            <textarea v-model="previous_experience"></textarea>
 
             <label>Committee</label>
-            <input v-model="committee" />
+            <input v-model="applied_committee" />
 
             <button @click="submit">Submit Application</button>
         </div>
@@ -19,16 +22,43 @@
 
 <script setup>
 import { ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
+import { useAuthStore } from '@/stores/auth';
+import { post } from '@/services/apiService';
 
+const router = useRouter();
 const route = useRoute();
+const authStore = useAuthStore();
 
-const orgName = ref('Organization ID: ' + route.params.id);
-const cover = ref('');
-const committee = ref('');
+// Form Refs
+const cover_letter = ref('');
+const skills = ref('');
+const previous_experience = ref('');
+const applied_committee = ref('');
 
-const submit = () => {
-    console.log('submit application');
+const submit = async () => {
+    try {
+        const payload = {
+            // Needed to create the Membership row
+            org_id: route.params.org_id,
+
+            // Details for the application_details row
+            cover_letter: cover_letter.value,
+            skills: skills.value,
+            previous_experience: previous_experience.value,
+            applied_committee: applied_committee.value,
+            date_applied: new Date().toISOString().split('T')[0],
+        };
+
+        // This call handles BOTH table insertions on the backend
+        await post('/applications', payload);
+
+        alert('Application submitted! Your membership is now pending.');
+        router.push('/discover');
+    } catch (err) {
+        console.error('Submission failed:', err);
+        alert('Failed to submit application.');
+    }
 };
 </script>
 

@@ -89,7 +89,7 @@ const routes = [
                 meta: { role: 'student' },
             },
             {
-                path: 'apply/:id',
+                path: 'apply/:org_id',
                 component: ApplicationForm,
                 meta: { role: 'student' },
             },
