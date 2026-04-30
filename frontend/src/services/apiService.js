@@ -15,11 +15,36 @@ export async function post(endpoint, data) {
 }
 
 export async function get(endpoint) {
-const res = await fetch(`${API_BASE_URL}${endpoint}`, {
+    const res = await fetch(`${API_BASE_URL}${endpoint}`, {
         method: 'GET',
         headers: {
             'Accept': 'application/json',
             'Authorization': `Bearer ${localStorage.getItem('AUTH_TOKEN')}`
         }
     });    return res.json();
+}
+
+export async function put(endpoint, data) {
+    const res = await fetch(`${API_BASE_URL}${endpoint}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json', 
+            'Authorization': `Bearer ${localStorage.getItem('AUTH_TOKEN')}` 
+        },
+        body: JSON.stringify(data),
+    });
+
+    return res.json();
+}
+
+export async function del(endpoint) {
+    const res = await fetch(`${API_BASE_URL}${endpoint}`, {
+        method: 'DELETE',
+        headers: {
+            'Accept': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('AUTH_TOKEN')}`
+        }
+    });
+    return res.json();
 }
