@@ -7,6 +7,7 @@ use App\Http\Controllers\OsaController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\DegreeProgramController;
 use App\Http\Controllers\OrganizationController;
+use App\Http\Controllers\ApplicationController;
 
 
 Route::get('/user', function (Request $request) {
@@ -40,6 +41,11 @@ Route::get('/organizations', [OrganizationController::class, 'index']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/organizations', [OrganizationController::class, 'checkMembership']);
+});
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/applications', [ApplicationController::class, 'store']);
+    
 });
 
 

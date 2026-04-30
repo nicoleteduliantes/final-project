@@ -1,33 +1,42 @@
+<?php
+
+namespace App\Http\Controllers;
+
 use App\Models\Membership;
 use App\Models\ApplicationDetail;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-public function store(Request $request)
+class ApplicationController extends Controller
 {
-    // Start a transaction so if one fails, both fail (no partial data)
-    return DB::transaction(function () use ($request) {
-        
-        // 1. Create the Membership entry first
-        $membership = Membership::create([
-            'org_id'     => $request->org_id,
-            'student_id' => auth()->user()->student_id,
-            'position'   => 'Applicant', // Default status
-            'status'     => 'Pending',   // Or whatever your default is
-        ]);
+    public function store(Request $request)
+    {
+        try {
+            return DB::transaction(function () use ($request) {
+                $membership = Membership::create([
+                    'org_id' => $request->org_id,
+                    'student_id' => auth()->user()->student_id,
+                    'status' => 'Pending',
+                    'position' => 'Applicant',
+                ]);
 
-        // 2. Use the newly created $membership->membership_id for the details
-        $application = ApplicationDetail::create([
-            'membership_id'       => $membership->membership_id,
-            'cover_letter'        => $request->cover_letter,
-            'skills'              => $request->skills,
-            'previous_experience' => $request->previous_experience,
-            'applied_committee'   => $request->applied_committee,
-            'date_applied'        => $request->date_applied,
-        ]);
+                ApplicationDetail::create([
+                    'membership_id' => $membership->membership_id,
+                    'cover_letter' => $request->cover_letter,
+                    'skills' => $request->skills,
+                    'previous_experience' => $request->previous_experience,
+                    'applied_committee' => $request->applied_committee,
+                    'date_applied' => $request->date_applied,
+                ]);
 
-        return response()->json([
-            'message' => 'Application and Membership created!',
-            'data'    => $application
-        ], 201);
-    });
+                return response()->json(['message' => 'Success'], 201);
+            });
+        } catch (\Exception $e) {
+            // This will send the EXACT error message to your browser console
+            return response()->json([
+                'error' => $e->getMessage(),
+                'line' => $e->getLine()
+            ], 500);
+        }
+    }
 }

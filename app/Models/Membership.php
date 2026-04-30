@@ -12,6 +12,8 @@ class Membership extends Model
      * The primary key associated with the table.
      */
     protected $primaryKey = 'membership_id';
+    public $incrementing = true; 
+    protected $keyType = 'int';   
 
     /**
      * The attributes that are mass assignable.

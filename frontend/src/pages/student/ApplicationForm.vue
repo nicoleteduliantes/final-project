@@ -3,20 +3,17 @@
         <h2>Application Form</h2>
 
         <div class="card">
-            <label>Organization</label>
-            <input :value="orgName" disabled />
-
             <label>Cover Letter</label>
-            <textarea v-model="form.cover_letter"></textarea>
+            <textarea v-model="cover_letter"></textarea>
 
             <label>Skills</label>
-            <textarea v-model="form.skills"></textarea>
+            <textarea v-model="skills"></textarea>
 
             <label>Previous Experience</label>
-            <textarea v-model="form.previous_experience"></textarea>
+            <textarea v-model="previous_experience"></textarea>
 
             <label>Committee</label>
-            <input v-model="form.applied_committee" />
+            <input v-model="applied_committee" />
 
             <button @click="submit">Submit Application</button>
         </div>
@@ -25,7 +22,7 @@
 
 <script setup>
 import { ref } from 'vue';
-import { useRouter, useRoute } from 'vue-router'; // Added useRoute to get org_id
+import { useRouter, useRoute } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import { post } from '@/services/apiService';
 
@@ -33,7 +30,7 @@ const router = useRouter();
 const route = useRoute();
 const authStore = useAuthStore();
 
-// Form Data Refs
+// Form Refs
 const cover_letter = ref('');
 const skills = ref('');
 const previous_experience = ref('');
@@ -42,30 +39,25 @@ const applied_committee = ref('');
 const submit = async () => {
     try {
         const payload = {
-            // Pulls the ID from the URL (e.g., /apply/5)
+            // Needed to create the Membership row
             org_id: route.params.org_id,
 
-            // Pulls the ID from your logged-in student's state
-            student_id: authStore.user?.student_id,
-
-            // Form inputs
+            // Details for the application_details row
             cover_letter: cover_letter.value,
             skills: skills.value,
             previous_experience: previous_experience.value,
             applied_committee: applied_committee.value,
-
-            // Auto-generated date
             date_applied: new Date().toISOString().split('T')[0],
         };
 
-        // Sends data to Laravel
+        // This call handles BOTH table insertions on the backend
         await post('/applications', payload);
 
-        alert('Application submitted!');
+        alert('Application submitted! Your membership is now pending.');
         router.push('/discover');
     } catch (err) {
         console.error('Submission failed:', err);
-        alert('Failed to submit application. Please try again.');
+        alert('Failed to submit application.');
     }
 };
 </script>
