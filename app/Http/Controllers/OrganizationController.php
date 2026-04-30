@@ -19,10 +19,10 @@ class OrganizationController extends Controller
 
     public function checkMembership()
     {
-        // 1. Get the current student's ID
+        // Get the current student's ID
         $studentId = auth()->user()->student_id; 
 
-        // 2. Fetch orgs 
+        // Fetch orgs 
         $organizations = Organization::all()->map(function ($org) use ($studentId) {
             
             $isMember = Membership::where('org_id', $org->org_id)
@@ -34,7 +34,7 @@ class OrganizationController extends Controller
             return $org;
         });
 
-        // 3. Return to Vue
+        // Return to Vue
         return response()->json($organizations);
     }
 }
