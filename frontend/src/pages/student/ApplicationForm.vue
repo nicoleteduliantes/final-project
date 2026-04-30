@@ -4,13 +4,19 @@
 
         <div class="card">
             <label>Organization</label>
-            <input v-model="orgName" disabled />
+            <input :value="orgName" disabled />
 
             <label>Cover Letter</label>
-            <textarea v-model="cover"></textarea>
+            <textarea v-model="form.cover_letter"></textarea>
+
+            <label>Skills</label>
+            <textarea v-model="form.skills"></textarea>
+
+            <label>Previous Experience</label>
+            <textarea v-model="form.previous_experience"></textarea>
 
             <label>Committee</label>
-            <input v-model="committee" />
+            <input v-model="form.applied_committee" />
 
             <button @click="submit">Submit Application</button>
         </div>
@@ -19,16 +25,48 @@
 
 <script setup>
 import { ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router'; // Added useRoute to get org_id
+import { useAuthStore } from '@/stores/auth';
+import { post } from '@/services/apiService';
 
+const router = useRouter();
 const route = useRoute();
+const authStore = useAuthStore();
 
-const orgName = ref('Organization ID: ' + route.params.id);
-const cover = ref('');
-const committee = ref('');
+// Form Data Refs
+const cover_letter = ref('');
+const skills = ref('');
+const previous_experience = ref('');
+const applied_committee = ref('');
 
-const submit = () => {
-    console.log('submit application');
+const submit = async () => {
+    try {
+        const payload = {
+            // Pulls the ID from the URL (e.g., /apply/5)
+            org_id: route.params.org_id,
+
+            // Pulls the ID from your logged-in student's state
+            student_id: authStore.user?.student_id,
+
+            // Form inputs
+            cover_letter: cover_letter.value,
+            skills: skills.value,
+            previous_experience: previous_experience.value,
+            applied_committee: applied_committee.value,
+
+            // Auto-generated date
+            date_applied: new Date().toISOString().split('T')[0],
+        };
+
+        // Sends data to Laravel
+        await post('/applications', payload);
+
+        alert('Application submitted!');
+        router.push('/discover');
+    } catch (err) {
+        console.error('Submission failed:', err);
+        alert('Failed to submit application. Please try again.');
+    }
 };
 </script>
 

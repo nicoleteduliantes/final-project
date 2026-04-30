@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Organization;
+use App\Models\Membership;
 use Illuminate\Http\Request;
 
 class OrganizationController extends Controller
@@ -13,6 +14,27 @@ class OrganizationController extends Controller
         $organizations = Organization::all();
 
         // Return them as JSON (Laravel does this automatically)
+        return response()->json($organizations);
+    }
+
+    public function checkMembership()
+    {
+        // 1. Get the current student's ID
+        $studentId = auth()->user()->student_id; 
+
+        // 2. Fetch orgs 
+        $organizations = Organization::all()->map(function ($org) use ($studentId) {
+            
+            $isMember = Membership::where('org_id', $org->org_id)
+                ->where('student_id', $studentId)
+                ->exists();
+
+            $org->checkMembership = $isMember;
+            
+            return $org;
+        });
+
+        // 3. Return to Vue
         return response()->json($organizations);
     }
 }

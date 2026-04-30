@@ -21,9 +21,15 @@
                         View
                     </RouterLink>
 
-                    <RouterLink :to="'/apply/' + org.org_id" class="apply">
+                    <RouterLink
+                        v-if="!org.checkMembership"
+                        :to="'/apply/' + org.org_id"
+                        class="apply"
+                    >
                         Apply
                     </RouterLink>
+
+                    <span v-else class="status-badge">Already a Member</span>
                 </div>
             </div>
         </div>
