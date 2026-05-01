@@ -3,16 +3,16 @@
         <h2>Register Organization</h2>
 
         <div class="card">
-            <input v-model="form.org_id" placeholder="Organization ID" />
-
+           
             <input v-model="form.org_name" placeholder="Organization Name" />
 
             <select v-model="form.category">
                 <option disabled value="">Select Category</option>
                 <option value="Academic">Academic</option>
-                <option value="Non-Academic">Non-Academic</option>
-                <option value="University-Wide">University-Wide</option>
-                <option value="College-Based">College-Based</option>
+                <option value="Civic">Civic</option>
+                <option value="Cultural">Cultural</option>
+                <option value="Sports">Sports</option>
+                <option value="Fraternities/Sororities">Fraternities/Sororities</option>
             </select>
 
             <textarea
@@ -20,12 +20,11 @@
                 placeholder="Description"
             ></textarea>
 
-            <input v-model="form.org_admin" placeholder="Organization Admin" />
-
             <input
-                type="password"
+                type="text"
                 v-model="form.admin_password"
-                placeholder="Admin Password"
+                readonly
+                class="readonly-input"
             />
 
             <button @click="register">Register Organization</button>
@@ -35,18 +34,34 @@
 
 <script setup>
 import { reactive } from 'vue';
+import { post } from '@/services/apiService';
+import { useRoute, useRouter } from 'vue-router';
+
+const route = useRoute();
+const router = useRouter();
 
 const form = reactive({
-    org_id: '',
     org_name: '',
     category: '',
     description: '',
-    org_admin: '',
-    admin_password: '',
+    admin_password:'org_admin123'
 });
 
-const register = () => {
-    console.log('ORG REGISTER:', form);
+const register = async () => {
+    const payload = {
+        org_name: form.org_name,
+        category: form.category,
+        description: form.description,
+    };
+
+    try {
+        await post('/osa/organizations', payload);
+        alert('Organization Registered Successfully!');
+        router.push('/osa/dashboard'); 
+
+    } catch (error) {
+        alert('Org registration failed.');
+    }
 };
 </script>
 
@@ -85,5 +100,12 @@ button {
 
 button:hover {
     background: #1d4ed8;
+}
+/* added styling for password field to show user they can't type there */
+.readonly-input {
+    
+    background-color: #f3f4f6;
+    color: #6b7280;
+    cursor: not-allowed;
 }
 </style>

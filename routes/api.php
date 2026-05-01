@@ -17,14 +17,12 @@ Route::get('/user', function (Request $request) {
 
 Route::post('/admin/login', [AdminLoginController::class, 'adminLogin']);
 
+//OSA ROUTING
 Route::middleware(['auth:sanctum', 'abilities:osa'])->group(function () {
-    Route::controller(OsaController::class)->group(function() {
-        Route::post('/osa/register-org', 'registerOrganization');
-        Route::get('/osa', 'test');
-    });
+    Route::post('/osa/organizations', [OsaController::class, 'store']);
 });
 
-//ORG PAGES
+//ORG ROUTING
 Route::middleware('auth:sanctum', 'abilities:org')->group(function () {
     Route::post('/org/events', [EventController::class, 'store']);
     Route::get('/org/events', [EventController::class, 'index']);
