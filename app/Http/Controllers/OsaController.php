@@ -33,4 +33,11 @@ class OsaController extends Controller
             'org_id'  => $organization->org_id
         ], 201);
     }
+
+    public function index()
+{
+    return response()->json([
+        'data' => Organization::all()
+    ]);
+}
 }

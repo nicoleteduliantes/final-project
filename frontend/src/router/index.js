@@ -48,10 +48,12 @@ const routes = [
     {
         path: '/',
         component: MainLayout,
+        meta: { breadcrumb: false },
         children: [
             {
                 path: '',
-                redirect: '/dashboard',
+                redirect: { path: '/dashboard' },
+                meta: { breadcrumb: false },
             },
 
             /* STUDENT */
@@ -63,22 +65,22 @@ const routes = [
             {
                 path: 'discover',
                 component: Discover,
-                meta: { role: 'student', breadcrumb: 'Discover' },
+                meta: { role: 'student', breadcrumb: 'Discover Organizations' },
             },
             {
                 path: 'memberships',
                 component: CurrentMemberships,
-                meta: { role: 'student', breadcrumb: 'Memberships' },
+                meta: { role: 'student', breadcrumb: 'Current Memberships' },
             },
             {
                 path: 'participation',
                 component: ParticipationRecord,
-                meta: { role: 'student', breadcrumb: 'Participation' },
+                meta: { role: 'student', breadcrumb: 'Participation Record' },
             },
             {
                 path: 'org/:id',
                 component: OrgProfile,
-                meta: { role: 'student', breadcrumb: 'Organization' },
+                meta: { role: 'student', breadcrumb: 'Organization Profile' },
             },
             {
                 path: 'apply/:org_id',
@@ -95,17 +97,17 @@ const routes = [
             {
                 path: 'org/members',
                 component: ManageMembers,
-                meta: { role: 'org', breadcrumb: 'Members' },
+                meta: { role: 'org', breadcrumb: 'Current Members' },
             },
             {
                 path: 'org/applications',
                 component: ReviewApplications,
-                meta: { role: 'org', breadcrumb: 'Applications' },
+                meta: { role: 'org', breadcrumb: 'Review Applications' },
             },
             {
                 path: 'org/events',
                 component: UpcomingEvents,
-                meta: { role: 'org', breadcrumb: 'Events' },
+                meta: { role: 'org', breadcrumb: 'Upcoming Events' },
             },
             {
                 path: 'org/events/new',
@@ -115,12 +117,12 @@ const routes = [
             {
                 path: 'org/events/edit/:id',
                 component: EventEditor,
-                meta: { role: 'org', breadcrumb: 'Edit Event' },
+                meta: { role: 'org', breadcrumb: 'Event Editor' },
             },
             {
                 path: 'org/attendance',
                 component: AttendanceTracker,
-                meta: { role: 'org', breadcrumb: 'Attendance' },
+                meta: { role: 'org', breadcrumb: 'Attendance Tracker' },
             },
 
             /* OSA */
@@ -132,22 +134,28 @@ const routes = [
             {
                 path: 'osa/colleges',
                 component: CollegeProgramManager,
-                meta: { role: 'osa', breadcrumb: 'Colleges' },
+                meta: {
+                    role: 'osa',
+                    breadcrumb: 'Colleges and Degree Programs Manager',
+                },
             },
             {
                 path: 'osa/orgs',
                 component: GlobalOrgManager,
-                meta: { role: 'osa', breadcrumb: 'Organizations' },
+                meta: {
+                    role: 'osa',
+                    breadcrumb: 'Global Organizations Manager',
+                },
             },
             {
                 path: 'osa/registration',
                 component: OrgRegister,
-                meta: { role: 'osa', breadcrumb: 'Registration' },
+                meta: { role: 'osa', breadcrumb: 'Organization Registration' },
             },
             {
                 path: 'osa/students',
                 component: StudentManager,
-                meta: { role: 'osa', breadcrumb: 'Students' },
+                meta: { role: 'osa', breadcrumb: 'Students Manager' },
             },
         ],
     },
