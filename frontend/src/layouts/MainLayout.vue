@@ -36,16 +36,14 @@ const sidebarComponent = computed(() => {
 <style scoped>
 .layout {
     display: flex;
-    height: 100vh;
+    height: 150vh;
 }
 
 .main {
     flex: 1;
     display: flex;
     flex-direction: column;
-
-    padding: 20px 24px;
-    margin-left: 8px;
+    padding: 20px 20px;
     background: #f9fafb;
 }
 

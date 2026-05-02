@@ -20,6 +20,9 @@ Route::post('/admin/login', [AdminLoginController::class, 'adminLogin']);
 //OSA ROUTING
 Route::middleware(['auth:sanctum', 'abilities:osa'])->group(function () {
     Route::post('/osa/organizations', [OsaController::class, 'store']);
+    Route::get('/osa/organizations', [OsaController::class, 'index']);
+    Route::put('/osa/organizations/{id}', [OsaController::class, 'update']);
+    Route::delete('/osa/organizations/{id}', [OsaController::class, 'destroy']);
 });
 
 //ORG ROUTING

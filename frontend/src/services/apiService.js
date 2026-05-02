@@ -1,51 +1,23 @@
 import { API_BASE_URL } from '@/config/api';
 
-export async function post(endpoint, data) {
+async function request(endpoint, method, data = null) {
     const res = await fetch(`${API_BASE_URL}${endpoint}`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json', //tells Laravel to talk in JSON
-            Authorization: `Bearer ${localStorage.getItem('AUTH_TOKEN')}`, // sends "key" once a user logs in
-        },
-        body: JSON.stringify(data),
-    });
-
-    return res.json();
-}
-
-export async function get(endpoint) {
-    const res = await fetch(`${API_BASE_URL}${endpoint}`, {
-        method: 'GET',
-        headers: {
-            Accept: 'application/json',
-            Authorization: `Bearer ${localStorage.getItem('AUTH_TOKEN')}`,
-        },
-    });
-    return res.json();
-}
-
-export async function put(endpoint, data) {
-    const res = await fetch(`${API_BASE_URL}${endpoint}`, {
-        method: 'PUT',
+        method,
         headers: {
             'Content-Type': 'application/json',
             Accept: 'application/json',
             Authorization: `Bearer ${localStorage.getItem('AUTH_TOKEN')}`,
         },
-        body: JSON.stringify(data),
+        body: data ? JSON.stringify(data) : null,
     });
 
-    return res.json();
+    return await res.json();
 }
 
-export async function del(endpoint) {
-    const res = await fetch(`${API_BASE_URL}${endpoint}`, {
-        method: 'DELETE',
-        headers: {
-            Accept: 'application/json',
-            Authorization: `Bearer ${localStorage.getItem('AUTH_TOKEN')}`,
-        },
-    });
-    return res.json();
-}
+export const get = (endpoint) => request(endpoint, 'GET');
+
+export const post = (endpoint, data) => request(endpoint, 'POST', data);
+
+export const put = (endpoint, data) => request(endpoint, 'PUT', data);
+
+export const del = (endpoint) => request(endpoint, 'DELETE');

@@ -47,17 +47,17 @@ const isLast = (index) => index === crumbs.value.length - 1;
 .breadcrumb {
     display: flex;
     gap: 6px;
-    font-size: 14px;
+    font-size: 16px;
     padding: 10px 0;
 }
 
 .link {
     cursor: pointer;
-    color: #2563eb;
+    color: goldenrod;
 }
 
 .link:hover {
-    text-decoration: underline;
+    color: #7f1d1d;
 }
 
 .current {
