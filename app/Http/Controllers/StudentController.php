@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Student;
+use App\Models\Event;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -85,11 +86,15 @@ class StudentController extends Controller
         'message' => 'Invalid credentials.'
     ], 401);
 }
-
-    public function index()
+    //SHOW ALL EVENTS IN STUDENT DASHBOARD
+     public function index()
     {
-        return response()->json([
-            'message' => 'Hello World'
-        ]);
-    }
+    
+    $events = Event::with('organization')
+                       ->where('date', '>=', now()) //ensures that it will display upcoming events only
+                       ->orderBy('date', 'asc')
+                       ->get();
+
+        return response()->json($events);
+}
 }
