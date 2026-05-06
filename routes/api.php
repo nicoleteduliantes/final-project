@@ -4,10 +4,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 use App\Http\Controllers\AdminLoginController;
-use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\DegreeProgramController;
 use App\Http\Controllers\EventController;
-use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\OrgApplicationController;
 use App\Http\Controllers\OsaController;
 use App\Http\Controllers\StudentController;
