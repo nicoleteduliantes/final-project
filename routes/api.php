@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminLoginController;
 use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\DegreeProgramController;
@@ -8,8 +10,9 @@ use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\OrgApplicationController;
 use App\Http\Controllers\OsaController;
 use App\Http\Controllers\StudentController;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\OrganizationController;
+use App\Http\Controllers\ApplicationController;
+use App\Http\Controllers\MembershipController;
 
 
 Route::get('/user', function (Request $request) {
@@ -55,7 +58,8 @@ Route::controller(StudentController::class)->group(function() {
         Route::post('/student-login', 'login');
     });
 
-Route::get('/degree-programs', [DegreeProgramController::class, 'getAll']); 
+
+Route::get('/degree-programs', [DegreeProgramController::class, 'index']); 
 
 Route::get('/organizations', [OrganizationController::class, 'index']);
 
@@ -65,6 +69,12 @@ Route::middleware('auth:sanctum')->group(function () {
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/applications', [ApplicationController::class, 'store']);
+
+});
+
+Route::get('/memberships', [MembershipController::class, 'index']);
+
+
     Route::get('student/events', [StudentController::class, 'index']);
     
     
