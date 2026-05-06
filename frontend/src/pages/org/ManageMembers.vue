@@ -20,7 +20,7 @@
                     <p class="email">{{ m.email }}</p>
 
                     <span class="badge">
-                        {{ m.applied_committee }}
+                        {{ m.assigned_committee }}
                     </span>
                 </div>
 
@@ -47,8 +47,7 @@ const fetchMembers = async () => {
             membership_id: m.membership_id,
             student_name: `${m.student.first_name} ${m.student.last_name}`,
             email: m.student.up_email,
-            applied_committee:
-                m.application_detail?.applied_committee || 'General',
+            assigned_committee: m.assigned_committee || 'General',
         }));
     } catch (error) {
         console.error('Error loading members:', error);

@@ -29,20 +29,30 @@ public function update(Request $request, $id)
             'position' => 'required|string'
         ]);
 
-        $membership = Membership::where('membership_id', $id)->firstOrFail();
+        $membership = Membership::with('applicationDetail')->findOrFail($id);
 
         //added security, ensures the logged in org actually owns the application
         if ($membership->org_id !== auth()->user()->org_id) {
-        return response()->json(['error' => 'Unauthorized'], 403);
+            return response()->json(['error' => 'Unauthorized'], 403);
     }
 
-    $membership->update([
+        $updateData = [
         'status' => $request->status,
         'position'=>$request->position
-    ]);
+    ];
 
-    return response()->json(['message' => 'Application updated successfully']);
+    //applied committee becomes assigned committee
+    if ($request->status === 'Accepted') {
+        $updateData['assigned_committee'] = $membership->applicationDetail->applied_committee;
+    } else {
+        // If rejected, ensure assigned_committee is null
+        $updateData['assigned_committee'] = null;
     }
+
+    $membership->update($updateData);
+
+    return response()->json(['message' => 'Application processed successfully!']);
+}
 
 //SHOW ACCEPTED MEMBERS
 public function show (){
