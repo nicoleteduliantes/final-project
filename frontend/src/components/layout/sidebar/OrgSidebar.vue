@@ -62,6 +62,7 @@ const logout = () => {
 </script>
 
 <style scoped>
+/* SIDEBAR BASE */
 .sidebar {
     width: 200px;
     height: 100vh;
@@ -76,9 +77,10 @@ const logout = () => {
     flex-direction: column;
 
     padding: 10px;
-    overflow: hidden;
 
     transition: width 0.3s ease;
+    overflow: hidden;
+    padding-bottom: 20px;
 }
 
 .sidebar.collapsed {
@@ -91,15 +93,18 @@ const logout = () => {
     align-items: center;
     justify-content: space-between;
 
-    background: white;
-    border-radius: 12px;
-
     padding: 7px;
     margin-bottom: 15px;
+
+    background: white;
+    border-radius: 15px;
 }
 
 .logo {
     width: 120px;
+    background: white;
+    padding: 4px;
+    border-radius: 6px;
 }
 
 /* TOGGLE */
@@ -124,10 +129,11 @@ a {
     text-decoration: none;
     padding: 9px;
     border-radius: 6px;
-
     display: flex;
     align-items: center;
     gap: 10px;
+    font-family: 'Georgia', serif;
+    transition: 0.2s;
 }
 
 a:hover {
@@ -138,28 +144,36 @@ a:hover {
 a.router-link-active {
     background: rgb(3, 74, 46);
     color: gold;
+    border: 2px solid gold;
 }
 
-/* COLLAPSED TEXT ONLY */
-.sidebar.collapsed span {
-    display: none;
-}
-
+/* COLLAPSE STYLE */
 .sidebar.collapsed a {
     justify-content: center;
 }
 
-/* LOGOUT (UNIFIED FIX) */
+.sidebar.collapsed span {
+    display: none;
+}
+
+.sidebar.collapsed .top {
+    justify-content: center;
+}
+
+/* LOGOUT */
 .logout-item {
-    margin-top: auto;
+    margin-top: 150px;
     margin-bottom: 10px;
 
-    padding: 10px;
-    cursor: pointer;
+    padding: 9px;
+    border-radius: 6px;
 
     display: flex;
     align-items: center;
     gap: 10px;
+
+    cursor: pointer;
+    transition: 0.2s;
 }
 
 .logout-item:hover {

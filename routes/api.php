@@ -64,4 +64,3 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/memberships', [MembershipController::class, 'index']);
 
 });
-
