@@ -8,10 +8,10 @@ use Illuminate\Http\JsonResponse;
 
 class DegreeProgramController extends Controller
 {
-    /**
-     * Fetch all degree programs for the frontend dropdown.
-     */
-    public function getAll(): JsonResponse
+    
+     // Fetch all degree programs for the frontend dropdown.
+     
+    public function index(): JsonResponse
     {
         // Fetch all programs from the 'degprogs' table
         $programs = DegreeProgram::all();

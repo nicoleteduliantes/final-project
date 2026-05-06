@@ -32,19 +32,19 @@ const login = async () => {
         // Send an object containing the ref values with matching the backend keys
         const res = await post('/student-login', {
             email: email.value,
-            password: password.value
+            password: password.value,
         });
 
         // Check for the data/status
         if (res.status === 'success') {
             auth.loginStudent(res.data, res.token || 'student-token');
-            
+
             router.push('/dashboard');
         } else {
             alert(res.message || 'Login failed! Check your credentials.');
         }
     } catch (err) {
-        console.error("Network error:", err);
+        console.error('Network error:', err);
         alert('Could not connect to the server.');
     }
 };
