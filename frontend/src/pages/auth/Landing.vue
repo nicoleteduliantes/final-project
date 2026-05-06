@@ -16,12 +16,8 @@
             </p>
 
             <div class="buttons">
-                <RouterLink to="/student-login" class="btn green">
+                <RouterLink to="/student-login" class="btn maroon">
                     Student Login
-                </RouterLink>
-
-                <RouterLink to="/student-register" class="btn maroon">
-                    Student Register
                 </RouterLink>
 
                 <RouterLink to="/admin-login" class="btn yellow">

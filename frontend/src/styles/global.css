@@ -14,10 +14,10 @@ body {
 ========================= */
 
 .page {
-    width: 90%; /* Occupies 90% of the screen on small devices */
-    max-width: 1200px; /* Caps the width at 1200px for large screens */
-    margin: 0 auto; /* Centers the wrapper horizontally */
-    padding: 0 20px; /* Optional: inside spacing for mobile gutters */
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
 }
 
 /* =========================
@@ -37,7 +37,7 @@ p {
 }
 
 /* =========================
-   CARD STYLE (SUBTLE)
+   CARD STYLE
 ========================= */
 
 .card {
@@ -63,6 +63,7 @@ textarea {
     border: 2px solid #d1d5db;
     font-family: 'Georgia', serif;
     background: #ffffff;
+    box-sizing: border-box;
 }
 
 input:focus,
@@ -77,7 +78,7 @@ textarea:focus {
 ========================= */
 
 button {
-    background: #7f1d1d; /* maroon */
+    background: #7f1d1d;
     color: white;
     border: none;
     padding: 10px 14px;
@@ -93,12 +94,12 @@ button:hover {
 }
 
 /* =========================
-   LINKS
+   LINKS (FIXED)
 ========================= */
 
 a {
-    color: #064e3b; /* dark green */
-    text-decoration-color: none;
+    color: #064e3b;
+    text-decoration: none;
 }
 
 a:hover {

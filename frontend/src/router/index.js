@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import { useAuthStore } from '@/stores/auth';
 
 /* LAYOUT */
 import MainLayout from '@/layouts/MainLayout.vue';
@@ -6,7 +7,6 @@ import MainLayout from '@/layouts/MainLayout.vue';
 /* AUTH */
 import Landing from '@/pages/auth/Landing.vue';
 import StudentLogin from '@/pages/auth/StudentLogin.vue';
-import StudentRegister from '@/pages/auth/StudentRegister.vue';
 import AdminLogin from '@/pages/auth/AdminLogin.vue';
 
 /* STUDENT */
@@ -37,11 +37,6 @@ const routes = [
     /* AUTH */
     { path: '/', component: Landing, meta: { public: true } },
     { path: '/student-login', component: StudentLogin, meta: { public: true } },
-    {
-        path: '/student-register',
-        component: StudentRegister,
-        meta: { public: true },
-    },
     { path: '/admin-login', component: AdminLogin, meta: { public: true } },
 
     /* APP */
@@ -161,7 +156,42 @@ const routes = [
     },
 ];
 
-export default createRouter({
+const router = createRouter({
     history: createWebHistory(),
     routes,
 });
+
+/* 🔐 ROUTE GUARD */
+router.beforeEach((to, from, next) => {
+    const auth = useAuthStore();
+
+    // restore session on refresh
+    auth.loadUser();
+
+    // allow public routes
+    if (to.meta.public) {
+        // prevent logged-in users from going back to login
+        if (auth.isAuthenticated) {
+            if (auth.role === 'student') return next('/dashboard');
+            if (auth.role === 'org') return next('/org/dashboard');
+            if (auth.role === 'osa') return next('/osa/dashboard');
+        }
+        return next();
+    }
+
+    // block if not logged in
+    if (!auth.isAuthenticated) {
+        return next('/student-login');
+    }
+
+    // role-based restriction
+    if (to.meta.role && to.meta.role !== auth.role) {
+        if (auth.role === 'student') return next('/dashboard');
+        if (auth.role === 'org') return next('/org/dashboard');
+        if (auth.role === 'osa') return next('/osa/dashboard');
+    }
+
+    next();
+});
+
+export default router;
