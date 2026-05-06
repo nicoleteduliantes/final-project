@@ -10,8 +10,6 @@ use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\OrgApplicationController;
 use App\Http\Controllers\OsaController;
 use App\Http\Controllers\StudentController;
-use App\Http\Controllers\OrganizationController;
-use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\MembershipController;
 
 
@@ -75,8 +73,5 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::middleware('auth:sanctum')->get('/memberships', [MembershipController::class, 'index']);
 
 
-    Route::get('student/events', [StudentController::class, 'index']);
-    
-    
-});
+Route::get('student/events', [StudentController::class, 'index']);
 
