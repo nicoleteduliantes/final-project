@@ -2,48 +2,6 @@
     <div class="page">
         <h2 class="title">Review Applications</h2>
 
-<<<<<<< HEAD
-        <table>
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Committee</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                <tr v-for="app in applications" :key="app.membership_id">
-                    <td>{{ app.student_name }}</td>
-                    <td>{{ app.applied_committee }}</td>
-                    <td>{{ app.cover_letter }}</td>
-                    <td>
-                        <button class="view" @click="openReview(app)">View Details</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-
-            <div v-if="selectedApp" class="modal-overlay">
-      <div class="modal-content">
-        <h3>Application Review: {{ selectedApp.student_name }}</h3>
-        <hr>
-            <div class="education-info">
-            <p><strong>College:</strong> {{ selectedApp.college }}</p>
-            <p><strong>Degree Program:</strong> {{ selectedApp.degree_program }}</p>
-            </div>
-        <hr>
-        <p><strong>Applied Committee:</strong> {{ selectedApp.applied_committee }}</p>
-        <p><strong>Cover Letter:</strong></p>
-        <div class="text-box">{{ selectedApp.cover_letter }}</div>
-        
-        <p><strong>Skills:</strong> {{ selectedApp.raw.application_detail?.skills || 'None listed' }}</p>
-
-        <div class="modal-actions">
-          <button class="approve" @click="handleUpdate('Accepted', 'Member')">Approve</button>
-          <button class="reject" @click="handleUpdate('Rejected', 'Applicant')">Reject</button>
-          <button class="close" @click="selectedApp = null">Close</button>
-=======
         <!-- FILTER -->
         <div class="filters">
             <select v-model="selectedStatus">
@@ -101,13 +59,16 @@
             <div class="modal">
                 <h3>Application Review</h3>
                 <p class="subtitle">{{ selectedApp.student_name }}</p>
+                <p class="academic-subtitle">
+                {{ selectedApp.degree_program }} | {{ selectedApp.college }}
+                </p>
 
                 <div class="modal-body">
                     <p>
                         <strong>Applied Committee:</strong>
                         {{ selectedApp.applied_committee }}
                     </p>
-
+                    
                     <p><strong>Cover Letter:</strong></p>
                     <div class="box">{{ selectedApp.cover_letter }}</div>
 
@@ -140,7 +101,6 @@
                     </button>
                 </div>
             </div>
->>>>>>> c665566f4f11fa532a8545328a4556e85dd3ef25
         </div>
     </div>
 </template>
@@ -158,20 +118,13 @@ const fetchApplications = async () => {
     try {
         const response = await get('/org/applications');
 
-<<<<<<< HEAD
-    applications.value = response.map(item => ({
-        membership_id: item.membership_id,
-        student_name: `${item.student.first_name} ${item.student.last_name}`,
-        degree_program: item.student.degree_program?.program_name || 'N/A',
-        college: item.student.degree_program?.college?.college_name || 'N/A',
-        applied_committee: item.application_detail?.applied_committee || 'N/A',
-        cover_letter: item.application_detail?.cover_letter || 'No cover letter provided',
-        raw: item 
-    }));
-=======
         applications.value = response.map((item) => ({
             membership_id: item.membership_id,
             student_name: `${item.student.first_name} ${item.student.last_name}`,
+
+            degree_program: item.student.degree_program?.degprog_name || 'N/A',
+            college: item.student.degree_program?.college?.college_name || 'N/A',
+
             applied_committee:
                 item.application_detail?.applied_committee || 'N/A',
             cover_letter:
@@ -180,7 +133,6 @@ const fetchApplications = async () => {
             status: item.status || 'Pending',
             raw: item,
         }));
->>>>>>> c665566f4f11fa532a8545328a4556e85dd3ef25
     } catch (error) {
         console.error('Fetch error:', error);
     }
@@ -351,9 +303,15 @@ td {
 
 .subtitle {
     color: #6b7280;
-    margin-bottom: 10px;
+    margin-bottom: 0;
 }
 
+.academic-subtitle {
+    font-size: 0.7rem;
+    color: #6b7280;
+    margin: 0;
+    font-style: italic;
+}
 .box {
     background: #f3f4f6;
     padding: 10px;
