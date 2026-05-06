@@ -55,6 +55,36 @@ public function show (){
 
     return response()->json($members);
 }
+public function destroy($id)
+{
+    try {
+        $membership = Membership::where('membership_id', $id)->first();
 
+        if (!$membership) {
+            return response()->json([
+                'message' => 'Member not found'
+            ], 404);
+        }
+
+        if ($membership->org_id !== auth()->user()->org_id) {
+            return response()->json([
+                'message' => 'Unauthorized'
+            ], 403);
+        }
+
+        $membership->delete();
+
+        return response()->json([
+            'message' => 'Member removed successfully'
+        ]);
+
+    } catch (\Exception $e) {
+        return response()->json([
+            'message' => 'Server error',
+            'error' => $e->getMessage()
+        ], 500);
+    }
 }
+}
+
 

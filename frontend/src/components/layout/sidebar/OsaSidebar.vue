@@ -158,7 +158,7 @@ a.router-link-active {
 
 /* LOGOUT */
 .logout-item {
-    margin-top: 220px;
+    margin-top: auto;
     margin-bottom: 10px;
 
     padding: 9px;

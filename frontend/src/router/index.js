@@ -13,7 +13,6 @@ import AdminLogin from '@/pages/auth/AdminLogin.vue';
 import StudentDashboard from '@/pages/student/StudentDashboard.vue';
 import Discover from '@/pages/student/Discover.vue';
 import CurrentMemberships from '@/pages/student/CurrentMemberships.vue';
-import ParticipationRecord from '@/pages/student/ParticipationRecord.vue';
 import ApplicationForm from '@/pages/student/ApplicationForm.vue';
 import OrgProfile from '@/pages/student/OrgProfile.vue';
 
@@ -24,7 +23,6 @@ import ReviewApplications from '@/pages/org/ReviewApplications.vue';
 import UpcomingEvents from '@/pages/org/UpcomingEvents.vue';
 import NewEvent from '@/pages/org/NewEvent.vue';
 import EventEditor from '@/pages/org/EventEditor.vue';
-import AttendanceTracker from '@/pages/org/AttendanceTracker.vue';
 
 /* OSA */
 import OSAAdminDashboard from '@/pages/osa/OSAAdminDashboard.vue';
@@ -34,123 +32,132 @@ import OrgRegister from '@/pages/osa/OrgRegister.vue';
 import StudentManager from '@/pages/osa/StudentManager.vue';
 
 const routes = [
-    /* AUTH */
+    /* AUTH (PUBLIC) */
     { path: '/', component: Landing, meta: { public: true } },
     { path: '/student-login', component: StudentLogin, meta: { public: true } },
     { path: '/admin-login', component: AdminLogin, meta: { public: true } },
 
-    /* APP */
+    /* APP LAYOUT */
     {
         path: '/',
         component: MainLayout,
-        meta: { breadcrumb: false },
         children: [
+            /* DEFAULT REDIRECT */
             {
                 path: '',
-                redirect: { path: '/dashboard' },
+                redirect: '/dashboard',
                 meta: { breadcrumb: false },
             },
 
-            /* STUDENT */
+            /* ===================== STUDENT ===================== */
+
             {
                 path: 'dashboard',
                 component: StudentDashboard,
                 meta: { role: 'student', breadcrumb: 'Dashboard' },
             },
+
             {
                 path: 'discover',
                 component: Discover,
-                meta: { role: 'student', breadcrumb: 'Discover Organizations' },
+                meta: { role: 'student', breadcrumb: 'Discover' },
             },
+
             {
                 path: 'memberships',
                 component: CurrentMemberships,
-                meta: { role: 'student', breadcrumb: 'Current Memberships' },
+                meta: { role: 'student', breadcrumb: 'My Memberships' },
             },
-            {
-                path: 'participation',
-                component: ParticipationRecord,
-                meta: { role: 'student', breadcrumb: 'Participation Record' },
-            },
+
+            /* Org Profile (FIXED PARAM) */
             {
                 path: 'org/:id',
                 component: OrgProfile,
-                meta: { role: 'student', breadcrumb: 'Organization Profile' },
+                meta: {
+                    role: 'student',
+                    breadcrumb: 'Organization',
+                },
             },
+
+            /* Application Form */
             {
                 path: 'apply/:org_id',
                 component: ApplicationForm,
-                meta: { role: 'student', breadcrumb: 'Apply' },
+                meta: {
+                    role: 'student',
+                    breadcrumb: (route) =>
+                        route.query.name || 'Application Form',
+                },
             },
 
-            /* ORG */
+            /* ===================== ORG ===================== */
+
             {
                 path: 'org/dashboard',
                 component: OrgDashboard,
                 meta: { role: 'org', breadcrumb: 'Dashboard' },
             },
+
             {
                 path: 'org/members',
                 component: ManageMembers,
-                meta: { role: 'org', breadcrumb: 'Current Members' },
+                meta: { role: 'org', breadcrumb: 'Members' },
             },
+
             {
                 path: 'org/applications',
                 component: ReviewApplications,
-                meta: { role: 'org', breadcrumb: 'Review Applications' },
+                meta: { role: 'org', breadcrumb: 'Applications' },
             },
+
             {
                 path: 'org/events',
                 component: UpcomingEvents,
-                meta: { role: 'org', breadcrumb: 'Upcoming Events' },
+                meta: { role: 'org', breadcrumb: 'Events' },
             },
+
             {
                 path: 'org/events/new',
                 component: NewEvent,
                 meta: { role: 'org', breadcrumb: 'New Event' },
             },
+
             {
                 path: 'org/events/edit/:id',
                 component: EventEditor,
-                meta: { role: 'org', breadcrumb: 'Event Editor' },
-            },
-            {
-                path: 'org/attendance',
-                component: AttendanceTracker,
-                meta: { role: 'org', breadcrumb: 'Attendance Tracker' },
+                meta: { role: 'org', breadcrumb: 'Edit Event' },
             },
 
-            /* OSA */
+            /* ===================== OSA ===================== */
+
             {
                 path: 'osa/dashboard',
                 component: OSAAdminDashboard,
                 meta: { role: 'osa', breadcrumb: 'Dashboard' },
             },
+
             {
                 path: 'osa/colleges',
                 component: CollegeProgramManager,
-                meta: {
-                    role: 'osa',
-                    breadcrumb: 'Colleges and Degree Programs Manager',
-                },
+                meta: { role: 'osa', breadcrumb: 'Colleges & Programs' },
             },
+
             {
                 path: 'osa/orgs',
                 component: GlobalOrgManager,
-                meta: {
-                    role: 'osa',
-                    breadcrumb: 'Global Organizations Manager',
-                },
+                meta: { role: 'osa', breadcrumb: 'Organizations' },
             },
+
             {
                 path: 'osa/registration',
                 component: OrgRegister,
                 meta: { role: 'osa', breadcrumb: 'Organization Registration' },
             },
+
             {
                 path: 'osa/students',
                 component: StudentManager,
-                meta: { role: 'osa', breadcrumb: 'Students Manager' },
+                meta: { role: 'osa', breadcrumb: 'Students' },
             },
         ],
     },
@@ -161,16 +168,14 @@ const router = createRouter({
     routes,
 });
 
-/* 🔐 ROUTE GUARD */
+/* ===================== AUTH GUARD ===================== */
 router.beforeEach((to, from, next) => {
     const auth = useAuthStore();
 
-    // restore session on refresh
     auth.loadUser();
 
-    // allow public routes
+    /* PUBLIC ROUTES */
     if (to.meta.public) {
-        // prevent logged-in users from going back to login
         if (auth.isAuthenticated) {
             if (auth.role === 'student') return next('/dashboard');
             if (auth.role === 'org') return next('/org/dashboard');
@@ -179,12 +184,12 @@ router.beforeEach((to, from, next) => {
         return next();
     }
 
-    // block if not logged in
+    /* NOT LOGGED IN */
     if (!auth.isAuthenticated) {
         return next('/student-login');
     }
 
-    // role-based restriction
+    /* ROLE CHECK */
     if (to.meta.role && to.meta.role !== auth.role) {
         if (auth.role === 'student') return next('/dashboard');
         if (auth.role === 'org') return next('/org/dashboard');
