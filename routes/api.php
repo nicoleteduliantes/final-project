@@ -63,5 +63,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/organizations', [OrganizationController::class, 'checkMembership']);
     Route::post('/applications', [ApplicationController::class, 'store']);
     Route::get('/memberships', [MembershipController::class, 'index']);
+     Route::get('/events', [StudentController::class, 'index']);
 
 });
