@@ -1,6 +1,6 @@
 <template>
     <div class="page">
-        <h1>Participation Record</h1>
+        <h1>Memberships</h1>
 
         <div class="table-container">
             <table>
@@ -21,7 +21,11 @@
                             {{ membership.organization?.org_name }}
                         </td>
                         <td>{{ membership.position }}</td>
-                        <td>{{ membership.assigned_committee }}</td>
+                        <td>
+                            {{
+                                membership.application_detail?.applied_committee
+                            }}
+                        </td>
                         <td>
                             <span
                                 :class="[

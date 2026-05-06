@@ -11,7 +11,7 @@ class MembershipController extends Controller
     public function index(): JsonResponse
     {
         //  With(organization) matches the function name in the Membership model
-        $memberships = Membership::with('organization')->get();
+        $memberships = Membership::with(['organization', 'applicationDetail'])->get();
 
         return response()->json($memberships);
     }
