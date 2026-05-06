@@ -32,10 +32,6 @@
             <router-link to="/org/events/new">
                 ➕ <span v-if="!collapsed">New Event</span>
             </router-link>
-
-            <router-link to="/org/attendance">
-                📌 <span v-if="!collapsed">Attendance</span>
-            </router-link>
         </nav>
 
         <!-- LOGOUT -->
@@ -162,7 +158,7 @@ a.router-link-active {
 
 /* LOGOUT */
 .logout-item {
-    margin-top: 150px;
+    margin-top: auto;
     margin-bottom: 10px;
 
     padding: 9px;

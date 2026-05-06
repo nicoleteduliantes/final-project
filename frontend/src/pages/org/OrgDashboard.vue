@@ -18,12 +18,6 @@
                 <p>3</p>
             </div>
         </div>
-
-        <div class="section">
-            <h3>Announcements</h3>
-            <textarea placeholder="Post announcement..."></textarea>
-            <button>Post</button>
-        </div>
     </div>
 </template>
 
@@ -40,9 +34,5 @@
     background: #fff;
     padding: 20px;
     border: 1px solid #eee;
-}
-textarea {
-    width: 100%;
-    height: 100px;
 }
 </style>

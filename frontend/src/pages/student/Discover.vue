@@ -39,13 +39,23 @@
 
                     <!-- ACTIONS -->
                     <div class="actions">
-                        <RouterLink :to="'/org/' + org.org_id" class="btn link">
+                        <!-- 🔥 FIXED ROUTER LINK -->
+                        <RouterLink
+                            :to="{
+                                path: '/org/' + org.org_id,
+                                query: { name: org.org_name },
+                            }"
+                            class="btn link"
+                        >
                             View
                         </RouterLink>
 
                         <RouterLink
                             v-if="!org.checkMembership"
-                            :to="'/apply/' + org.org_id"
+                            :to="{
+                                path: '/apply/' + org.org_id,
+                                query: { name: org.org_name },
+                            }"
                             class="btn apply"
                         >
                             Apply
@@ -68,7 +78,7 @@ const search = ref('');
 const selectedCategory = ref('');
 
 const fallbackBanner =
-    'https://images.unsplash.com/photo-1523240795612-9a054b0db644';
+    'https://up.edu.ph/wp-content/uploads/2024/05/UP-Mindanao-by-Jonathan-Madrid-2048x1024.jpg';
 
 onMounted(async () => {
     try {
