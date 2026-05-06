@@ -1,73 +1,45 @@
 <template>
     <div class="page">
-        <div class="form-container">
-            <h2 class="page-title">Register Organization</h2>
+        <div class="card">
+            <h2>Register Organization</h2>
+            <p class="subtext">
+                Fill in the details to register a new student organization
+            </p>
 
-            <div class="card">
-                <!-- Org Name -->
-                <div class="form-group">
+            <div class="form">
+                <div class="group">
+                    <label>Organization Name</label>
                     <input
-                        v-model="form.org_name"
-                        placeholder="Organization Name"
-                        :class="{ error: errors.org_name }"
+                        v-model="org.org_name"
+                        placeholder="e.g. Computer Science Society"
                     />
-                    <small v-if="errors.org_name">{{ errors.org_name }}</small>
                 </div>
 
-                <!-- Category -->
-                <div class="form-group">
-                    <select
-                        v-model="form.category"
-                        :class="{ error: errors.category }"
-                    >
-                        <option disabled value="">Select Category</option>
-                        <option value="Academic">Academic</option>
-                        <option value="Civic">Civic</option>
-                        <option value="Cultural">Cultural</option>
-                        <option value="Sports">Sports</option>
-                        <option value="Fraternities/Sororities">
-                            Fraternities/Sororities
-                        </option>
+                <div class="group">
+                    <label>Category</label>
+                    <select v-model="org.category">
+                        <option disabled value="">Select a category</option>
+
+                        <option>Academic</option>
+                        <option>Civic</option>
+                        <option>Cultural</option>
+                        <option>Sports</option>
+                        <option>Fraternities/Sororities</option>
+                        <option>Other</option>
                     </select>
-                    <small v-if="errors.category">{{ errors.category }}</small>
                 </div>
 
-                <!-- Description -->
-                <div class="form-group">
+                <div class="group">
+                    <label>Description</label>
                     <textarea
-                        v-model="form.description"
-                        placeholder="Description"
-                        :class="{ error: errors.description }"
+                        v-model="org.description"
+                        placeholder="Describe the organization..."
                     ></textarea>
-                    <small v-if="errors.description">{{
-                        errors.description
-                    }}</small>
                 </div>
 
-                <!-- Admin Name -->
-                <div class="form-group">
-                    <input
-                        type="text"
-                        v-model="form.admin_name"
-                        placeholder="Admin Name"
-                        :class="{ error: errors.admin_name }"
-                    />
-                    <small v-if="errors.admin_name">{{
-                        errors.admin_name
-                    }}</small>
-                </div>
-
-                <!-- Admin Password -->
-                <div class="form-group">
-                    <input
-                        type="password"
-                        v-model="form.admin_password"
-                        readonly
-                        class="readonly-input"
-                    />
-                </div>
-
-                <button @click="register">Register Organization</button>
+                <button class="primary" @click="registerOrg">
+                    Register Organization
+                </button>
             </div>
         </div>
     </div>
@@ -80,135 +52,117 @@ import { useRouter } from 'vue-router';
 
 const router = useRouter();
 
-const form = reactive({
-    org_name: '',
-    category: '',
-    description: '',
-    admin_password: 'org_admin123',
-});
-
-const errors = reactive({
+const org = reactive({
     org_name: '',
     category: '',
     description: '',
 });
 
-const validate = () => {
-    errors.org_name = form.org_name ? '' : 'Organization name is required';
-    errors.category = form.category ? '' : 'Category is required';
-    errors.description = form.description ? '' : 'Description is required';
-
-    return !errors.org_name && !errors.category && !errors.description;
-};
-
-const register = async () => {
-    if (!validate()) return;
-
+const registerOrg = async () => {
     try {
-        await post('/osa/organizations', form);
-        alert('Organization Registered Successfully!');
-        router.push('/osa/dashboard');
+        await post('/osa/organizations', org);
+        alert('Organization Registered!');
+        router.push('/osa/orgs');
     } catch (error) {
-        alert('Org registration failed.');
+        alert('Registration failed.');
+        console.error(error);
     }
 };
 </script>
 
 <style scoped>
 .page {
+    width: 100%;
+    padding: 20px;
+
     display: flex;
     flex-direction: column;
     align-items: flex-start;
+
+    text-align: left;
 }
 
-.form-container {
-    width: 100%;
-    max-width: 500px; /* same as card */
-}
-
-/* center relative to container (form width) */
-.page-title {
-    text-align: center;
-    margin-bottom: 15px;
-}
-
+/* CARD */
 .card {
-    background: white;
-    padding: 15px;
     width: 100%;
-    max-width: 500px; /* responsive instead of fixed */
-    border-radius: 8px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    max-width: 650px;
+    background: white;
+    padding: 28px;
+    border-radius: 14px;
+    border-left: 5px solid #7f1d1d;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
+
+/* TEXT */
+h2 {
+    margin-bottom: 4px;
+}
+
+.subtext {
+    color: #6b7280;
+    font-size: 13px;
+    margin-bottom: 20px;
+}
+
+/* FORM */
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+/* GROUP */
+.group {
     display: flex;
     flex-direction: column;
 }
 
-/* group wrapper */
-.form-group {
-    display: flex;
-    flex-direction: column;
+label {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 4px;
 }
 
-/* inputs */
+/* INPUTS */
 input,
 select,
 textarea {
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    width: 100%; /* prevents cutoff */
-    box-sizing: border-box;
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #d1d5db;
+    transition: 0.2s;
+    font-family: inherit;
 }
 
-/* textarea height */
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: #7f1d1d;
+}
+
+/* TEXTAREA */
 textarea {
-    min-height: 90px;
+    min-height: 100px;
     resize: vertical;
 }
 
-/* button */
-button {
+/* BUTTON */
+.primary {
+    margin-top: 8px;
+    padding: 12px;
     background: #7f1d1d;
     color: white;
     border: none;
-    padding: 12px;
-    border-radius: 6px;
+    border-radius: 8px;
+    font-weight: 600;
     cursor: pointer;
-    width: 100%;
+    transition: 0.2s;
 }
 
-button:hover {
-    background: rgb(3, 74, 46);
+.primary:hover {
+    background: #064e3b;
     color: gold;
-    border: 2px solid gold;
-}
-
-/* readonly */
-.readonly-input {
-    background-color: #f3f4f6;
-    color: #6b7280;
-    cursor: not-allowed;
-}
-
-/* validation styles */
-.error {
-    border-color: #ef4444;
-}
-
-small {
-    color: #ef4444;
-    font-size: 12px;
-    margin-top: 4px;
-}
-
-/* mobile tweaks */
-@media (max-width: 480px) {
-    .page {
-        padding: 10px;
-    }
-
-    .card {
-        padding: 15px;
-    }
+    border: gold 2px solid;
 }
 </style>
