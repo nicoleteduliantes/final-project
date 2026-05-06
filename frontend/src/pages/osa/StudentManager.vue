@@ -1,73 +1,95 @@
 <template>
     <div class="page">
-        <div class="header">
-            <h1>Student Manager</h1>
+        <div class="header-row">
+            <h1>Student Directory (OSA)</h1>
+            <div class="search-box">
+                <input
+                    v-model="searchQuery"
+                    placeholder="Search by name or ID..."
+                />
+            </div>
         </div>
 
-        <div class="table-card">
+        <div class="table-container">
             <table>
                 <thead>
                     <tr>
+                        <th>Student ID</th>
                         <th>Name</th>
+                        <th>UP Email</th>
                         <th>Degree Program</th>
                         <th>Organizations</th>
-                        <th>Events Joined</th>
                     </tr>
                 </thead>
-
                 <tbody>
-                    <tr v-for="student in students" :key="student.id">
-                        <td>{{ student.name }}</td>
-                        <td>{{ student.degree_program }}</td>
-
-                        <td>
-                            {{ formatList(student.organizations) }}
+                    <tr
+                        v-for="student in filteredStudents"
+                        :key="student.student_id"
+                    >
+                        <td class="id-column">{{ student.student_id }}</td>
+                        <td class="name-column">
+                            {{ student.first_name }} {{ student.last_name }}
                         </td>
-
+                        <td>{{ student.up_email }}</td>
                         <td>
-                            {{ formatList(student.events) }}
+                            <span class="prog-tag">{{
+                                student.degree_program?.degprog_name || 'N/A'
+                            }}</span>
                         </td>
-                    </tr>
-
-                    <tr v-if="students.length === 0">
-                        <td colspan="4" class="empty">No students found</td>
+                        <td>
+                            <div class="org-list">
+                                <template v-if="student.memberships?.length">
+                                    <span
+                                        v-for="m in student.memberships"
+                                        :key="m.membership_id"
+                                        class="org-badge"
+                                    >
+                                        {{ m.organization?.org_name }}
+                                    </span>
+                                </template>
+                                <span v-else class="text-muted">None</span>
+                            </div>
+                        </td>
                     </tr>
                 </tbody>
             </table>
+
+            <div v-if="filteredStudents.length === 0" class="empty-msg">
+                No student records found.
+            </div>
         </div>
     </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { get } from '@/services/apiService';
 
 const students = ref([]);
+const searchQuery = ref('');
 
-const fetchStudents = async () => {
+onMounted(async () => {
     try {
-        const res = await get('/students');
-        console.log('STUDENT RESPONSE:', res);
-
+        const res = await get('/osa/students');
         students.value = res.data ?? res;
     } catch (err) {
-        console.error('Failed to fetch students:', err);
+        console.error('Failed to fetch student directory', err);
     }
-};
+});
 
-const formatList = (value) => {
-    if (!value) return 'None';
+const filteredStudents = computed(() => {
+    const query = searchQuery.value.toLowerCase().trim();
+    if (!query) return students.value;
 
-    // if array → join
-    if (Array.isArray(value)) {
-        return value.join(', ');
-    }
-
-    // if string → return as is
-    return value;
-};
-
-onMounted(fetchStudents);
+    return students.value.filter((s) => {
+        const full_name = `${s.first_name} ${s.last_name}`.toLowerCase();
+        return (
+            full_name.includes(query) ||
+            s.student_id.toString().includes(query) ||
+            s.up_email.toLowerCase().includes(query)
+        );
+    });
+});
 </script>
 
 <style scoped>
@@ -75,16 +97,26 @@ onMounted(fetchStudents);
     padding: 20px;
 }
 
-.header {
+.header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 15px;
 }
 
-.header h1 {
+.header-row h1 {
     font-size: 22px;
     font-weight: 600;
 }
 
-.table-card {
+.search-box input {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    width: 250px;
+}
+
+.table-container {
     background: white;
     border-radius: 10px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
@@ -111,7 +143,33 @@ tbody tr {
     border-top: 1px solid #eee;
 }
 
-.empty {
+.org-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    max-width: 400px;
+}
+
+.org-badge {
+    background: #7f1d1d;
+    color: white;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 10px;
+    border-radius: 20px;
+    white-space: nowrap;
+}
+
+.prog-tag {
+    color: #4b5563;
+}
+
+.text-muted {
+    color: #9ca3af;
+    font-style: italic;
+}
+
+.empty-msg {
     text-align: center;
     padding: 20px;
     color: #6b7280;

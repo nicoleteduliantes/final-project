@@ -40,4 +40,11 @@ class Student extends Authenticatable
         // Owner Key: degprog_id (on degree_programs table)
         return $this->belongsTo(DegreeProgram::class, 'degprog_id', 'degprog_id');
     }
+
+    public function memberships()
+    {
+        // Foreign Key: membership_id (on memberships table)
+        // Owner Key: membership_d (on memberships table)
+        return $this->hasMany(Membership::class, 'student_id');
+    }
 }
