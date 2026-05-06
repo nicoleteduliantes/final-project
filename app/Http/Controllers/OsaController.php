@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Organization;
+use App\Models\Student;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Hash;
@@ -35,9 +36,20 @@ class OsaController extends Controller
     }
 
     public function index()
-{
+    {
     return response()->json([
         'data' => Organization::all()
     ]);
-}
+    }
+
+    public function studentDirectory()
+    {
+        // Fetches all the students as well as their degrpogs and organizations
+        $students = Student::with([
+            'degreeProgram:degprog_id,degprog_name', 
+            'memberships.organization:org_id,org_name'
+        ])->get();
+
+        return response()->json($students);
+    }
 }

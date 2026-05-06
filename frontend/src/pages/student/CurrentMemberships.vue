@@ -45,7 +45,7 @@
             </table>
 
             <div v-if="memberships.length === 0" class="empty-msg">
-                No participation records found.
+                No memberships records found.
             </div>
         </div>
     </div>
