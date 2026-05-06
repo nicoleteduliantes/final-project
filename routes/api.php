@@ -9,29 +9,23 @@ use App\Http\Controllers\EventController;
 use App\Http\Controllers\OrgApplicationController;
 use App\Http\Controllers\OsaController;
 use App\Http\Controllers\StudentController;
+use App\Http\Controllers\OrganizationController;
+use App\Http\Controllers\ApplicationController;
 use App\Http\Controllers\MembershipController;
 
-/*
-|--------------------------------------------------------------------------
-| AUTH USER
-|--------------------------------------------------------------------------
-*/
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');
-
-/*
-|--------------------------------------------------------------------------
-| ADMIN LOGIN
-|--------------------------------------------------------------------------
-*/
+/* AUTH */
 Route::post('/admin/login', [AdminLoginController::class, 'adminLogin']);
 
-/*
-|--------------------------------------------------------------------------
-| OSA ROUTES
-|--------------------------------------------------------------------------
-*/
+Route::controller(StudentController::class)->group(function () {
+    Route::post('/register-student', 'store');
+    Route::post('/student-login', 'login');
+});
+
+/* PUBLIC */
+Route::get('/degree-programs', [DegreeProgramController::class, 'index']);
+Route::get('/organizations', [OrganizationController::class, 'index']);
+
+/* OSA */
 Route::middleware(['auth:sanctum', 'abilities:osa'])->group(function () {
     Route::post('/osa/organizations', [OsaController::class, 'store']);
     Route::get('/osa/organizations', [OsaController::class, 'index']);
@@ -39,13 +33,8 @@ Route::middleware(['auth:sanctum', 'abilities:osa'])->group(function () {
     Route::delete('/osa/organizations/{id}', [OsaController::class, 'destroy']);
 });
 
-/*
-|--------------------------------------------------------------------------
-| ORG ROUTES
-|--------------------------------------------------------------------------
-*/
+/* ORGANIZATION */
 Route::middleware(['auth:sanctum', 'abilities:org'])->group(function () {
-
     Route::post('/org/events', [EventController::class, 'store']);
     Route::get('/org/events', [EventController::class, 'index']);
     Route::get('/org/events/{id}', [EventController::class, 'show']);
@@ -59,34 +48,12 @@ Route::middleware(['auth:sanctum', 'abilities:org'])->group(function () {
     Route::delete('/org/members/{id}', [OrgApplicationController::class, 'destroy']);
 });
 
-/*
-|--------------------------------------------------------------------------
-| STUDENT AUTH
-|--------------------------------------------------------------------------
-*/
-Route::controller(StudentController::class)->group(function () {
-    Route::post('/register-student', 'store');
-    Route::post('/student-login', 'login');
-});
-
-/*
-|--------------------------------------------------------------------------
-| PUBLIC DATA
-|--------------------------------------------------------------------------
-*/
-Route::get('/degree-programs', [DegreeProgramController::class, 'index']);
-Route::get('/organizations', [OrganizationController::class, 'index']);
-Route::get('/student/events', [StudentController::class, 'index']);
-
-/*
-|--------------------------------------------------------------------------
-| AUTHENTICATED STUDENT FEATURES
-|--------------------------------------------------------------------------
-*/
+/* STUDENT (AUTHENTICATED) */
 Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    });
 
     Route::post('/applications', [ApplicationController::class, 'store']);
     Route::get('/memberships', [MembershipController::class, 'index']);
-
-    Route::get('/organizations/memberships', [OrganizationController::class, 'checkMembership']);
 });

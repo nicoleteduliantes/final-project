@@ -1,6 +1,6 @@
 <template>
     <div class="page" v-if="org">
-        <h1>{{ org.name }}</h1>
+        <h1>{{ org.org_name }}</h1>
 
         <p class="desc">
             {{ org.description }}
@@ -18,14 +18,22 @@
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { get } from '@/services/apiService';
+import { useAuthStore } from '@/stores/auth';
 
 const route = useRoute();
+const auth = useAuthStore();
+
 const org = ref(null);
 
 onMounted(async () => {
     try {
         const res = await get(`/organizations/${route.params.id}`);
+
         org.value = res;
+
+        auth.currentOrg = res;
+
+        sessionStorage.setItem('current_org_name', res.org_name);
     } catch (err) {
         console.error('Failed to load org', err);
     }
@@ -40,6 +48,7 @@ onMounted(async () => {
 .desc {
     margin-top: 10px;
     font-size: 15px;
+    color: #4b5563;
 }
 
 .apply-btn {
@@ -50,6 +59,7 @@ onMounted(async () => {
     text-decoration: none;
     display: inline-block;
     margin-top: 15px;
+    font-weight: 600;
 }
 
 .apply-btn:hover {
@@ -58,5 +68,6 @@ onMounted(async () => {
 
 .loading {
     padding: 20px;
+    color: #6b7280;
 }
 </style>

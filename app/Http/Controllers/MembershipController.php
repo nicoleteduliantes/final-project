@@ -2,22 +2,46 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Membership;
 use Illuminate\Http\JsonResponse;
+use App\Models\Membership;
 
 class MembershipController extends Controller
 {
-    // Fetch all memberships with their related organization names.
+    // GET all memberships for logged-in user
     public function index(): JsonResponse
     {
-    // Gets the ID of the currently logged-in user/student
-    $userId = auth()->id();
+        $userId = auth()->id();
 
-    // Gets the current memberships of the user
-    $memberships = Membership::with(['organization', 'applicationDetail'])
-        ->where('student_id', $userId) 
-        ->get();
+        $memberships = Membership::with(['organization', 'applicationDetail'])
+            ->where('student_id', $userId)
+            ->get();
 
-    return response()->json($memberships);
+        return response()->json($memberships);
+    }
+
+    // DELETE member (REMOVE from organization)
+    public function destroy($id): JsonResponse
+    {
+        try {
+            $membership = Membership::where('membership_id', $id)->first();
+
+            if (!$membership) {
+                return response()->json([
+                    'message' => 'Member not found'
+                ], 404);
+            }
+
+            $membership->delete();
+
+            return response()->json([
+                'message' => 'Member removed successfully'
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Server error while deleting member',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 }

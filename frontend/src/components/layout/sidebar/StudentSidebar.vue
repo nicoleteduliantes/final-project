@@ -24,10 +24,6 @@
             <router-link to="/memberships">
                 👥 <span v-if="!collapsed">Memberships</span>
             </router-link>
-
-            <router-link to="/participation">
-                📊 <span v-if="!collapsed">Participation</span>
-            </router-link>
         </nav>
 
         <!-- LOGOUT -->
@@ -154,7 +150,7 @@ a.router-link-active {
 
 /* LOGOUT */
 .logout-item {
-    margin-top: 220px;
+    margin-top: auto;
     margin-bottom: 10px;
 
     padding: 9px;
