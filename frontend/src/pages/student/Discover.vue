@@ -68,7 +68,7 @@ const search = ref('');
 const selectedCategory = ref('');
 
 const fallbackBanner =
-    'https://up.edu.ph/wp-content/uploads/2024/05/UP-Mindanao-by-Jonathan-Madrid-2048x1024.jpg';
+    'https://images.unsplash.com/photo-1523240795612-9a054b0db644';
 
 onMounted(async () => {
     try {
@@ -211,13 +211,13 @@ select {
 .apply {
     background: #7f1d1d;
     color: white;
-    border: 1px solid #7f1d1d;
+    border: 2px solid #7f1d1d;
 }
 
 .apply:hover {
     background: #064e3b;
     color: gold;
-    border: 2px solid gold;
+    border: gold solid 2px;
 }
 
 /* MEMBER BADGE */
