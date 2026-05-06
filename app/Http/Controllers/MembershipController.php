@@ -10,9 +10,14 @@ class MembershipController extends Controller
     // Fetch all memberships with their related organization names.
     public function index(): JsonResponse
     {
-        //  With(organization) matches the function name in the Membership model
-        $memberships = Membership::with(['organization', 'applicationDetail'])->get();
+    // Gets the ID of the currently logged-in user/student
+    $userId = auth()->id();
 
-        return response()->json($memberships);
+    // Gets the current memberships of the user
+    $memberships = Membership::with(['organization', 'applicationDetail'])
+        ->where('student_id', $userId) 
+        ->get();
+
+    return response()->json($memberships);
     }
 }

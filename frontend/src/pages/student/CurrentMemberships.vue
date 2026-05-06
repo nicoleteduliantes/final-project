@@ -23,7 +23,11 @@
                         <td>{{ membership.position }}</td>
                         <td>
                             {{
-                                membership.application_detail?.applied_committee
+                                membership.status.toLowerCase() === 'pending'
+                                    ? membership.application_detail
+                                          ?.applied_committee || 'N/A'
+                                    : membership.assigned_committee ||
+                                      'General Member'
                             }}
                         </td>
                         <td>
@@ -55,7 +59,7 @@ const memberships = ref([]);
 
 onMounted(async () => {
     try {
-        // This calls your backend route
+        // Calls the backend route
         const res = await get('/memberships');
         memberships.value = res;
     } catch (err) {
