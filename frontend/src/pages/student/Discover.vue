@@ -1,35 +1,58 @@
 <template>
     <div class="page">
-        <h1>Discover</h1>
+        <h1>Discover Organizations</h1>
 
-        <h2>Organizations</h2>
+        <!-- FILTER BAR -->
+        <div class="filters">
+            <input v-model="search" placeholder="Search organizations..." />
 
+            <select v-model="selectedCategory">
+                <option value="">All Categories</option>
+                <option v-for="c in categories" :key="c" :value="c">
+                    {{ c }}
+                </option>
+            </select>
+        </div>
+
+        <!-- GRID -->
         <div class="grid">
-            <div class="card" v-for="org in orgs" :key="org.org_id">
-                <h3>{{ org.org_name }}</h3>
+            <div class="card" v-for="org in filteredOrgs" :key="org.org_id">
+                <!-- BANNER -->
+                <div class="banner">
+                    <img
+                        :src="org.banner_url || fallbackBanner"
+                        alt="org banner"
+                    />
+                </div>
 
-                <p class="category">
-                    {{ org.category }}
-                </p>
+                <!-- CARD BODY -->
+                <div class="card-body">
+                    <h3>{{ org.org_name }}</h3>
 
-                <p class="desc">
-                    {{ org.description }}
-                </p>
+                    <p class="category">
+                        {{ org.category }}
+                    </p>
 
-                <div class="actions">
-                    <RouterLink :to="'/org/' + org.org_id" class="link">
-                        View
-                    </RouterLink>
+                    <p class="desc">
+                        {{ org.description }}
+                    </p>
 
-                    <RouterLink
-                        v-if="!org.checkMembership"
-                        :to="'/apply/' + org.org_id"
-                        class="apply"
-                    >
-                        Apply
-                    </RouterLink>
+                    <!-- ACTIONS -->
+                    <div class="actions">
+                        <RouterLink :to="'/org/' + org.org_id" class="btn link">
+                            View
+                        </RouterLink>
 
-                    <span v-else class="status-badge">Already a Member</span>
+                        <RouterLink
+                            v-if="!org.checkMembership"
+                            :to="'/apply/' + org.org_id"
+                            class="btn apply"
+                        >
+                            Apply
+                        </RouterLink>
+
+                        <span v-else class="badge"> Member </span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -37,64 +60,173 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { get } from '@/services/apiService';
 
 const orgs = ref([]);
+const search = ref('');
+const selectedCategory = ref('');
+
+const fallbackBanner =
+    'https://up.edu.ph/wp-content/uploads/2024/05/UP-Mindanao-by-Jonathan-Madrid-2048x1024.jpg';
 
 onMounted(async () => {
     try {
-        const res = await get('/organizations'); // backend endpoint
-        orgs.value = res;
+        const res = await get('/organizations');
+        orgs.value = res.data ?? res;
     } catch (err) {
         console.error('Failed to load organizations', err);
     }
 });
+
+/* AUTO CATEGORIES */
+const categories = computed(() => {
+    const set = new Set(orgs.value.map((o) => o.category));
+    return [...set];
+});
+
+/* FILTER LOGIC */
+const filteredOrgs = computed(() => {
+    return orgs.value.filter((org) => {
+        const matchesSearch =
+            org.org_name?.toLowerCase().includes(search.value.toLowerCase()) ||
+            org.description?.toLowerCase().includes(search.value.toLowerCase());
+
+        const matchesCategory =
+            !selectedCategory.value || org.category === selectedCategory.value;
+
+        return matchesSearch && matchesCategory;
+    });
+});
 </script>
 
 <style scoped>
+/* FILTER BAR */
+.filters {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+input,
+select {
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    width: 100%;
+}
+
+/* GRID */
 .grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
     gap: 16px;
 }
 
+/* CARD */
 .card {
     background: white;
-    border-radius: 10px;
-    padding: 16px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-    border-left: 4px solid #7f1d1d;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+    transition: 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-3px);
+}
+
+/* BANNER */
+.banner {
+    height: 120px;
+    overflow: hidden;
+}
+
+.banner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* BODY */
+.card-body {
+    padding: 14px;
 }
 
 .category {
     color: #7f1d1d;
     font-weight: 600;
-    margin: 6px 0;
+    font-size: 13px;
+    margin: 5px 0;
 }
 
 .desc {
-    font-size: 14px;
-    color: #444;
+    font-size: 13px;
+    color: #555;
+    margin-bottom: 10px;
 }
 
+/* ACTION ROW */
 .actions {
     display: flex;
-    gap: 10px;
+    gap: 8px;
     margin-top: 10px;
 }
 
-.link {
-    color: #facc15;
+/* SHARED BUTTON BASE */
+.btn {
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 6px 10px;
+    font-size: 13px;
+    line-height: 1;
+    border-radius: 6px;
+
     text-decoration: none;
     font-weight: 600;
+
+    border: 1px solid transparent;
+    box-sizing: border-box;
+
+    transition: 0.2s ease;
+    text-align: center;
 }
 
-.apply {
+/* VIEW (OUTLINE) */
+.link {
+    background: white;
+    color: #7f1d1d;
+    border: 2px solid #7f1d1d;
+}
+
+.link:hover {
+    background: #7f1d1d;
     color: white;
+}
+
+/* APPLY (SOLID) */
+.apply {
+    background: #7f1d1d;
+    color: white;
+    border: 1px solid #7f1d1d;
+}
+
+.apply:hover {
     background: #064e3b;
-    padding: 6px 10px;
+    color: gold;
+    border: 2px solid gold;
+}
+
+/* MEMBER BADGE */
+.badge {
+    flex: 1;
+    text-align: center;
+    font-size: 12px;
+    background: #e5e7eb;
+    padding: 6px 8px;
     border-radius: 6px;
-    text-decoration: none;
 }
 </style>

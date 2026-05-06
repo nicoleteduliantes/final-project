@@ -95,7 +95,9 @@ button {
 }
 
 button:hover {
-    opacity: 0.9;
+    background: rgb(3, 74, 46);
+    color: gold;
+    border: 2px solid gold;
 }
 
 /* IMAGE SIDE */

@@ -1,6 +1,6 @@
 <template>
     <div :class="['sidebar', { collapsed }]">
-        <!-- TOP SECTION -->
+        <!-- TOP -->
         <div class="top">
             <img
                 v-if="!collapsed"
@@ -11,92 +11,104 @@
             <button class="toggle" @click="collapsed = !collapsed">☰</button>
         </div>
 
-        <!-- LINKS -->
-        <nav>
-            <router-link to="/org/dashboard"
-                >📊 <span v-if="!collapsed">Dashboard</span></router-link
-            >
-            <router-link to="/org/members"
-                >👥 <span v-if="!collapsed">Members</span></router-link
-            >
-            <router-link to="/org/applications"
-                >📄 <span v-if="!collapsed">Applications</span></router-link
-            >
-            <router-link to="/org/events"
-                >🎉 <span v-if="!collapsed">Events</span></router-link
-            >
-            <router-link to="/org/events/new"
-                >➕ <span v-if="!collapsed">New Event</span></router-link
-            >
-            <router-link to="/org/attendance"
-                >📌 <span v-if="!collapsed">Attendance</span></router-link
-            >
+        <!-- NAV -->
+        <nav class="nav">
+            <router-link to="/org/dashboard">
+                📊 <span v-if="!collapsed">Dashboard</span>
+            </router-link>
+
+            <router-link to="/org/members">
+                👥 <span v-if="!collapsed">Members</span>
+            </router-link>
+
+            <router-link to="/org/applications">
+                📄 <span v-if="!collapsed">Applications</span>
+            </router-link>
+
+            <router-link to="/org/events">
+                🎉 <span v-if="!collapsed">Events</span>
+            </router-link>
+
+            <router-link to="/org/events/new">
+                ➕ <span v-if="!collapsed">New Event</span>
+            </router-link>
+
+            <router-link to="/org/attendance">
+                📌 <span v-if="!collapsed">Attendance</span>
+            </router-link>
         </nav>
+
+        <!-- LOGOUT -->
+        <div class="logout-item" @click="logout">
+            🔓 <span v-if="!collapsed">Logout</span>
+        </div>
     </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { useAuthStore } from '@/stores/auth';
 
-const collapsed = ref(false);
+const collapsed = defineModel();
+
+const router = useRouter();
+const auth = useAuthStore();
+
+const logout = () => {
+    auth.logout();
+    localStorage.clear();
+    router.replace('/');
+};
 </script>
 
 <style scoped>
-/* SIDEBAR BASE */
 .sidebar {
     width: 200px;
-    height: 100%;
-    background: #7f1d1d; /* maroon */
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    background: #7f1d1d;
     color: white;
+
     display: flex;
     flex-direction: column;
+
     padding: 10px;
-    transition: width 0.3s ease;
     overflow: hidden;
+
+    transition: width 0.3s ease;
 }
 
 .sidebar.collapsed {
     width: 50px;
 }
 
-/* TOP OF SIDEBAR */
+/* TOP */
 .top {
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+    background: white;
+    border-radius: 12px;
+
     padding: 7px;
     margin-bottom: 15px;
-
-    /* WHITE BACKGROUND FOR LOGO AREA */
-    background: #ffffff;
-    border-radius: 15px;
 }
 
 .logo {
     width: 120px;
-    height: auto;
-
-    /* ensures clean logo presentation */
-    background: #ffffff;
-    padding: 4px;
-    border-radius: 6px;
 }
 
-/* TOGGLE BUTTON */
+/* TOGGLE */
 .toggle {
     background: transparent;
     border: none;
-    color: #7f1d1d; /* maroon icon */
+    color: #7f1d1d;
     font-size: 22px;
     cursor: pointer;
-    padding: 8px;
-    transition: 0.2s;
-}
-
-.toggle:hover {
-    opacity: 0.7;
-    transform: scale(1.2);
-    color: rgb(3, 74, 46);
 }
 
 /* NAV */
@@ -112,11 +124,10 @@ a {
     text-decoration: none;
     padding: 9px;
     border-radius: 6px;
+
     display: flex;
     align-items: center;
     gap: 10px;
-    font-family: 'Georgia', serif;
-    transition: 0.2s;
 }
 
 a:hover {
@@ -127,17 +138,36 @@ a:hover {
 a.router-link-active {
     background: rgb(3, 74, 46);
     color: gold;
-    border: 2px solid gold;
 }
 
-/* COLLAPSED ALIGNMENT */
+/* COLLAPSED TEXT ONLY */
+.sidebar.collapsed span {
+    display: none;
+}
+
 .sidebar.collapsed a {
     justify-content: center;
-    padding: 11px 0;
 }
 
-/* ICON ALIGNMENT */
-.sidebar.collapsed a span {
-    display: center;
+/* LOGOUT (UNIFIED FIX) */
+.logout-item {
+    margin-top: auto;
+    margin-bottom: 10px;
+
+    padding: 10px;
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logout-item:hover {
+    background: white;
+    color: #7f1d1d;
+}
+
+.sidebar.collapsed .logout-item {
+    justify-content: center;
 }
 </style>

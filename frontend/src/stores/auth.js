@@ -62,6 +62,7 @@ export const useAuthStore = defineStore('auth', () => {
 
         localStorage.removeItem('user');
         localStorage.removeItem('role');
+        localStorage.removeItem('AUTH_TOKEN');
     }
 
     // EXPORT
