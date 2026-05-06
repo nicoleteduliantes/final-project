@@ -66,3 +66,4 @@ Route::middleware('auth:sanctum')->group(function () {
      Route::get('/events', [StudentController::class, 'index']);
 
 });
+
