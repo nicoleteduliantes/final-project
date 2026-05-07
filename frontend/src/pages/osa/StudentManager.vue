@@ -95,6 +95,7 @@ const filteredStudents = computed(() => {
 <style scoped>
 .page {
     padding: 20px;
+    padding-top: 0;
 }
 
 .header-row {

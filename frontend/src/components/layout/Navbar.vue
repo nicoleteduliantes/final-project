@@ -1,44 +1,57 @@
 <template>
     <nav class="navbar">
-        <RouterLink to="/discover">Discover</RouterLink>
+        <div class="logo">
+            <RouterLink to="/">Iskonek</RouterLink>
+        </div>
 
-        <RouterLink v-if="role === 'student'" to="/dashboard">
-            Dashboard
-        </RouterLink>
-
-        <RouterLink v-if="role === 'org'" to="/org/dashboard">
-            Org Dashboard
-        </RouterLink>
-
-        <RouterLink v-if="role === 'osa'" to="/osa/dashboard">
-            OSA Dashboard
-        </RouterLink>
+        <div class="nav-links">
+            <RouterLink to="/">Home</RouterLink>
+            <RouterLink to="/about">About</RouterLink>
+            <RouterLink to="/contact">Contact</RouterLink>
+        </div>
     </nav>
 </template>
 
-<script setup>
-import { computed } from 'vue';
-import { useAuthStore } from '@/stores/auth';
-
-const auth = useAuthStore();
-const role = computed(() => auth.role);
-</script>
+<script setup></script>
 
 <style scoped>
 .navbar {
     display: flex;
-    gap: 16px;
-    padding: 12px 20px;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-left: 50px;
+    padding: 14px 32px;
     background: #7f1d1d;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-.navbar a {
+.logo a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.3rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+.nav-links {
+    display: flex;
+    gap: 24px;
+}
+
+.nav-links a {
     color: white;
     text-decoration: none;
     font-weight: 600;
+    transition: 0.2s ease;
+    padding-bottom: 4px;
 }
 
-.navbar a.router-link-active {
-    border-bottom: 2px solid gold;
+.nav-links a:hover {
+    color: #facc15;
+}
+
+.nav-links a.router-link-active {
+    border-bottom: 2px solid #facc15;
 }
 </style>

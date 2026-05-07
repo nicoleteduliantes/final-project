@@ -19,13 +19,20 @@
                     <label>Category</label>
                     <select v-model="org.category">
                         <option disabled value="">Select a category</option>
-
                         <option>Academic</option>
                         <option>Civic</option>
                         <option>Cultural</option>
                         <option>Sports</option>
                         <option>Fraternities/Sororities</option>
                         <option>Other</option>
+                    </select>
+                </div>
+
+                <!-- STATUS -->
+                <div class="group">
+                    <label>Status</label>
+                    <select v-model="org.status">
+                        <option value="Registered">Registered</option>
                     </select>
                 </div>
 
@@ -52,15 +59,32 @@ import { useRouter } from 'vue-router';
 
 const router = useRouter();
 
+/* Helper: format YYYY-MM-DD */
+const formatDate = (date) => {
+    return date.toISOString().split('T')[0];
+};
+
+const today = new Date();
+
+/* +1 year expiry */
+const expiry = new Date();
+expiry.setFullYear(today.getFullYear() + 1);
+
 const org = reactive({
     org_name: '',
     category: '',
     description: '',
+
+    // NEW FIELDS
+    status: 'Registered',
+    date_registered: formatDate(today),
+    expiry_date: formatDate(expiry),
 });
 
 const registerOrg = async () => {
     try {
         await post('/osa/organizations', org);
+
         alert('Organization Registered!');
         router.push('/osa/orgs');
     } catch (error) {
@@ -73,12 +97,11 @@ const registerOrg = async () => {
 <style scoped>
 .page {
     width: 100%;
-    padding: 20px;
-
+    padding-left: 55px;
+    padding-top: 20px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-
     text-align: left;
 }
 
@@ -111,7 +134,6 @@ h2 {
     gap: 14px;
 }
 
-/* GROUP */
 .group {
     display: flex;
     flex-direction: column;
@@ -130,7 +152,6 @@ textarea {
     padding: 10px;
     border-radius: 8px;
     border: 1px solid #d1d5db;
-    transition: 0.2s;
     font-family: inherit;
 }
 
@@ -141,7 +162,6 @@ textarea:focus {
     border-color: #7f1d1d;
 }
 
-/* TEXTAREA */
 textarea {
     min-height: 100px;
     resize: vertical;

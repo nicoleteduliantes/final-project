@@ -62,9 +62,8 @@
 </template>
 
 <script setup>
-
 import { ref, onMounted } from 'vue';
-import { get} from '@/services/apiService'; 
+import { get } from '@/services/apiService';
 
 const events = ref([]);
 
@@ -90,7 +89,6 @@ const formatDate = (dateString) => {
 };
 
 onMounted(fetchEvents);
-
 </script>
 
 <style scoped>

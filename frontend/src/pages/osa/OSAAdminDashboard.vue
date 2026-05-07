@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="page">
         <h2>Office of Student Affairs Dashboard</h2>
 
         <div class="cards">

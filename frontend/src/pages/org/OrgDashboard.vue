@@ -23,7 +23,7 @@
 
 <style scoped>
 .page {
-    padding: 20px;
+    padding: 0;
 }
 .cards {
     display: flex;
