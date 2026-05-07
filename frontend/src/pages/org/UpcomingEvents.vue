@@ -75,6 +75,7 @@ onMounted(fetchEvents);
 <style scoped>
 /* HEADER */
 .header {
+    padding-top: 20px;
     margin-bottom: 20px;
 }
 

@@ -74,8 +74,8 @@ const createEvent = async () => {
 <style scoped>
 .page {
     width: 100%;
-    padding: 20px;
-
+    padding-left: 55px;
+    padding-top: 20px;
     display: flex;
     flex-direction: column;
     align-items: flex-start;

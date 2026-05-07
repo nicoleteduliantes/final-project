@@ -4,7 +4,6 @@
 
         <div class="main" :class="{ collapsed }">
             <Navbar />
-            <Breadcrumb />
 
             <div class="content">
                 <router-view />
@@ -17,7 +16,6 @@
 import { ref, computed } from 'vue';
 
 import Navbar from '@/components/layout/Navbar.vue';
-import Breadcrumb from '@/components/layout/Breadcrumb.vue';
 
 import StudentSidebar from '@/components/layout/sidebar/StudentSidebar.vue';
 import OrgSidebar from '@/components/layout/sidebar/OrgSidebar.vue';
@@ -38,6 +36,7 @@ const sidebarComponent = computed(() => {
 .layout {
     display: flex;
     height: 100vh;
+    width: 100%;
 }
 
 /* MAIN CONTENT */
@@ -48,17 +47,19 @@ const sidebarComponent = computed(() => {
     padding: 20px;
     background: #f9fafb;
 
-    margin-left: 200px;
+    margin-left: 100px;
     transition: margin-left 0.3s ease;
-    padding-left: 50px;
+    padding-left: 100px;
 }
 
 /* when sidebar is collapsed */
 .layout .sidebar.collapsed ~ .main {
-    margin-left: 50px;
+    margin-left: 0px;
+    padding-left: 50px;
 }
 
 .content {
     padding-top: 8px;
+    max-width: 1400px;
 }
 </style>

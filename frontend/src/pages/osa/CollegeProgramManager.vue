@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="page">
         <h2>Colleges and Degree Programs</h2>
 
         <table>
@@ -30,7 +30,7 @@
 
 <style scoped>
 .page {
-    padding: 20px;
+    padding-left: 20px;
 }
 
 .header {

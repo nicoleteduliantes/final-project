@@ -46,7 +46,6 @@ const routes = [
             {
                 path: '',
                 redirect: '/dashboard',
-                meta: { breadcrumb: false },
             },
 
             /* ===================== STUDENT ===================== */
@@ -54,19 +53,19 @@ const routes = [
             {
                 path: 'dashboard',
                 component: StudentDashboard,
-                meta: { role: 'student', breadcrumb: 'Dashboard' },
+                meta: { role: 'student' },
             },
 
             {
                 path: 'discover',
                 component: Discover,
-                meta: { role: 'student', breadcrumb: 'Discover' },
+                meta: { role: 'student' },
             },
 
             {
                 path: 'memberships',
                 component: CurrentMemberships,
-                meta: { role: 'student', breadcrumb: 'My Memberships' },
+                meta: { role: 'student' },
             },
 
             /* Org Profile (FIXED PARAM) */
@@ -75,7 +74,6 @@ const routes = [
                 component: OrgProfile,
                 meta: {
                     role: 'student',
-                    breadcrumb: 'Organization',
                 },
             },
 
@@ -85,8 +83,6 @@ const routes = [
                 component: ApplicationForm,
                 meta: {
                     role: 'student',
-                    breadcrumb: (route) =>
-                        route.query.name || 'Application Form',
                 },
             },
 
@@ -95,37 +91,37 @@ const routes = [
             {
                 path: 'org/dashboard',
                 component: OrgDashboard,
-                meta: { role: 'org', breadcrumb: 'Dashboard' },
+                meta: { role: 'org' },
             },
 
             {
                 path: 'org/members',
                 component: ManageMembers,
-                meta: { role: 'org', breadcrumb: 'Members' },
+                meta: { role: 'org' },
             },
 
             {
                 path: 'org/applications',
                 component: ReviewApplications,
-                meta: { role: 'org', breadcrumb: 'Applications' },
+                meta: { role: 'org' },
             },
 
             {
                 path: 'org/events',
                 component: UpcomingEvents,
-                meta: { role: 'org', breadcrumb: 'Events' },
+                meta: { role: 'org' },
             },
 
             {
                 path: 'org/events/new',
                 component: NewEvent,
-                meta: { role: 'org', breadcrumb: 'New Event' },
+                meta: { role: 'org' },
             },
 
             {
                 path: 'org/events/edit/:id',
                 component: EventEditor,
-                meta: { role: 'org', breadcrumb: 'Edit Event' },
+                meta: { role: 'org' },
             },
 
             /* ===================== OSA ===================== */
@@ -133,31 +129,31 @@ const routes = [
             {
                 path: 'osa/dashboard',
                 component: OSAAdminDashboard,
-                meta: { role: 'osa', breadcrumb: 'Dashboard' },
+                meta: { role: 'osa' },
             },
 
             {
                 path: 'osa/colleges',
                 component: CollegeProgramManager,
-                meta: { role: 'osa', breadcrumb: 'Colleges & Programs' },
+                meta: { role: 'osa' },
             },
 
             {
                 path: 'osa/orgs',
                 component: GlobalOrgManager,
-                meta: { role: 'osa', breadcrumb: 'Organizations' },
+                meta: { role: 'osa' },
             },
 
             {
                 path: 'osa/registration',
                 component: OrgRegister,
-                meta: { role: 'osa', breadcrumb: 'Organization Registration' },
+                meta: { role: 'osa' },
             },
 
             {
                 path: 'osa/students',
                 component: StudentManager,
-                meta: { role: 'osa', breadcrumb: 'Students' },
+                meta: { role: 'osa' },
             },
         ],
     },
