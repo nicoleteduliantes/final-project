@@ -23,11 +23,11 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $this->call([
-        StudentSeeder::class,
-        ]);
-
-        $this->call([
         DegreeProgramSeeder::class,
+        ]);
+        
+        $this->call([
+        StudentSeeder::class,
         ]);
     }
 }
