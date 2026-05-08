@@ -56,5 +56,9 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('pass123'),
             'category' => 'Academic'
         ]);
+
+        $this->call([
+            OrganizationSeeder::class,
+        ]);
     }
 }
