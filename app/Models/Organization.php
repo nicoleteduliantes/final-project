@@ -15,6 +15,8 @@ class Organization extends Authenticatable
         'org_name', 
         'category', 
         'description', 
+        'expiration',
+        'status',
         'password'
     ];
     protected $hidden = ['password'];

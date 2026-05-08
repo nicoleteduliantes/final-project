@@ -22,6 +22,10 @@ return new class extends Migration
             ]);
 
             $table->text('description')->nullable();
+            $table->date('expiration')->nullable();
+
+            $table->enum('status', ['Registered', 'Expired']);
+
             $table->string('password');
 
             $table->timestamps();
