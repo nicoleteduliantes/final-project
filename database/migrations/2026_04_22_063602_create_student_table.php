@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('last_name');
             $table->string('first_name');
             $table->string('up_email')->unique();
-            $table->date('admission_date');
 
             $table->foreignId('degprog_id')
                 ->constrained('degprogs', 'degprog_id')

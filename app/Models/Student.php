@@ -19,7 +19,6 @@ class Student extends Authenticatable
         'last_name',
         'first_name',
         'up_email',
-        'admission_date',
         'degprog_id', 
         'password',
     ];
