@@ -18,7 +18,6 @@ class StudentController extends Controller
             'first_name'     => 'required|string|max:255',
             'last_name'      => 'required|string|max:255',
             'up_email'       => 'required|email|unique:students,up_email',
-            'admission_date' => 'required|date',
             'degprog_id'     => 'required|exists:degprogs,degprog_id',
             'password'       => 'required|string|min:8',
         ]);
@@ -29,7 +28,6 @@ class StudentController extends Controller
             'first_name'     => $validated['first_name'],
             'last_name'      => $validated['last_name'],
             'up_email'       => $validated['up_email'],
-            'admission_date' => $validated['admission_date'],
             'degprog_id'     => $validated['degprog_id'],
             'password'       => Hash::make($validated['password']), 
         ]);

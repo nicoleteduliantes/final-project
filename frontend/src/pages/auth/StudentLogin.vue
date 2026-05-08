@@ -22,8 +22,6 @@
                 <input v-model="form.first_name" placeholder="First Name" />
                 <input v-model="form.last_name" placeholder="Last Name" />
 
-                <input type="date" v-model="form.admission_date" />
-
                 <select v-model="form.degprog_id">
                     <option disabled value="">Select Degree Program</option>
                     <option
@@ -90,7 +88,6 @@ const form = reactive({
     first_name: '',
     last_name: '',
     up_email: '',
-    admission_date: '',
     degprog_id: '',
     password: '',
 });

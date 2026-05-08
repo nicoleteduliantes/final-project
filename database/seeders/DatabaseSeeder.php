@@ -4,7 +4,6 @@ namespace Database\Seeders;
 
 use App\Models\College;
 use App\Models\DegreeProgram;
-use App\Models\Organization;
 use App\Models\Osa;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
