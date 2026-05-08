@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
     {
         Osa::create([
             'osa_id'   => 220422, // Your chosen manual ID 
-            'password' => Hash::make('admin123'), 
+            'password' => Hash::make('superadmin123'), 
         ]);
 
         $this->call([
@@ -25,7 +25,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
         DegreeProgramSeeder::class,
         ]);
-        
+
         $this->call([
         StudentSeeder::class,
         ]);
