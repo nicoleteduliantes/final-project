@@ -50,13 +50,6 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('admin123'), 
         ]);
 
-        //Seeded org account for testing
-        Organization::create([
-            'org_name' => 'Test Org',
-            'password' => Hash::make('pass123'),
-            'category' => 'Academic'
-        ]);
-
         $this->call([
             OrganizationSeeder::class,
         ]);
