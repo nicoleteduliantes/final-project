@@ -1,40 +1,55 @@
 <template>
     <div class="page">
-        <h2>Manage Members</h2>
+        <div class="header">
+            <h1>Manage Members</h1>
+            <p class="subtext">Organization Members</p>
+        </div>
 
-        <div class="grid">
-            <div
-                class="member-card"
-                v-for="m in members"
-                :key="m.membership_id"
-            >
-                <div class="card-header">ISKONEK MEMBER ID</div>
+        <!-- EMPTY STATE -->
+        <div v-if="members.length === 0" class="empty-msg">
+            No membership records found.
+        </div>
 
-                <div class="card-body">
+        <!-- BOOTH GRID -->
+        <div v-else class="booth-grid">
+            <div class="booth-card" v-for="m in members" :key="m.membership_id">
+                <!-- TOP CANOPY -->
+                <div class="booth-top">
+                    <span class="org">MEMBER</span>
+
+                    <span class="badge">
+                        {{ m.assigned_committee }}
+                    </span>
+                </div>
+
+                <!-- BODY -->
+                <div class="booth-body">
                     <div class="avatar">
                         {{ getInitials(m.student_name) }}
                     </div>
 
                     <div class="info">
-                        <h3>{{ m.student_name }}</h3>
-                        <p class="email">{{ m.email }}</p>
+                        <p class="label">Name</p>
+                        <p class="value">{{ m.student_name }}</p>
 
-                        <span class="badge">
-                            {{ m.assigned_committee }}
-                        </span>
+                        <p class="label">Email</p>
+                        <p class="value">{{ m.email }}</p>
 
-                        <p class="id">ID: {{ m.membership_id }}</p>
-                        <p class="expiry">Valid Until: {{ m.valid_until }}</p>
+                        <p class="label">Valid Until</p>
+                        <p class="value">{{ m.valid_until }}</p>
                     </div>
                 </div>
 
-                <div class="card-footer">
+                <!-- FOOTER -->
+                <div class="booth-footer">
                     <button
                         class="danger"
                         @click="removeMember(m.membership_id)"
                     >
                         Remove Member
                     </button>
+
+                    <span class="id">ID NO. {{ m.membership_id }}</span>
                 </div>
             </div>
         </div>
@@ -61,8 +76,6 @@ const fetchMembers = async () => {
                 student_name: `${m.student.first_name} ${m.student.last_name}`,
                 email: m.student.up_email,
                 assigned_committee: m.assigned_committee || 'General',
-
-                // expiry field (1 year validity)
                 valid_until: expiryDate.toLocaleDateString(),
             };
         });
@@ -95,118 +108,175 @@ onMounted(fetchMembers);
 </script>
 
 <style scoped>
-/* GRID */
-.grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 16px;
-    margin-top: 20px;
-}
-
-/* ID CARD */
-.member-card {
-    background: white;
-    border-radius: 14px;
-    border: 1px solid #e5e7eb;
-
-    width: 280px;
-    min-height: 190px;
-
-    display: flex;
-    flex-direction: column;
-
-    overflow: hidden;
-
-    transition: 0.2s ease;
-}
-
-.member-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+/* PAGE */
+.page {
+    padding-top: 20px;
+    min-height: 100vh;
 }
 
 /* HEADER */
-.card-header {
-    background: #7f1d1d;
-    color: white;
-    font-size: 11px;
-    letter-spacing: 1px;
-    padding: 6px;
+.header {
+    margin-bottom: 18px;
+}
+
+h1 {
+    margin: 0;
+    font-size: 26px;
+    font-weight: 900;
+    color: #7f1d1d;
+}
+
+.subtext {
+    margin-top: 4px;
+    color: #6b7280;
+    font-size: 14px;
+}
+
+/* EMPTY */
+.empty-msg {
+    padding: 20px;
     text-align: center;
+    color: #6b7280;
+    border: 1px dashed #d1d5db;
+    border-radius: 10px;
+}
+
+/* GRID */
+.booth-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 28px;
+    padding: 20px;
+}
+
+/* CARD */
+.booth-card {
+    position: relative;
+    transition: 0.3s ease;
+    transform: rotate(-0.4deg);
+}
+
+.booth-card:nth-child(even) {
+    transform: rotate(0.5deg);
+}
+
+.booth-card:hover {
+    transform: translateY(-10px) rotate(0deg);
+}
+
+/* TOP */
+.booth-top {
+    padding: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    color: white;
+    background: linear-gradient(135deg, #7f1d1d, #b91c1c);
+    border-radius: 14px 14px 0 0;
+
+    box-shadow:
+        0 10px 0 rgba(0, 0, 0, 0.12),
+        0 18px 30px rgba(0, 0, 0, 0.15);
+}
+
+.org {
+    font-size: 13px;
+    font-weight: 900;
+    text-transform: uppercase;
+}
+
+/* BADGE */
+.badge {
+    font-size: 10px;
+    font-weight: 800;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: #e5e7eb;
+    color: #111827;
 }
 
 /* BODY */
-.card-body {
+.booth-body {
     display: flex;
-    gap: 12px;
-    padding: 12px;
-    flex: 1;
+    gap: 14px;
     align-items: center;
+    padding: 16px;
+    background: white;
+    border-left: 1px solid #e5e7eb;
+    border-right: 1px solid #e5e7eb;
 }
 
-/* AVATAR (ID PHOTO STYLE) */
+/* AVATAR */
 .avatar {
-    width: 55px;
-    height: 55px;
-    border-radius: 8px;
-    background: #7f1d1d;
+    width: 58px;
+    height: 58px;
+    border-radius: 14px;
+    background: radial-gradient(circle at top left, #7f1d1d, #991b1b);
     color: white;
 
     display: flex;
     align-items: center;
     justify-content: center;
 
-    font-weight: bold;
+    font-weight: 900;
+
+    box-shadow:
+        inset 0 0 0 2px rgba(255, 255, 255, 0.2),
+        0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
 /* INFO */
 .info {
     flex: 1;
-    text-align: left;
 }
 
-.info h3 {
-    font-size: 14px;
-    margin: 0;
-}
-
-.email {
-    font-size: 11px;
-    color: #666;
-    margin: 2px 0;
-}
-
-.badge {
+.label {
     font-size: 10px;
-    background: #f3f4f6;
-    padding: 3px 8px;
-    border-radius: 999px;
-    display: inline-block;
-    margin-top: 4px;
+    color: #a8a29e;
+    text-transform: uppercase;
+    margin-top: 6px;
+    letter-spacing: 0.5px;
 }
 
-.id,
-.expiry {
-    font-size: 10px;
-    color: #888;
-    margin-top: 4px;
+.value {
+    font-size: 13px;
+    font-weight: 700;
+    color: #1c1917;
 }
 
 /* FOOTER */
-.card-footer {
-    padding: 8px;
-    border-top: 1px solid #eee;
+.booth-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 10px 14px;
+    font-size: 11px;
+
+    background: linear-gradient(90deg, #374151, #1f2937);
+    border-radius: 0 0 14px 14px;
+
+    box-shadow:
+        0 12px 0 rgba(0, 0, 0, 0.15),
+        0 18px 30px rgba(0, 0, 0, 0.12);
 }
 
-.danger {
-    width: 100%;
-    background: transparent;
-    border: 1px solid #7f1d1d;
-    color: #7f1d1d;
+/* ID */
+.id {
+    color: #f9fafb;
+    font-size: 10px;
+}
 
-    padding: 6px;
+/* BUTTON */
+.danger {
+    background: transparent;
+    border: 1px solid #fca5a5;
+    color: #fca5a5;
+
+    padding: 4px 10px;
     border-radius: 6px;
-    font-size: 12px;
+    font-size: 10px;
 
     cursor: pointer;
     transition: 0.2s ease;
@@ -214,6 +284,7 @@ onMounted(fetchMembers);
 
 .danger:hover {
     background: #7f1d1d;
+    border-color: #7f1d1d;
     color: white;
 }
 </style>

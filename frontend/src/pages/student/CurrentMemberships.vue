@@ -56,7 +56,7 @@
 
                 <!-- FOOTER -->
                 <div class="booth-footer">
-                    ID: {{ membership.membership_id }}
+                    ID NO. {{ membership.membership_id }}
                 </div>
             </div>
         </div>
@@ -93,7 +93,6 @@ const getInitials = (name = '') => {
 .page {
     padding-top: 20px;
     min-height: 100vh;
-    background: linear-gradient(180deg, #f8fafc, #f3f4f6);
 }
 
 /* HEADER */

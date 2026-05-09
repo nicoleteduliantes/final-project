@@ -22,9 +22,6 @@
 </template>
 
 <style scoped>
-.page {
-    padding: 0;
-}
 .cards {
     display: flex;
     gap: 20px;
