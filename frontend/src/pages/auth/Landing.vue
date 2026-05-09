@@ -1,26 +1,45 @@
 <template>
     <div class="landing">
-        <!-- HEADER -->
-        <header class="header">
-            <img src="@/assets/iskonek-logo.png" class="logo" />
-        </header>
-
-        <!-- BACKGROUND OVERLAY -->
+        <!-- OVERLAY -->
         <div class="overlay"></div>
+
+        <!-- FLOATING CAMPUS ELEMENTS -->
+        <div class="floating sticker2">📌</div>
+        <div class="floating sticker3">🎓</div>
+        <div class="floating sticker4">📚</div>
+        <div class="floating sticker5">📅</div>
+        <div class="floating sticker6">📣</div>
+        <div class="floating sticker7">⭐</div>
+        <div class="floating sticker8">🎨</div>
+        <div class="floating sticker9">📝</div>
+        <div class="floating sticker10">🏛️</div>
+        <div class="floating sticker11">💡</div>
+        <div class="floating sticker12">📍</div>
+
+        <!-- PUSH PINS -->
+        <div class="pin pin1"></div>
+        <div class="pin pin2"></div>
 
         <!-- MAIN CONTENT -->
         <div class="content">
+            <!-- Center Logo -->
+            <div class="identity-block">
+                <img src="@/assets/iskonek-logo.png" class="main-logo" />
+
+                <div class="id-badge">STUDENT ORGANIZATION ACCESS</div>
+            </div>
+
             <p class="subtitle">
                 <span>University of the Philippines Mindanao</span><br />
                 Student Organization Portal
             </p>
 
             <div class="buttons">
-                <RouterLink to="/student-login" class="btn maroon">
+                <RouterLink to="/student-login" class="btn student">
                     Student Login
                 </RouterLink>
 
-                <RouterLink to="/admin-login" class="btn yellow">
+                <RouterLink to="/admin-login" class="btn admin">
                     Admin Login
                 </RouterLink>
             </div>
@@ -33,140 +52,322 @@ import { RouterLink } from 'vue-router';
 </script>
 
 <style scoped>
-/* MAIN BACKGROUND */
+/* PAGE */
 .landing {
-    height: 100vh;
+    min-height: 100vh;
     width: 100%;
+    position: relative;
+    overflow: hidden;
+
     background-image: url('@/assets/upmin.jpg');
     background-size: cover;
     background-position: center;
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
 
-    /* make image pop */
-    filter: saturate(1.25) contrast(1.15);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0px;
+
+    filter: saturate(1.1) contrast(1.05);
 }
 
-/* DARK CINEMATIC OVERLAY */
+/* OVERLAY */
 .overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(
-        to bottom,
-        rgba(255, 255, 255, 0.379),
-        rgba(13, 107, 41, 0.381)
-    );
+    background: linear-gradient(rgba(0, 0, 0, 0.45), rgba(6, 78, 59, 0.45));
     z-index: 1;
 }
 
-/* HEADER */
-.header {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    padding: 15px 30px;
+/* MAIN CARD */
+.identity-block {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    z-index: 2;
-    background: rgb(255, 255, 255);
-    backdrop-filter: blur(8px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-}
+    gap: 10px;
 
-.logo {
-    height: 50px;
-    object-fit: contain;
+    margin-bottom: 1.5rem;
 }
-
-/* CONTENT CARD */
 .content {
     position: relative;
     z-index: 2;
+
+    width: 100%;
+    max-width: 620px;
+
     text-align: center;
-    color: white;
-    max-width: 750px;
-    padding: 30px;
 
-    /* glass effect */
-    background: rgba(0, 0, 0, 0.25);
-    backdrop-filter: blur(6px);
-    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.14);
+    backdrop-filter: blur(16px);
 
-    /* glow depth */
-    text-shadow: 0 3px 15px rgba(0, 0, 0, 0.8);
+    padding: 45px;
+    border-radius: 24px;
+
+    border: 1px solid rgba(255, 255, 255, 0.25);
+
+    box-shadow:
+        0 0 0 2px rgba(250, 204, 21, 0.12),
+        0 18px 45px rgba(0, 0, 0, 0.35);
+}
+
+/* CENTER LOGO */
+.main-logo {
+    width: 240px;
+    margin-bottom: 14px;
+
+    background: rgba(255, 255, 255, 0.95);
+    padding: 14px 22px;
+    border-radius: 18px;
+
+    box-shadow:
+        0 6px 20px rgba(0, 0, 0, 0.18),
+        0 0 0 2px rgba(255, 255, 255, 0.4);
+
+    transform: rotate(1deg);
+}
+
+/* BADGE */
+.id-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #facc15;
+    color: #064e3b;
+
+    padding: 6px 16px;
+    border-radius: 999px;
+
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 1px;
+
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+
+    transform: translateY(-4px);
 }
 
 /* SUBTITLE */
 .subtitle {
-    font-size: 20px;
+    font-size: 18px;
     line-height: 1.6;
-    margin-bottom: 30px;
-    opacity: 0.95;
+    margin-bottom: 35px;
+    color: white;
 }
 
 .subtitle span {
-    color: #facc15; /* yellow accent */
     font-weight: 700;
-    letter-spacing: 1px;
 }
 
 /* BUTTONS */
 .buttons {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 18px;
     align-items: center;
 }
 
-/* BUTTON BASE */
+/* POSTER BUTTONS */
 .btn {
-    padding: 12px 20px;
-    border-radius: 8px;
+    width: 260px;
+    padding: 15px;
+
     text-decoration: none;
-    width: 240px;
-    text-align: center;
-    font-weight: 600;
-    transition: 0.3s;
+    font-weight: 700;
+    font-size: 16px;
+
+    border: 3px solid white;
+    border-radius: 10px;
+
+    box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.2);
+
+    transition: all 0.25s ease;
 }
 
-/* COLORS */
-.green {
-    background: #064e3b;
-    color: white;
-}
-
-.maroon {
+/* BUTTON COLORS */
+.student {
     background: #7f1d1d;
     color: white;
+    transform: rotate(-2deg);
 }
 
-.yellow {
-    background: #facc15cc;
-    color: rgb(255, 255, 255);
+.admin {
+    background: #facc15;
+    color: #1f2937;
+    transform: rotate(2deg);
 }
 
-/* HOVER EFFECT */
-.btn:hover {
-    transform: scale(1.05);
-    opacity: 0.9;
+.student,
+.admin {
+    transition: all 0.25s ease;
+}
+
+.student:hover {
+    transform: translateY(-4px) rotate(1deg);
+
+    background: #064e3b; /* dark green */
+    color: gold; /* gold text */
+
+    border: 2px solid gold;
+
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+.admin:hover {
+    transform: translateY(-4px) scale(1) rotate(0deg);
+
+    background: #064e3b; /* dark green */
+    color: gold; /* gold text */
+
+    border: 2px solid gold;
+
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* PUSH PINS */
+.pin {
+    position: absolute;
+    z-index: 3;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #dc2626;
+
+    box-shadow:
+        inset -3px -3px 6px rgba(0, 0, 0, 0.25),
+        0 3px 6px rgba(0, 0, 0, 0.25);
+}
+
+.pin1 {
+    top: calc(50% - 250px);
+    left: calc(50% - 260px);
+}
+
+.pin2 {
+    top: calc(50% - 250px);
+    right: calc(50% - 260px);
+}
+
+/* FLOATING CAMPUS ICONS */
+.floating {
+    position: absolute;
+    z-index: 2;
+
+    background: rgba(255, 255, 255, 0.14);
+    backdrop-filter: blur(6px);
+
+    padding: 8px;
+    border-radius: 14px;
+
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
+
+    animation: float 5s ease-in-out infinite;
+}
+
+/* top left */
+.sticker1 {
+    top: 14%;
+    left: 8%;
+    font-size: 36px;
+}
+
+/* top right */
+.sticker2 {
+    top: 18%;
+    right: 10%;
+    font-size: 28px;
+}
+
+.sticker3 {
+    top: 28%;
+    right: 5%;
+    font-size: 40px;
+}
+
+.sticker4 {
+    bottom: 18%;
+    left: 12%;
+    font-size: 32px;
+}
+
+.sticker5 {
+    bottom: 22%;
+    right: 18%;
+    font-size: 24px;
+}
+
+.sticker6 {
+    top: 42%;
+    left: 5%;
+    font-size: 26px;
+}
+
+.sticker7 {
+    bottom: 35%;
+    left: 17%;
+    font-size: 32px;
+}
+
+.sticker8 {
+    bottom: 12%;
+    left: 28%;
+    font-size: 22px;
+}
+
+.sticker9 {
+    top: 48%;
+    right: 18%;
+    font-size: 18px;
+}
+
+.sticker10 {
+    bottom: 30%;
+    right: 8%;
+    font-size: 26px;
+}
+
+.sticker11 {
+    top: 32%;
+    left: 14%;
+    font-size: 20px;
+}
+
+@keyframes float {
+    0%,
+    100% {
+        transform: translateY(0px) rotate(0deg);
+    }
+    50% {
+        transform: translateY(-12px) rotate(3deg);
+    }
 }
 
 /* MOBILE */
-@media (max-width: 600px) {
-    .logo {
-        height: 38px;
+@media (max-width: 768px) {
+    .content {
+        padding: 30px 24px;
+        transform: none;
     }
 
-    .btn {
+    .main-logo {
         width: 180px;
     }
 
     .subtitle {
         font-size: 16px;
+    }
+
+    .btn {
+        width: 220px;
+    }
+
+    .floating,
+    .pin {
+        display: none;
+    }
+
+    .header-logo {
+        height: 38px;
     }
 }
 </style>
