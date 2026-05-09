@@ -9,18 +9,47 @@ use Illuminate\Support\Facades\Hash;
 
 class StudentController extends Controller
 {
+    protected $allowedDomain = 'up.edu.ph'; // allowable domain for the up email address
+
     // Registration function
     public function store(Request $request)
     {
+
+    //For student id validation
+    $currentYear = date('Y'); // Gets the current year 2026
+
         // Validate the incoming request data
-        $validated = $request->validate([
-            'student_id'     => 'required|string|unique:students,student_id',
+        $validated = $request->validate(
+            [
+            'student_id'     => ['required', 
+                                'string',
+                                'unique:students,student_id',
+                                'regex: /^20\d{2}-\d{5}$/',
+                                    function ($attribute, $value, $fail) use ($currentYear) {
+                                    $year = (int) substr($value, 0, 4);
+                                    if ($year > $currentYear) {
+                                        $fail("Student ID is invalid.");
+                                    }
+                                },
+                                ], //check student id format
             'first_name'     => 'required|string|max:255',
             'last_name'      => 'required|string|max:255',
-            'up_email'       => 'required|email|unique:students,up_email',
+            'up_email'       => ['required',
+                                'email',
+                                'unique:students,up_email',
+                                'regex:/^[a-zA-Z0-9._%+-]+@' . preg_quote($this->allowedDomain) . '$/i'], //checks for correct domain in up email
             'degprog_id'     => 'required|exists:degprogs,degprog_id',
             'password'       => 'required|string|min:8',
-        ]);
+        ],
+        
+        // Custom error messages
+        ['student_id.regex' => 'The Student ID must follow the format 20XX-XXXXX.',
+        'student_id.unique' => 'This Student ID is already registered.',
+        'up_email.regex'  => "Please use your official @{$this->allowedDomain} email address.",
+        'up_email.unique' => 'This email is already registered.',
+        'up_email.email'  => "Please use your official @{$this->allowedDomain} email address.",]
+
+        );
 
         // Create student record
         $student = Student::create([
@@ -52,6 +81,12 @@ class StudentController extends Controller
         'email'    => 'required|email',
         'password' => 'required|string'
     ]);
+
+    if (!str_ends_with($request->email, "@" . $this->allowedDomain)) {
+            return response()->json([
+                'message' => "Please use your official @{$this->allowedDomain} account."
+            ], 403);
+        }
 
     // Prepare credentials for the guard
     $credentials = [

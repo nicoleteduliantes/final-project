@@ -129,10 +129,6 @@ h1 {
     border-radius: 18px;
 }
 
-/* =========================
-   🎪 BOOTH TENT STRUCTURE
-========================= */
-
 .booth-card {
     position: relative;
     transition: 0.3s ease;
@@ -147,7 +143,6 @@ h1 {
     transform: translateY(-10px) rotate(0deg);
 }
 
-/* 🏕️ CANOPY TOP (NO TRIANGLE VERSION) */
 .booth-top {
     position: relative;
     padding: 14px;
@@ -203,21 +198,6 @@ h1 {
     color: #1f2937;
 }
 
-/* =========================
-   BODY (stall interior)
-========================= */
-
-.booth-body {
-    display: flex;
-    gap: 14px;
-    padding: 18px;
-
-    background: #fffdf7;
-
-    border-left: 2px solid #e5e7eb;
-    border-right: 2px solid #e5e7eb;
-}
-
 /* AVATAR */
 .avatar {
     width: 58px;
@@ -256,10 +236,6 @@ h1 {
     font-weight: 700;
     color: #1c1917;
 }
-
-/* =========================
-   FOOTER (booth base)
-========================= */
 
 .booth-footer {
     padding: 10px 14px;
