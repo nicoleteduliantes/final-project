@@ -66,7 +66,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, onMounted } from 'vue';
+import { ref, reactive, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
 import { get, post } from '@/services/apiService';
@@ -92,6 +92,34 @@ const form = reactive({
     password: '',
 });
 
+// STUDENT ID VALIDATION LOGIC
+const isIdValid = computed(() => {
+    const currentYear = new Date().getFullYear();
+    const regex = /^20\d{2}-\d{5}$/; // Matches 20XX-XXXXX
+    
+    if (!regex.test(form.student_id)) return false;
+
+    const inputYear = parseInt(form.student_id.substring(0, 4));
+    return inputYear <= currentYear;
+});
+
+// RESET FORM FUNCTION
+const resetForm = () => {
+    // Reset Login fields
+    email.value = '';
+    password.value = '';
+    
+    // Reset Register Form
+    Object.assign(form, {
+        student_id: '',
+        first_name: '',
+        last_name: '',
+        up_email: '',
+        degprog_id: '',
+        password: '',
+    });
+};
+
 // FETCH DEGREE PROGRAMS
 const fetchDegreePrograms = async () => {
     try {
@@ -105,6 +133,7 @@ const fetchDegreePrograms = async () => {
 // TOGGLE
 const toggleAuth = () => {
     isRegister.value = !isRegister.value;
+    resetForm();
 };
 
 // LOGIN
@@ -117,7 +146,6 @@ const login = async () => {
 
         if (res.status === 'success') {
             auth.loginStudent(res.data, res.token || 'student-token');
-
             router.push('/dashboard');
         } else {
             alert(res.message || 'Login failed!');
@@ -133,12 +161,15 @@ const register = async () => {
     try {
         const response = await post('/register-student', form);
 
-        console.log('REGISTER RESPONSE:', response); // 🔥 ADD THIS
+        console.log('REGISTER RESPONSE:', response); 
 
         if (response.status === 'success') {
             alert('Registration Successful!');
-            router.push('/student-login');
-        } else {
+            resetForm();
+            isRegister.value = false; //switch to login
+        }
+        
+        else {
             console.log('VALIDATION ERRORS:', response.errors);
             alert(response.message || 'Registration failed');
         }
