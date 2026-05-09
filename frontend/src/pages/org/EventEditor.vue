@@ -83,6 +83,7 @@ onMounted(loadEvent);
 .page {
     width: 100%;
     padding: 20px;
+    padding-left: 55px;
 
     display: flex;
     flex-direction: column;

@@ -253,6 +253,7 @@ input {
 
 /* BUTTON */
 button {
+    width: 100%;
     padding: 12px;
     background: #7f1d1d; /* maroon */
     color: white;
