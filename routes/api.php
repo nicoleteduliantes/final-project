@@ -12,6 +12,7 @@ use App\Http\Controllers\OrgApplicationController;
 use App\Http\Controllers\OsaController;
 use App\Http\Controllers\StudentController;
 use App\Http\Controllers\MembershipController;
+use App\Http\Controllers\AnnouncementController;
 
 /* AUTH */
 Route::post('/admin/login', [AdminLoginController::class, 'adminLogin']);
@@ -24,6 +25,7 @@ Route::controller(StudentController::class)->group(function () {
 /* PUBLIC */
 Route::get('/degree-programs', [DegreeProgramController::class, 'index']);
 Route::get('/organizations', [OrganizationController::class, 'index']);
+Route::get('/announcements', [AnnouncementController::class, 'index']);
 
 /* OSA */
 Route::middleware(['auth:sanctum', 'abilities:osa'])->group(function () {
