@@ -43,6 +43,23 @@
                         placeholder="Describe the organization..."
                     ></textarea>
                 </div>
+                
+                <div class="group">
+                    <label>Password</label>
+                    <input
+                        v-model="org.password"
+                    />
+                </div>
+
+                <div class="group">
+                    <label>Registration Valid Until</label>
+                    <input
+                        :value="org.expiration"
+                        readonly
+                        class="readonly-input"
+                    />
+                    <small class="hint">Automatically set to 1 year from today</small>
+                </div>
 
                 <button class="primary" @click="registerOrg">
                     Register Organization
@@ -74,11 +91,11 @@ const org = reactive({
     org_name: '',
     category: '',
     description: '',
+    password:'',
 
     // NEW FIELDS
     status: 'Registered',
-    date_registered: formatDate(today),
-    expiry_date: formatDate(expiry),
+    expiration: formatDate(expiry),
 });
 
 const registerOrg = async () => {
@@ -165,6 +182,19 @@ textarea:focus {
 textarea {
     min-height: 100px;
     resize: vertical;
+}
+
+.readonly-input {
+    background-color: #f3f4f6;
+    color: #6b7280;
+    cursor: not-allowed;
+    border-style: dashed;
+}
+
+.hint {
+    font-size: 11px;
+    color: #9ca3af;
+    margin-top: 4px;
 }
 
 /* BUTTON */

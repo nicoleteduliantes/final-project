@@ -17,6 +17,8 @@ class OsaController extends Controller
             'org_name'    => 'required|string|max:255|unique:organizations,org_name',
             'category'    => 'required|in:Academic,Civic,Cultural,Sports,Fraternities/Sororities,Other',
             'description' => 'nullable|string',
+            'password'    => 'required|string|min:8',
+            'status'      => 'required|in:Registered,Expired',
         ]);
 
         //Create the record
@@ -24,7 +26,9 @@ class OsaController extends Controller
             'org_name'    => $request->org_name,
             'category'    => $request->category,
             'description' => $request->description,
-            'password'    => Hash::make("admin123"), //set a default password
+            'password'    => Hash::make($request['password']), 
+            'status'      => $request->status,
+            'expiration'  => now()->addYear(), //sets organization expiration to 1 year
         ]);
 
         //Return response with the auto-generated org_id
@@ -37,6 +41,9 @@ class OsaController extends Controller
 
     public function index()
     {
+        Organization::where('status', 'Registered')
+        ->where('expiration', '<', now())
+        ->update(['status' => 'Expired']);
     return response()->json([
         'data' => Organization::all()
     ]);
