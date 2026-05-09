@@ -23,6 +23,10 @@ class Osa extends Authenticatable
     {
         return $this->osa_id;
     }
+
+    public function announcements() {
+        return $this->hasMany(Announcement::class, 'osa_id');
+    }
     
 }
 

@@ -33,4 +33,8 @@ class Organization extends Authenticatable
     {
         return $this->org_id;
     }
+
+    public function announcements() {
+        return $this->hasMany(Announcement::class, 'org_id');
+    }
 }
