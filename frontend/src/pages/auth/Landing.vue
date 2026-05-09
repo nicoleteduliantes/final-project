@@ -207,7 +207,7 @@ import { RouterLink } from 'vue-router';
 
     background: #064e3b;
     color: gold;
-    border: 2px solid gold;
+    border: 3px solid gold;
 
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
 }
@@ -217,7 +217,7 @@ import { RouterLink } from 'vue-router';
 
     background: #064e3b;
     color: gold;
-    border: 2px solid gold;
+    border: 3px solid gold;
 
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
 }

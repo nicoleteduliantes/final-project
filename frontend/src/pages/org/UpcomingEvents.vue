@@ -1,7 +1,7 @@
 <template>
     <div class="page">
         <div class="header">
-            <h2>Upcoming Events</h2>
+            <h1>Upcoming Events</h1>
             <p class="subtext">Manage and monitor organization events</p>
         </div>
 

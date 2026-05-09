@@ -45,7 +45,6 @@ const sidebarComponent = computed(() => {
     flex: 1;
     display: flex;
     flex-direction: column;
-    background: white;
 
     min-width: 0;
     margin-left: 100px;
