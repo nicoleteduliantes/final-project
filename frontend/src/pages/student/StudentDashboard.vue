@@ -5,7 +5,47 @@
         <!-- ANNOUNCEMENTS -->
         <section class="section">
             <h2 class="section-title">Announcements</h2>
-            <div class="announcement-card">Admin announcement here</div>
+
+            <div v-if="announcements.length === 0" class="empty">
+                No announcements found.
+            </div>
+
+            <div v-else>
+                <div
+                    class="announcement-card poster"
+                    v-for="ann in announcements"
+                    :key="ann.announcement_id"
+                    style="margin-bottom: 12px"
+                >
+                    <div class="poster-content">
+                        <div class="poster-top">
+                            <span class="tag">ANNOUNCEMENT</span>
+                            <span class="date">{{ ann.date_posted }}</span>
+                        </div>
+
+                        <h3 class="title" style="margin-top: 8px">
+                            {{ ann.title }}
+                        </h3>
+
+                        <p
+                            class="location"
+                            style="font-weight: 700; color: #7f1d1d"
+                        >
+                            Posted by:
+                            {{
+                                ann.osa_id
+                                    ? 'Office of the Student Affairs'
+                                    : ann.organization?.org_name ||
+                                      'Organization'
+                            }}
+                        </p>
+
+                        <p class="desc">
+                            {{ ann.content }}
+                        </p>
+                    </div>
+                </div>
+            </div>
         </section>
 
         <!-- UPCOMING EVENTS -->
@@ -77,17 +117,21 @@ import { ref, onMounted } from 'vue';
 import { get } from '@/services/apiService';
 
 const events = ref([]);
+const announcements = ref([]);
 
-const fetchEvents = async () => {
+const fetchData = async () => {
     try {
-        const res = await get('/events');
-        events.value = res.data ?? res;
+        const eventRes = await get('/events');
+        events.value = eventRes.data ?? eventRes;
+
+        const annRes = await get('/announcements');
+        announcements.value = annRes.data ?? annRes;
     } catch (error) {
-        console.error('Error fetching events:', error);
+        console.error('Error fetching dashboard data:', error);
     }
 };
 
-onMounted(fetchEvents);
+onMounted(fetchData);
 </script>
 
 <style scoped>
