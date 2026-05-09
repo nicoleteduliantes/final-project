@@ -1,7 +1,7 @@
 <template>
     <div class="page">
         <div class="card">
-            <h2>Create New Event</h2>
+            <h1>Create New Event</h1>
             <p class="subtext">
                 Fill in the details to publish a new organization event
             </p>
@@ -89,13 +89,10 @@ const createEvent = async () => {
     max-width: 650px;
     background: white;
     padding: 28px;
+    padding-top: 0px;
     border-radius: 14px;
     border-left: 5px solid #7f1d1d;
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
-}
-
-h2 {
-    margin-bottom: 4px;
 }
 
 .subtext {
@@ -151,7 +148,7 @@ textarea:focus {
     padding: 12px;
     background: #7f1d1d;
     color: white;
-    border: none;
+    border: #7f1d1d 3px solid;
     border-radius: 8px;
     font-weight: 600;
     cursor: pointer;
@@ -161,7 +158,7 @@ textarea:focus {
 .primary:hover {
     background: #064e3b;
     color: gold;
-    border: gold 2px solid;
+    border: gold 3px solid;
 }
 
 /* MOBILE */

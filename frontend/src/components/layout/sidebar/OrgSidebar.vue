@@ -138,7 +138,7 @@ a:hover {
 }
 
 a.router-link-active {
-    background: rgb(3, 74, 46);
+    background: #034a2e;
     color: gold;
     border: 2px solid gold;
 }

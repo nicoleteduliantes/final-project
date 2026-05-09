@@ -119,13 +119,6 @@ onMounted(fetchMembers);
     margin-bottom: 18px;
 }
 
-h1 {
-    margin: 0;
-    font-size: 26px;
-    font-weight: 900;
-    color: #7f1d1d;
-}
-
 .subtext {
     margin-top: 4px;
     color: #6b7280;
