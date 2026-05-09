@@ -1,48 +1,59 @@
 <template>
     <div class="page">
-        <h1>Dashboard</h1>
+        <h1 class="page-title">Dashboard</h1>
 
         <!-- ANNOUNCEMENTS -->
-        <section>
-            <h2>Announcements</h2>
-
-            <div class="card announcement-card">Admin announcement here</div>
+        <section class="section">
+            <h2 class="section-title">Announcements</h2>
+            <div class="announcement-card">Admin announcement here</div>
         </section>
 
         <!-- UPCOMING EVENTS -->
-        <section>
-            <h2>Announcements</h2>
-            <div class="card">Admin announcement here</div>
-        </section>
+        <section class="section">
+            <h2 class="section-title">Upcoming Events</h2>
 
-        <section>
-            <h2>Upcoming Events</h2>
+            <!-- EMPTY STATE -->
+            <div v-if="events.length === 0" class="empty">
+                No upcoming events found.
+            </div>
 
-            <div class="grid">
-                <div class="card" v-for="event in events" :key="event.event_id">
-                    <!-- BANNER -->
-                    <div class="banner">
+            <!-- POSTER GRID -->
+            <div v-else class="poster-grid">
+                <div
+                    class="poster"
+                    v-for="event in events"
+                    :key="event.event_id"
+                >
+                    <!-- IMAGE -->
+                    <div class="poster-image">
                         <img
-                            :src="event.banner_url || fallbackBanner"
-                            alt="event banner"
+                            :src="
+                                event.image_url ||
+                                'https://images.unsplash.com/photo-1523580494863-6f3031224c94?auto=format&fit=crop&w=1200&q=80'
+                            "
+                            alt="event poster"
                         />
                     </div>
 
-                    <!-- BODY -->
-                    <div class="card-body">
-                        <h3>{{ event.event_name }}</h3>
+                    <!-- CONTENT -->
+                    <div class="poster-content">
+                        <!-- TOP -->
+                        <div class="poster-top">
+                            <span class="tag">EVENT</span>
+                            <span class="date">{{ event.date }}</span>
+                        </div>
 
-                        <p class="category">
-                            {{ event.category || 'Event' }}
-                        </p>
+                        <!-- TITLE -->
+                        <h3 class="title">
+                            {{ event.event_name }}
+                        </h3>
 
+                        <!-- LOCATION -->
+                        <p class="location">📍 {{ event.location }}</p>
+
+                        <!-- DESCRIPTION -->
                         <p class="desc">
                             {{ event.description }}
-                        </p>
-
-                        <p class="desc">📅 {{ formatDate(event.date) }}</p>
-                        <p class="category">
-                            {{ event.org_name }}
                         </p>
 
                         <!-- ACTION -->
@@ -67,9 +78,6 @@ import { get } from '@/services/apiService';
 
 const events = ref([]);
 
-const fallbackBanner =
-    'https://up.edu.ph/wp-content/uploads/2024/05/UP-Mindanao-by-Jonathan-Madrid-2048x1024.jpg';
-
 const fetchEvents = async () => {
     try {
         const res = await get('/events');
@@ -79,94 +87,155 @@ const fetchEvents = async () => {
     }
 };
 
-const formatDate = (dateString) => {
-    if (!dateString) return '';
-    return new Date(dateString).toLocaleDateString('en-US', {
-        month: 'short',
-        day: 'numeric',
-        year: 'numeric',
-    });
-};
-
 onMounted(fetchEvents);
 </script>
 
 <style scoped>
-/* GRID (same as org page) */
-.grid {
+/* TITLE */
+.page-title {
+    font-size: 24px;
+    font-weight: 800;
+    margin-bottom: 16px;
+}
+
+/* SECTION */
+.section {
+    margin-bottom: 28px;
+}
+
+.section-title {
+    font-size: 18px;
+    font-weight: 800;
+    margin-bottom: 12px;
+}
+
+/* EMPTY */
+.empty {
+    padding: 16px;
+    border: 1px dashed #d1d5db;
+    border-radius: 10px;
+    text-align: center;
+    color: #6b7280;
+}
+
+/* GRID */
+.poster-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 16px;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 18px;
 }
 
-/* CARD */
-.card {
+/* POSTER */
+.poster {
     background: white;
-    border-radius: 12px;
+    border-radius: 16px;
     overflow: hidden;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
-    transition: 0.2s ease;
+
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+
+    display: flex;
+    flex-direction: column;
+
+    transition: 0.25s ease;
 }
 
-.card:hover {
-    transform: translateY(-3px);
+.poster:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 18px 35px rgba(0, 0, 0, 0.12);
 }
 
-/* BANNER */
-.banner {
-    height: 120px;
+/* IMAGE */
+.poster-image {
+    height: 160px;
     overflow: hidden;
 }
 
-.banner img {
+.poster-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
 
-/* BODY */
-.card-body {
+/* CONTENT */
+.poster-content {
     padding: 14px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
 }
 
-.category {
-    color: #7f1d1d;
-    font-weight: 600;
+/* TOP */
+.poster-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* TAG */
+.tag {
+    background: #7f1d1d;
+    color: white;
+
+    padding: 3px 10px;
+    border-radius: 999px;
+
+    font-size: 10px;
+    font-weight: 700;
+}
+
+/* DATE */
+.date {
+    font-size: 12px;
+    color: #6b7280;
+}
+
+/* TITLE */
+.title {
+    margin: 10px 0 4px;
+    font-size: 18px;
+    font-weight: 800;
+}
+
+/* LOCATION */
+.location {
     font-size: 13px;
-    margin: 5px 0;
+    color: #4b5563;
+    margin-bottom: 6px;
 }
 
+/* DESCRIPTION */
 .desc {
     font-size: 13px;
-    color: #555;
-    margin-bottom: 10px;
+    color: #4b5563;
+    line-height: 1.5;
 }
 
-/* ACTIONS */
+/* ACTION */
 .actions {
-    display: flex;
-    gap: 8px;
-    margin-top: 10px;
+    margin-top: auto;
+    padding-top: 12px;
 }
 
-/* BUTTON BASE */
+/* BUTTON */
 .btn {
-    flex: 1;
-    display: inline-flex;
-    align-items: center;
+    display: flex;
     justify-content: center;
+    align-items: center;
 
-    padding: 6px 10px;
+    width: 100%;
+    padding: 8px;
+
+    border-radius: 10px;
     font-size: 13px;
-    border-radius: 6px;
+    font-weight: 700;
 
     text-decoration: none;
-    font-weight: 600;
 
-    transition: 0.2s ease;
+    box-sizing: border-box;
 }
 
-/* VIEW BUTTON */
+/* LINK */
 .link {
     background: white;
     color: #7f1d1d;
@@ -178,10 +247,9 @@ onMounted(fetchEvents);
     color: white;
 }
 
-/* ANNOUNCEMENT CARD */
+/* ANNOUNCEMENT */
 .announcement-card {
     padding: 14px;
     font-size: 14px;
-    color: #333;
 }
 </style>

@@ -86,7 +86,7 @@ const submit = async () => {
 <style scoped>
 .page {
     width: 100%;
-    padding: 20px;
+    padding: 50px;
 
     display: flex;
     flex-direction: column;
