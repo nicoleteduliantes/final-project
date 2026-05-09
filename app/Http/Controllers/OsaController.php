@@ -24,7 +24,7 @@ class OsaController extends Controller
             'org_name'    => $request->org_name,
             'category'    => $request->category,
             'description' => $request->description,
-            'password'    => Hash::make("org_admin123"), //set a default password
+            'password'    => Hash::make("admin123"), //set a default password
         ]);
 
         //Return response with the auto-generated org_id
@@ -47,7 +47,11 @@ class OsaController extends Controller
         // Fetches all the students as well as their degrpogs and organizations
         $students = Student::with([
             'degreeProgram:degprog_id,degprog_name', 
-            'memberships.organization:org_id,org_name'
+            'memberships' => function ($query) {
+            //filters to show only the organization where student is ACCEPTED
+            $query->where('status', 'Accepted')
+                  ->with('organization:org_id,org_name');
+        }
         ])->get();
 
         return response()->json($students);

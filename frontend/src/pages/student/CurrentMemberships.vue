@@ -10,6 +10,7 @@
                         <th>Position</th>
                         <th>Committee</th>
                         <th>Status</th>
+                        <th>Expires On</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -39,6 +40,14 @@
                             >
                                 {{ membership.status }}
                             </span>
+                        </td>
+
+                        <td>
+                        {{ 
+                            membership.expiration
+                            ? new Date(membership.expiration).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }) 
+                            : 'N/A' 
+                        }}
                         </td>
                     </tr>
                 </tbody>
@@ -103,10 +112,16 @@ td {
     text-transform: uppercase;
 }
 
-.badge.active {
+.badge.active,
+.badge.accepted {
     background: #dcfce7;
     color: #166534;
 }
+.badge.pending {
+    background: #fef9c3;
+    color: #854d0e;
+}
+.badge.rejected,
 .badge.expired {
     background: #fee2e2;
     color: #991b1b;

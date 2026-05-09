@@ -38,7 +38,8 @@ public function update(Request $request, $id)
 
         $updateData = [
         'status' => $request->status,
-        'position'=>$request->position
+        'position'=>$request->position,
+        'expiration' => now()->addYear(), //sets membership expiration to 1 year
     ];
 
     //applied committee becomes assigned committee

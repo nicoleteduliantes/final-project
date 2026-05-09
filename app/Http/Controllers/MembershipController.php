@@ -12,6 +12,11 @@ class MembershipController extends Controller
     {
         $userId = auth()->id();
 
+        Membership::where('student_id', $userId)
+        ->where('status', 'Accepted')
+        ->where('expiration', '<', now())
+        ->update(['status' => 'Expired']);
+
         $memberships = Membership::with(['organization', 'applicationDetail'])
             ->where('student_id', $userId)
             ->get();
