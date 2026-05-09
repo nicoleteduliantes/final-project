@@ -12,14 +12,16 @@ return new class extends Migration
     public function up(): void
     {
             Schema::create('announcements', function (Blueprint $table) {
-            $table->id('announcement_id');
+            $table->id('announcement_id'); // This is BigInt
             $table->string('title');
             $table->text('content');
             $table->date('date_posted');
 
+            // Match Organizations: $table->id() is an Unsigned Big Integer
             $table->unsignedBigInteger('org_id')->nullable(); 
             
-            $table->unsignedInteger('osa_id')->nullable();
+            // Match OSA: Your migration used ->integer(), which is a Signed Integer
+            $table->integer('osa_id')->nullable();
 
             // Foreign keys
             $table->foreign('org_id')->references('org_id')->on('organizations')->onDelete('cascade');
