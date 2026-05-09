@@ -419,7 +419,6 @@ h1 {
     background: #f8fafc;
     padding: 24px;
     min-height: 100vh;
-    font-family: 'Inter', sans-serif;
 }
 .topbar {
     display: flex;

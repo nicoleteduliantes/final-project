@@ -23,7 +23,10 @@
                         {{ membership.organization?.org_name }}
                     </span>
 
-                    <span class="badge">
+                    <span
+                        class="badge"
+                        :class="membership.status?.toLowerCase()"
+                    >
                         {{ membership.status }}
                     </span>
                 </div>
@@ -41,7 +44,7 @@
                         <p class="label">Committee</p>
                         <p class="value">
                             {{
-                                membership.status.toLowerCase() === 'pending'
+                                membership.status?.toLowerCase() === 'pending'
                                     ? membership.application_detail
                                           ?.applied_committee || 'N/A'
                                     : membership.assigned_committee ||
@@ -120,15 +123,15 @@ h1 {
     border-radius: 10px;
 }
 
-/* GRID (fairground layout) */
+/* GRID */
 .booth-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 28px;
     padding: 20px;
-    border-radius: 18px;
 }
 
+/* CARD */
 .booth-card {
     position: relative;
     transition: 0.3s ease;
@@ -143,17 +146,15 @@ h1 {
     transform: translateY(-10px) rotate(0deg);
 }
 
+/* TOP */
 .booth-top {
-    position: relative;
     padding: 14px;
-
     display: flex;
     justify-content: space-between;
     align-items: center;
 
     color: white;
     background: linear-gradient(135deg, #7f1d1d, #b91c1c);
-
     border-radius: 14px 14px 0 0;
 
     box-shadow:
@@ -161,30 +162,9 @@ h1 {
         0 18px 30px rgba(0, 0, 0, 0.15);
 }
 
-/* BOOTH POLE SHADOW */
-.booth-top::after {
-    content: '';
-    position: absolute;
-    bottom: -16px;
-    left: 10px;
-    right: 10px;
-    height: 16px;
-
-    background: linear-gradient(
-        to right,
-        #6b7280 0px,
-        #6b7280 4px,
-        transparent 4px,
-        transparent calc(100% - 4px),
-        #6b7280 calc(100% - 4px)
-    );
-}
-
-/* ORG NAME */
 .org {
     font-size: 13px;
     font-weight: 900;
-    letter-spacing: 1px;
     text-transform: uppercase;
 }
 
@@ -194,8 +174,34 @@ h1 {
     font-weight: 800;
     padding: 4px 10px;
     border-radius: 999px;
-    background: #fff;
-    color: #1f2937;
+    background: #e5e7eb;
+    color: #111827;
+}
+
+.badge.pending {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.badge.approved {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.badge.rejected {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+/* BODY FIX (IMPORTANT) */
+.booth-body {
+    display: flex;
+    gap: 14px;
+    align-items: center;
+    padding: 16px;
+    background: white;
+    border-left: 1px solid #e5e7eb;
+    border-right: 1px solid #e5e7eb;
 }
 
 /* AVATAR */
@@ -203,7 +209,6 @@ h1 {
     width: 58px;
     height: 58px;
     border-radius: 14px;
-
     background: radial-gradient(circle at top left, #7f1d1d, #991b1b);
     color: white;
 
@@ -237,16 +242,13 @@ h1 {
     color: #1c1917;
 }
 
+/* FOOTER */
 .booth-footer {
     padding: 10px 14px;
-
     font-size: 11px;
     color: #f9fafb;
-
     text-align: right;
-
     background: linear-gradient(90deg, #374151, #1f2937);
-
     border-radius: 0 0 14px 14px;
 
     box-shadow:
@@ -254,7 +256,7 @@ h1 {
         0 18px 30px rgba(0, 0, 0, 0.12);
 }
 
-/* GROUND SHADOW */
+/* SHADOW */
 .booth-card::after {
     content: '';
     position: absolute;
@@ -262,7 +264,6 @@ h1 {
     left: 10%;
     right: 10%;
     height: 18px;
-
     background: rgba(0, 0, 0, 0.15);
     filter: blur(10px);
     border-radius: 50%;
