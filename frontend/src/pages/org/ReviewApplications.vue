@@ -265,7 +265,7 @@ onMounted(fetchApplications);
 <style scoped>
 /* GENERAL LAYOUT */
 .page-container {
-    padding-left: 60px;
+    padding-left: 20px;
     padding-top: 20px;
     max-width: 1200px;
     margin: 0 auto;

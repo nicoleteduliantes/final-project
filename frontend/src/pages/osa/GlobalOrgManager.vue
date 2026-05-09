@@ -1,64 +1,82 @@
 <template>
     <div class="page">
-        <h2>List of Organizations</h2>
+        <div class="header-row">
+            <h1>List of Organizations</h1>
 
-        <!-- FILTER BAR -->
-        <div class="filters">
-            <input v-model="search" placeholder="Search organizations..." />
+            <div class="controls">
+                <select v-model="selectedStatus" class="status-select">
+                    <option value="">All Status</option>
+                    <option v-for="s in statuses" :key="s" :value="s">
+                        {{ s }}
+                    </option>
+                </select>
 
-            <select v-model="selectedStatus">
-                <option value="">All Status</option>
-                <option v-for="s in statuses" :key="s" :value="s">
-                    {{ s }}
-                </option>
-            </select>
-        </div>
-
-        <!-- GRID -->
-        <div class="grid">
-            <div
-                class="card"
-                v-for="org in filteredOrganizations"
-                :key="org.id"
-            >
-                <div class="card-body">
-                    <h3>{{ org.org_name }}</h3>
-
-                    <p class="college">
-                        {{ org.college ?? 'N/A' }}
-                    </p>
-
-                    <span :class="['status', org.status]">
-                        {{ org.status }}
-                    </span>
-
-                    <!-- ACTIONS -->
-                    <div class="actions">
-                        <button
-                            v-if="org.status === 'Registered'"
-                            class="btn expire"
-                            @click="updateStatus(org.id, 'Expired')"
-                        >
-                            Mark Expired
-                        </button>
-
-                        <button
-                            v-if="org.status === 'Expired'"
-                            class="btn reactivate"
-                            @click="updateStatus(org.id, 'Registered')"
-                        >
-                            Reactivate
-                        </button>
-
-                        <span v-if="!org.status" class="badge">
-                            No actions
-                        </span>
-                    </div>
+                <div class="search-box">
+                    <input
+                        v-model="search"
+                        placeholder="Search organizations..."
+                    />
                 </div>
             </div>
+        </div>
 
-            <!-- EMPTY -->
-            <div v-if="filteredOrganizations.length === 0" class="empty">
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Organization</th>
+                        <th>College</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr v-for="org in filteredOrganizations" :key="org.id">
+                        <td class="name-column">
+                            {{ org.org_name }}
+                        </td>
+
+                        <td>
+                            <span class="college-tag">
+                                {{ org.college ?? 'N/A' }}
+                            </span>
+                        </td>
+
+                        <td>
+                            <span :class="['status', org.status]">
+                                {{ org.status || 'N/A' }}
+                            </span>
+                        </td>
+
+                        <td>
+                            <div class="actions">
+                                <button
+                                    v-if="org.status === 'Registered'"
+                                    class="btn expire"
+                                    @click="updateStatus(org.id, 'Expired')"
+                                >
+                                    Expire
+                                </button>
+
+                                <button
+                                    v-if="org.status === 'Expired'"
+                                    class="btn reactivate"
+                                    @click="updateStatus(org.id, 'Registered')"
+                                >
+                                    Reactivate
+                                </button>
+
+                                <span v-if="!org.status" class="badge">
+                                    No actions
+                                </span>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div v-if="filteredOrganizations.length === 0" class="empty-msg">
                 No organizations found
             </div>
         </div>
@@ -70,11 +88,9 @@ import { ref, computed, onMounted } from 'vue';
 import { get, post } from '@/services/apiService';
 
 const organizations = ref([]);
-
 const search = ref('');
 const selectedStatus = ref('');
 
-/* ONLY THESE STATUSES */
 const statuses = ['Registered', 'Expired'];
 
 const fetchOrganizations = async () => {
@@ -97,7 +113,6 @@ const updateStatus = async (id, status) => {
     }
 };
 
-/* FILTER LOGIC */
 const filteredOrganizations = computed(() => {
     return organizations.value.filter((org) => {
         const matchesSearch =
@@ -115,61 +130,73 @@ onMounted(fetchOrganizations);
 </script>
 
 <style scoped>
-/* PAGE */
 .page {
     padding: 20px;
-    padding-top: 0px;
+    padding-top: 0;
 }
 
-/* FILTER BAR */
-.filters {
+/* HEADER */
+.header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.header-row h1 {
+    font-size: 22px;
+    font-weight: 600;
+}
+
+.controls {
     display: flex;
     gap: 10px;
-    margin-bottom: 20px;
+    align-items: center;
 }
 
-input,
-select {
-    padding: 10px;
-    border-radius: 6px;
+.search-box input,
+.status-select {
+    padding: 8px 12px;
     border: 1px solid #ddd;
-    width: 100%;
+    border-radius: 6px;
+    font-size: 14px;
 }
 
-/* GRID */
-.grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-    gap: 16px;
-}
-
-/* CARD */
-.card {
+/* TABLE */
+.table-container {
     background: white;
-    border-radius: 12px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
     overflow: hidden;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
-    transition: 0.2s ease;
 }
 
-.card:hover {
-    transform: translateY(-3px);
+table {
+    width: 100%;
+    border-collapse: collapse;
 }
 
-.card-body {
-    padding: 14px;
+thead {
+    background: #f3f4f6;
 }
 
-/* TEXT */
-h3 {
-    margin: 0;
-    font-size: 16px;
+th,
+td {
+    padding: 12px 15px;
+    text-align: left;
+    font-size: 14px;
 }
 
-.college {
-    font-size: 13px;
-    color: #555;
-    margin: 6px 0;
+tbody tr {
+    border-top: 1px solid #eee;
+}
+
+tbody tr:hover {
+    background-color: #f9fafb;
+}
+
+.name-column {
+    font-weight: 600;
+    color: #111827;
 }
 
 /* STATUS */
@@ -179,7 +206,6 @@ h3 {
     border-radius: 999px;
     font-size: 12px;
     text-transform: capitalize;
-    margin: 6px 0;
 }
 
 .status.Registered {
@@ -196,22 +222,18 @@ h3 {
 .actions {
     display: flex;
     gap: 8px;
-    margin-top: 10px;
 }
 
 /* BUTTONS */
 .btn {
-    flex: 1;
     padding: 6px 10px;
     font-size: 13px;
     border-radius: 6px;
-    border: 1px solid transparent;
+    border: none;
     cursor: pointer;
     font-weight: 600;
-    transition: 0.2s ease;
 }
 
-/* EXPIRE */
 .expire {
     background: #dc2626;
     color: white;
@@ -221,7 +243,6 @@ h3 {
     background: #b91c1c;
 }
 
-/* REACTIVATE */
 .reactivate {
     background: #16a34a;
     color: white;
@@ -233,8 +254,6 @@ h3 {
 
 /* BADGE */
 .badge {
-    flex: 1;
-    text-align: center;
     font-size: 12px;
     background: #e5e7eb;
     padding: 6px 8px;
@@ -242,10 +261,9 @@ h3 {
 }
 
 /* EMPTY */
-.empty {
-    grid-column: 1 / -1;
+.empty-msg {
     text-align: center;
+    padding: 30px;
     color: #6b7280;
-    padding: 20px;
 }
 </style>

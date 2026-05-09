@@ -1,6 +1,4 @@
-/* =========================
-   GLOBAL BASE
-========================= */
+/* GLOBAL BASE */
 
 body {
     margin: 0;
@@ -9,36 +7,42 @@ body {
     color: #1f2937;
 }
 
-/* =========================
-   PAGE WRAPPER
-========================= */
+/* PAGE WRAPPER */
 
 .page {
-    width: 90%;
-    max-width: 1200px;
-    margin: 0 auto;
+    width: 100%;
+    max-width: none;
+    margin: 0;
     padding: 0 20px;
+    box-sizing: border-box;
+}
+.page.map-page {
+    width: 100%;
+    max-width: none;
+    margin: 0;
 }
 
-/* =========================
-   HEADINGS (ACADEMIC STYLE)
-========================= */
+.main-layout-wrapper {
+    flex: 1;
+    min-width: 0;
+}
+
+/* HEADINGS (ACADEMIC STYLE) */
 
 h1,
 h2,
 h3 {
     font-family: 'Georgia', serif;
-    color: #7f1d1d; /* maroon accent */
+    color: #7f1d1d;
     margin-bottom: 10px;
 }
 
 p {
     line-height: 1.6;
+    font-family: 'Georgia', serif;
 }
 
-/* =========================
-   CARD STYLE
-========================= */
+/* CARD STYLE */
 
 .card {
     background: #ffffff;
@@ -48,9 +52,7 @@ p {
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
 }
 
-/* =========================
-   INPUTS
-========================= */
+/* INPUTS */
 
 input,
 select,
@@ -73,9 +75,7 @@ textarea:focus {
     border-color: #7f1d1d;
 }
 
-/* =========================
-   BUTTONS
-========================= */
+/* BUTTONS */
 
 button {
     background: #7f1d1d;
@@ -93,9 +93,7 @@ button:hover {
     transform: translateY(-1px);
 }
 
-/* =========================
-   LINKS (FIXED)
-========================= */
+/* LINKS (FIXED) */
 
 a {
     color: #064e3b;

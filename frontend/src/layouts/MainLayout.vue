@@ -3,7 +3,7 @@
         <component :is="sidebarComponent" v-model:collapsed="collapsed" />
 
         <div class="main" :class="{ collapsed }">
-            <Navbar />
+            <!-- <Navbar /> -->
 
             <div class="content">
                 <router-view />
@@ -15,7 +15,7 @@
 <script setup>
 import { ref, computed } from 'vue';
 
-import Navbar from '@/components/layout/Navbar.vue';
+// import Navbar from '@/components/layout/Navbar.vue';
 
 import StudentSidebar from '@/components/layout/sidebar/StudentSidebar.vue';
 import OrgSidebar from '@/components/layout/sidebar/OrgSidebar.vue';
@@ -37,6 +37,7 @@ const sidebarComponent = computed(() => {
     display: flex;
     height: 100vh;
     width: 100%;
+    overflow-x: none; /* Prevents horizontal scrollbar */
 }
 
 /* MAIN CONTENT */
@@ -44,12 +45,12 @@ const sidebarComponent = computed(() => {
     flex: 1;
     display: flex;
     flex-direction: column;
-    padding: 20px;
-    background: #f9fafb;
+    background: white;
 
+    min-width: 0;
     margin-left: 100px;
     transition: margin-left 0.3s ease;
-    padding-left: 100px;
+    padding-left: 120px;
 }
 
 /* when sidebar is collapsed */

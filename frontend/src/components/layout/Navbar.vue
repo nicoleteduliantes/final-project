@@ -20,7 +20,7 @@
     justify-content: space-between;
     align-items: center;
 
-    margin-left: 50px;
+    margin-left: 0px;
     padding: 14px 32px;
     background: #7f1d1d;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
