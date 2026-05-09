@@ -17,13 +17,10 @@ return new class extends Migration
             $table->text('content');
             $table->date('date_posted');
 
-            // Match Organizations: $table->id() is an Unsigned Big Integer
             $table->unsignedBigInteger('org_id')->nullable(); 
-            
-            // Match OSA: Your migration used ->integer(), which is a Signed Integer
+        
             $table->integer('osa_id')->nullable();
 
-            // Foreign keys
             $table->foreign('org_id')->references('org_id')->on('organizations')->onDelete('cascade');
             $table->foreign('osa_id')->references('osa_id')->on('osa')->onDelete('cascade');
             
