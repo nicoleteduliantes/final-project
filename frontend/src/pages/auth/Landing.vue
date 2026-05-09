@@ -205,9 +205,8 @@ import { RouterLink } from 'vue-router';
 .student:hover {
     transform: translateY(-4px) rotate(1deg);
 
-    background: #064e3b; /* dark green */
-    color: gold; /* gold text */
-
+    background: #064e3b;
+    color: gold;
     border: 2px solid gold;
 
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
@@ -216,9 +215,8 @@ import { RouterLink } from 'vue-router';
 .admin:hover {
     transform: translateY(-4px) scale(1) rotate(0deg);
 
-    background: #064e3b; /* dark green */
-    color: gold; /* gold text */
-
+    background: #064e3b;
+    color: gold;
     border: 2px solid gold;
 
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);

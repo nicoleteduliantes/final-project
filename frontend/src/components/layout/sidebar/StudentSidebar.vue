@@ -69,6 +69,7 @@ const logout = () => {
     transition: width 0.3s ease;
     overflow: hidden;
     padding-bottom: 20px;
+    z-index: 1;
 }
 
 .sidebar.collapsed {
