@@ -79,7 +79,7 @@
                     <div class="poster-content">
                         <!-- TOP -->
                         <div class="poster-top">
-                            <span class="tag">EVENT</span>
+                            <span class="tag">{{event.event_host}}</span>
                             <span class="date">{{ event.date }}</span>
                         </div>
 
