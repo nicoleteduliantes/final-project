@@ -17,7 +17,7 @@ class EventController extends Controller
             'location'   => 'required|string',
             'description' => 'nullable|string',
         ], 
-            ['event_date.after_or_equal' => 'You cannot schedule an event for a past date.']
+            ['date.after_or_equal' => 'You cannot schedule an event for a past date.']
         );
 
        
