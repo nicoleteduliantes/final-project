@@ -15,7 +15,6 @@ class OrgApplicationController extends Controller
     $orgId = auth()->user()->org_id;
     $applications = Membership::with(['applicationDetail', 'student.degreeProgram.college' ])
                        ->where('org_id', $orgId) //ensures that it will display applications for THIS ORG only
-                       ->where('status', 'Pending')//shows only applications that are still 'pending'
                        ->get();
 
         return response()->json($applications);

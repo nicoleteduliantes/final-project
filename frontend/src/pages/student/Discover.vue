@@ -176,8 +176,10 @@ const groupedRows = computed(() => {
 });
 
 const isMember = (orgId) => {
-    return userMemberships.value.includes(Number(orgId));
+    return userMemberships.value.some (m => Number(m.org_id)=== Number(orgId));
 };
+
+
 </script>
 
 <style scoped>
