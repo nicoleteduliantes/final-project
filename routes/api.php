@@ -50,6 +50,9 @@ Route::middleware(['auth:sanctum', 'abilities:org'])->group(function () {
 
     Route::get('/org/members', [OrgApplicationController::class, 'show']);
     Route::delete('/org/members/{id}', [OrgApplicationController::class, 'destroy']);
+
+    Route::get('/org/profile', [OrganizationController::class, 'show']);
+    Route::put('/org/status', [OrganizationController::class, 'updateStatus']);
 });
 
 /* STUDENT (AUTHENTICATED) */
