@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Organization;
 use App\Models\Membership;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class OrganizationController extends Controller
 {
@@ -36,5 +37,32 @@ class OrganizationController extends Controller
 
         // Return to Vue
         return response()->json($organizations);
+    }
+
+    public function show()
+    {
+        return response()->json(Auth::user());
+    }
+
+    public function updateStatus(Request $request)
+    {
+        $request->validate([
+            'application_status' => 'required|in:open,closed'
+        ]);
+        
+        $org = auth()->user(); 
+
+        if (!$org) {
+            return response()->json(['error' => 'Unauthorized'], 401);
+        }
+
+        $org->update([
+            'application_status' => $request->application_status
+        ]);
+
+        return response()->json([
+            'message' => 'Status updated!',
+            'new_status' => $org->application_status
+        ]);
     }
 }
