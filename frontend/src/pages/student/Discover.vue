@@ -176,9 +176,9 @@ const groupedRows = computed(() => {
 });
 
 const isMember = (orgId) => {
-    return userMemberships.value.some (m => Number(m.org_id)=== Number(orgId));
+    const membership = userMemberships.value.find(m => Number(m.org_id) === Number(orgId));//modified to look at what the status is currently ('Accepted', 'Pending')
+    return membership ? membership.status : null;
 };
-
 
 </script>
 
