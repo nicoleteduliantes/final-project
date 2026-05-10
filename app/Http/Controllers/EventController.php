@@ -13,10 +13,12 @@ class EventController extends Controller
     {
         $request->validate([
             'event_name' => 'required|string|max:255',
-            'date'       => 'required|date',
+            'date'       => 'required|date|after_or_equal:today',
             'location'   => 'required|string',
             'description' => 'nullable|string',
-        ]);
+        ], 
+            ['event_date.after_or_equal' => 'You cannot schedule an event for a past date.']
+        );
 
        
         $user = $request->user();
