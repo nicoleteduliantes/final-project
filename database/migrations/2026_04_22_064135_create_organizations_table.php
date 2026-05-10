@@ -25,6 +25,7 @@ return new class extends Migration
             $table->date('expiration')->nullable();
 
             $table->enum('status', ['Registered', 'Expired']);
+            $table->enum('application_status', ['open', 'closed'])->default('closed');
 
             $table->string('password');
 
