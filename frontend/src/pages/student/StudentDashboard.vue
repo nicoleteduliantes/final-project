@@ -1,19 +1,5 @@
 <template>
     <div class="page">
-        <<<<<<< HEAD
-        <h1 class="page-title">Student Dashboard</h1>
-        =======
-        <header class="header">
-            <div>
-                <h1>Dashboard</h1>
-                <p class="subtext">
-                    Stay updated with the latest campus news and events
-                </p>
-            </div>
-        </header>
-        >>>>>>> de8e8ca (Student: Discover & Dashboard, Org: Dashboard,
-        Announcement, Events, Osa: No changes)
-
         <h1 class="page-title">Dashboard</h1>
 
         <!-- ANNOUNCEMENTS -->

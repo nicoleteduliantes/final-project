@@ -16,7 +16,7 @@
                             @click="close"
                             aria-label="Close modal"
                         >
-                            ×
+                            ✕
                         </button>
                     </div>
 
@@ -186,6 +186,7 @@ const createEvent = async () => {
     width: 90%;
     max-width: 600px;
     background: white;
+    position: relative;
     border-radius: 16px;
     padding: 32px;
     box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
@@ -210,21 +211,20 @@ h1 {
 }
 
 .close-btn {
-    background: #d2d2d4;
+    background: transparent;
     border: none;
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
+    color: #6b7280;
+    font-size: 22px;
+    font-weight: 400;
+    line-height: 1;
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
+    padding: 4px;
     transition: 0.2s;
 }
 
 .close-btn:hover {
-    background: #7b7c7f;
+    color: #7f1d1d;
+    transform: scale(1.1);
 }
 
 /* FORM ELEMENTS */

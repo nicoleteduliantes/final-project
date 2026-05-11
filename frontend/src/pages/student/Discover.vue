@@ -15,8 +15,6 @@
             @click.self="closeApplyModal"
         >
             <div class="modal-content">
-                <button class="close-modal" @click="closeApplyModal">✕</button>
-
                 <ApplicationFormModal
                     :org="selectedOrgForApply"
                     @submitted="handleApplicationSuccess"
@@ -174,10 +172,11 @@ const groupedRows = computed(() => {
 });
 
 const isMember = (orgId) => {
-    const membership = userMemberships.value.find(m => Number(m.org_id) === Number(orgId));//modified to look at what the status is currently ('Accepted', 'Pending')
+    const membership = userMemberships.value.find(
+        (m) => Number(m.org_id) === Number(orgId)
+    ); //modified to look at what the status is currently ('Accepted', 'Pending')
     return membership ? membership.status : null;
 };
-
 </script>
 
 <style scoped>
