@@ -1,6 +1,5 @@
 <template>
     <div class="page">
-        <!-- HEADER -->
         <div class="header">
             <h1>Office of Student Affairs</h1>
             <p class="subtext">
@@ -8,7 +7,6 @@
             </p>
         </div>
 
-        <!-- CREATE ANNOUNCEMENT -->
         <div class="announcement-section">
             <div class="section-header" @click="toggleCreate">
                 <h2>
@@ -51,15 +49,14 @@
             </Transition>
         </div>
 
-        <!-- MY ANNOUNCEMENTS -->
         <div class="my-announcements">
             <div class="list-header">
                 <h2>My Announcements</h2>
-                <span class="count">{{ announcements.length }} total</span>
+                <span class="count">{{ myAnnouncements.length }} total</span>
             </div>
 
             <div
-                v-if="!announcements || announcements.length === 0"
+                v-if="!myAnnouncements || myAnnouncements.length === 0"
                 class="empty"
             >
                 <div class="empty-icon">📢</div>
@@ -68,7 +65,7 @@
 
             <div v-else class="announcement-list">
                 <div
-                    v-for="ann in announcements"
+                    v-for="ann in myAnnouncements"
                     :key="ann.announcement_id"
                     class="announcement-item"
                 >
@@ -92,7 +89,44 @@
             </div>
         </div>
 
-        <!-- UPCOMING EVENTS -->
+        <div class="my-announcements">
+            <div class="list-header">
+                <h2>Campus-wide Announcements</h2>
+                <span class="count">{{ allAnnouncements.length }} total</span>
+            </div>
+
+            <div v-if="allAnnouncements.length === 0" class="empty">
+                <p>No campus announcements found.</p>
+            </div>
+
+            <div v-else class="announcement-list">
+                <div
+                    v-for="ann in allAnnouncements"
+                    :key="ann.announcement_id"
+                    class="announcement-item"
+                >
+                    <div class="info">
+                        <div class="item-header">
+                            <h3>{{ ann.title }}</h3>
+                            <small>{{ formatDate(ann.date_posted) }}</small>
+                        </div>
+                        <p style="margin-bottom: 8px">
+                            <small
+                                >Posted by:
+                                <b>{{
+                                    ann.osa_id
+                                        ? 'Office of the Student Affairs'
+                                        : ann.organization?.org_name ||
+                                          'Organization'
+                                }}</b></small
+                            >
+                        </p>
+                        <p>{{ ann.content }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <section class="section">
             <h2 class="section-title">Upcoming Events</h2>
 
@@ -119,7 +153,9 @@
                     <div class="poster-content">
                         <div class="poster-top">
                             <span class="tag">{{ event.event_host }}</span>
-                            <span class="date">{{ event.date }}</span>
+                            <span class="date">{{
+                                formatDate(event.date)
+                            }}</span>
                         </div>
 
                         <h3 class="title">
@@ -132,7 +168,7 @@
                             {{ event.description }}
                         </p>
 
-                        <div class="actions">
+                        <div class="actions" style="margin-top: 15px">
                             <RouterLink
                                 :to="'/event/' + event.event_id"
                                 class="btn link"
@@ -145,7 +181,6 @@
             </div>
         </section>
 
-        <!-- EDIT MODAL -->
         <Teleport to="body">
             <Transition name="fade">
                 <div
@@ -186,7 +221,6 @@
             </Transition>
         </Teleport>
 
-        <!-- DELETE MODAL -->
         <Teleport to="body">
             <Transition name="fade">
                 <div
@@ -222,7 +256,6 @@
             </Transition>
         </Teleport>
 
-        <!-- TOAST -->
         <Transition name="slide">
             <div v-if="toast.show" class="toast">
                 {{ toast.message }}
@@ -244,7 +277,8 @@ const newAnnouncement = ref({
     content: '',
 });
 
-const announcements = ref([]);
+const myAnnouncements = ref([]);
+const allAnnouncements = ref([]);
 const events = ref([]);
 
 const showModal = ref(false);
@@ -283,11 +317,31 @@ const fetchMyAnnouncements = async () => {
     try {
         const res = await get('/osa/announcements/my');
         const data = res?.data?.data ?? res?.data ?? res ?? [];
-        announcements.value = Array.isArray(data) ? data : [];
+        myAnnouncements.value = Array.isArray(data) ? data : [];
     } catch (err) {
         console.error(err);
         showToast('Failed to load announcements');
-        announcements.value = [];
+        myAnnouncements.value = [];
+    }
+};
+
+const fetchAllAnnouncements = async () => {
+    try {
+        const res = await get('/announcements');
+        const data = res?.data?.data ?? res?.data ?? res ?? [];
+        allAnnouncements.value = Array.isArray(data) ? data : [];
+    } catch (err) {
+        console.error(err);
+    }
+};
+
+const fetchEvents = async () => {
+    try {
+        const res = await get('/events');
+        const data = res?.data?.data ?? res?.data ?? res ?? [];
+        events.value = Array.isArray(data) ? data : [];
+    } catch (err) {
+        console.error(err);
     }
 };
 
@@ -314,6 +368,7 @@ const postAnnouncement = async () => {
         showCreate.value = false;
 
         await fetchMyAnnouncements();
+        await fetchAllAnnouncements();
 
         showToast('Announcement posted!');
     } catch (err) {
@@ -344,6 +399,7 @@ const updateAnnouncement = async () => {
 
         closeModal();
         await fetchMyAnnouncements();
+        await fetchAllAnnouncements();
 
         showToast('Announcement updated!');
     } catch (err) {
@@ -364,6 +420,7 @@ const deleteAnnouncement = async () => {
 
         showDeleteModal.value = false;
         await fetchMyAnnouncements();
+        await fetchAllAnnouncements();
 
         showToast('Announcement deleted!');
     } catch (err) {
@@ -377,7 +434,11 @@ const formatDate = (date) =>
     date ? new Date(date).toLocaleDateString() : 'Just now';
 
 /* INIT */
-onMounted(fetchMyAnnouncements);
+onMounted(() => {
+    fetchMyAnnouncements();
+    fetchAllAnnouncements();
+    fetchEvents();
+});
 </script>
 
 <style scoped>
