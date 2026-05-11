@@ -152,7 +152,7 @@ const login = async () => {
         }
     } catch (err) {
         console.error(err);
-        alert('Server error');
+        alert(err.message||'Server error');
     }
 };
 

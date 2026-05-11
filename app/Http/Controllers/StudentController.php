@@ -116,7 +116,7 @@ class StudentController extends Controller
     // Fail Response
     return response()->json([
         'status'  => 'error',
-        'message' => 'Invalid credentials.'
+        'message' => 'The provided credentials do not match our records.'
     ], 401);
 }
     //SHOW ALL EVENTS IN STUDENT DASHBOARD
