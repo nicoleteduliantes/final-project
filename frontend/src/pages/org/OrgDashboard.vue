@@ -449,7 +449,6 @@ onMounted(() => {
     padding-top: 20px;
 }
 h1 {
-    font-size: 28px;
     font-weight: 800;
     color: #7f1d1d;
     margin: 0;

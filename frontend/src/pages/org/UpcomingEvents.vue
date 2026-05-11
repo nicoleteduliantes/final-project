@@ -186,7 +186,6 @@ onMounted(fetchEvents);
 }
 
 h1 {
-    font-size: 26px;
     font-weight: 800;
     margin: 0;
     color: #7f1d1d;
