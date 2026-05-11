@@ -20,9 +20,7 @@
         </div>
 
         <!-- IMPORTANT FIX HERE -->
-        <button class="stall-btn" @click="$emit('view', org)">
-            View Details
-        </button>
+        <button class="stall-btn" @click="$emit('view', org)">Details</button>
     </div>
 </template>
 

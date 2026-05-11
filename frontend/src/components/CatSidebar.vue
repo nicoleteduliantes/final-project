@@ -7,9 +7,10 @@
 
         <div v-show="categoriesOpen" class="cat-list">
             <button
-                class="cat-btn"
+                class="cat-btn all"
                 :class="{ active: selectedCategory === '' }"
                 @click="$emit('update-category', '')"
+                style="--cat-color: #7f1d1d"
             >
                 All Categories
             </button>
@@ -20,12 +21,7 @@
                 class="cat-btn"
                 :class="{ active: selectedCategory === c }"
                 @click="$emit('update-category', c)"
-                :style="{
-                    borderLeft: '5px solid ' + getColor(c),
-                    backgroundColor:
-                        selectedCategory === c ? getColor(c) : '#fff',
-                    color: selectedCategory === c ? 'white' : '#333',
-                }"
+                :style="{ '--cat-color': getColor(c) }"
             >
                 {{ c }}
             </button>
@@ -119,12 +115,24 @@ defineEmits(['update-category', 'toggle']);
     font-size: 13px;
     background-color: white;
     color: #333;
-    border-left: #7f1d1d 5px solid;
+
+    border-left: 5px solid var(--cat-color);
+    transition: all 0.2s ease;
 }
 
-.cat-btn:hover,
-.cat-btn:active {
-    background-color: #7f1d1d;
+.cat-btn:hover {
+    background-color: var(--cat-color);
     color: white;
+    transform: translateX(2px);
+}
+
+.cat-btn.active {
+    background-color: var(--cat-color);
+    color: white;
+    font-weight: 600;
+}
+
+.cat-btn.active:hover {
+    filter: brightness(0.95);
 }
 </style>
