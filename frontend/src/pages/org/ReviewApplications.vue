@@ -92,16 +92,29 @@ const fetchApplications = async () => {
 
         applications.value = response.map((item) => ({
             membership_id: item.membership_id,
+
             student_name: `${item.student.first_name} ${item.student.last_name}`,
+
             degree_program: item.student.degree_program?.degprog_name || 'N/A',
+
             college:
                 item.student.degree_program?.college?.college_name || 'N/A',
+
             applied_committee:
                 item.application_detail?.applied_committee || 'N/A',
+
             cover_letter:
                 item.application_detail?.cover_letter ||
                 'No cover letter provided',
+
+            skills: item.application_detail?.skills || 'No skills listed',
+
+            previous_experience:
+                item.application_detail?.previous_experience ||
+                'No experience provided',
+
             status: item.status ?? 'Pending',
+
             raw: item,
         }));
     } catch (error) {
@@ -120,6 +133,7 @@ const filteredApplications = computed(() => {
 
 /* OPEN MODAL */
 const openReview = (app) => {
+    console.log('SELECTED APP:', app);
     selectedApp.value = app;
 };
 
