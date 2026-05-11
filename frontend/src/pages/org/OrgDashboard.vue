@@ -317,7 +317,7 @@ h1 {
     width: 100%;
 }
 .arrow {
-    font-size: 12px;
+    font-size: 20px;
     transition: transform 0.3s ease;
     color: #7f1d1d;
 }
