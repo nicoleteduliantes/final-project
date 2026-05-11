@@ -2,19 +2,26 @@
     <div class="page">
         <div class="header">
             <h1>Organization Dashboard</h1>
-            <p class="subtext">
-                Post and manage your organization announcements and monitor
-                campus events
+
+            <p class="org-badge">
+                <span v-if="organization">
+                    {{ organization.org_name }}
+                </span>
+
+                <span v-else> Loading organization... </span>
+
+                <span v-if="organization" class="verified">✔</span>
             </p>
         </div>
 
+        <!-- POST NEW ANNOUNCEMENT -->
         <div class="announcement-section">
             <div class="section-header" @click="toggleCreate">
                 <h2>
                     Post New Announcement
-                    <span class="arrow" :class="{ 'is-active': showCreate }"
-                        >▼</span
-                    >
+                    <span class="arrow" :class="{ 'is-active': showCreate }">
+                        ▼
+                    </span>
                 </h2>
             </div>
 
@@ -50,89 +57,123 @@
             </Transition>
         </div>
 
+        <!-- MY ANNOUNCEMENTS -->
         <div class="my-announcements">
-            <div class="list-header">
-                <h2>My Announcements</h2>
+            <div class="section-header" @click="toggleMyAnnouncements">
+                <h2>
+                    My Announcements
+                    <span
+                        class="arrow"
+                        :class="{ 'is-active': showMyAnnouncements }"
+                    >
+                        ▼
+                    </span>
+                </h2>
+
                 <span class="count">{{ myAnnouncements.length }} total</span>
             </div>
 
-            <div v-if="myAnnouncements.length === 0" class="empty">
-                <div class="empty-icon">📢</div>
-                <p>
-                    No announcements yet. Share something with your
-                    organization!
-                </p>
-            </div>
-
-            <div v-else class="announcement-list">
-                <div
-                    v-for="ann in myAnnouncements"
-                    :key="ann.announcement_id"
-                    class="announcement-item"
-                >
-                    <div class="info">
-                        <div class="item-header">
-                            <h3>{{ ann.title }}</h3>
-                            <small>{{ formatDate(ann.date_posted) }}</small>
-                        </div>
-                        <p>{{ ann.content }}</p>
+            <Transition name="expand">
+                <div v-if="showMyAnnouncements">
+                    <div v-if="myAnnouncements.length === 0" class="empty">
+                        <div class="empty-icon">📢</div>
+                        <p>
+                            No announcements yet. Share something with your
+                            organization!
+                        </p>
                     </div>
 
-                    <div class="actions">
-                        <button class="btn edit" @click="openEdit(ann)">
-                            Edit
-                        </button>
-                        <button class="btn delete" @click="confirmDelete(ann)">
-                            Delete
-                        </button>
+                    <div v-else class="announcement-stack">
+                        <div
+                            class="poster announcement-card"
+                            v-for="ann in myAnnouncements"
+                            :key="ann.announcement_id"
+                        >
+                            <div class="poster-content">
+                                <div class="poster-top">
+                                    <span class="tag announcement-tag">{{
+                                        organization?.org_name || 'My Post'
+                                    }}</span>
+                                    <span class="date">
+                                        {{ formatDate(ann.date_posted) }}
+                                    </span>
+                                </div>
+
+                                <h3 class="title">{{ ann.title }}</h3>
+
+                                <p class="desc">{{ ann.content }}</p>
+
+                                <div class="actions" style="margin-top: 12px">
+                                    <button
+                                        class="btn edit"
+                                        @click="openEdit(ann)"
+                                    >
+                                        Edit
+                                    </button>
+                                    <button
+                                        class="btn delete"
+                                        @click="confirmDelete(ann)"
+                                    >
+                                        Delete
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </Transition>
         </div>
 
-        <div class="my-announcements">
-            <div class="list-header">
-                <h2>Campus-wide Announcements</h2>
-                <span class="count">{{ allAnnouncements.length }} total</span>
-            </div>
+        <!-- CAMPUS-WIDE ANNOUNCEMENTS -->
+        <section class="section">
+            <h2 class="section-title">Campus-wide Announcements</h2>
 
             <div v-if="allAnnouncements.length === 0" class="empty">
                 <p>No campus announcements found.</p>
             </div>
 
-            <div v-else class="announcement-list">
+            <div v-else class="announcement-stack">
                 <div
+                    class="poster announcement-card"
                     v-for="ann in allAnnouncements"
                     :key="ann.announcement_id"
-                    class="announcement-item"
                 >
-                    <div class="info">
-                        <div class="item-header">
-                            <h3>{{ ann.title }}</h3>
-                            <small>{{ formatDate(ann.date_posted) }}</small>
+                    <div class="poster-content">
+                        <div class="poster-top">
+                            <span class="tag announcement-tag"
+                                >ANNOUNCEMENT</span
+                            >
+                            <span class="date">
+                                {{ formatDate(ann.date_posted) }}
+                            </span>
                         </div>
-                        <p style="margin-bottom: 8px">
-                            <small
-                                >Posted by:
-                                <b>{{
+
+                        <h3 class="title">{{ ann.title }}</h3>
+
+                        <p class="posted-by">
+                            Posted by:
+                            <b>
+                                {{
                                     ann.osa_id
                                         ? 'Office of the Student Affairs'
                                         : ann.organization?.org_name ||
                                           'Organization'
-                                }}</b></small
-                            >
+                                }}
+                            </b>
                         </p>
-                        <p>{{ ann.content }}</p>
+
+                        <p class="desc">{{ ann.content }}</p>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
 
+        <!-- EVENTS -->
         <section class="section">
             <h2 class="section-title">Upcoming Events</h2>
 
             <div v-if="events.length === 0" class="empty">
-                <p>No upcoming events found.</p>
+                No upcoming events found.
             </div>
 
             <div v-else class="poster-grid">
@@ -160,22 +201,16 @@
                         </div>
 
                         <h3 class="title">{{ event.event_name }}</h3>
-                        <p class="location">📍 {{ event.location }}</p>
-                        <p class="desc">{{ event.description }}</p>
 
-                        <div class="actions" style="margin-top: 15px">
-                            <RouterLink
-                                :to="'/event/' + event.event_id"
-                                class="btn link"
-                            >
-                                View Event
-                            </RouterLink>
-                        </div>
+                        <p class="location">📍 {{ event.location }}</p>
+
+                        <p class="desc">{{ event.description }}</p>
                     </div>
                 </div>
             </div>
         </section>
 
+        <!-- EDIT MODAL -->
         <Teleport to="body">
             <Transition name="fade">
                 <div
@@ -185,10 +220,12 @@
                 >
                     <div class="modal">
                         <h2>Edit Announcement</h2>
+
                         <div class="input-group">
                             <label>Title</label>
                             <input v-model="editForm.title" />
                         </div>
+
                         <div class="input-group">
                             <label>Content</label>
                             <textarea
@@ -196,6 +233,7 @@
                                 rows="5"
                             ></textarea>
                         </div>
+
                         <div class="modal-actions">
                             <button
                                 class="primary-btn"
@@ -212,6 +250,7 @@
             </Transition>
         </Teleport>
 
+        <!-- DELETE MODAL -->
         <Teleport to="body">
             <Transition name="fade">
                 <div
@@ -221,10 +260,12 @@
                 >
                     <div class="modal">
                         <h2>Delete Announcement</h2>
+
                         <p>
                             Are you sure you want to delete
                             <b>"{{ deleteTarget?.title }}"</b>?
                         </p>
+
                         <div class="modal-actions">
                             <button
                                 class="delete-confirm-btn"
@@ -244,6 +285,7 @@
             </Transition>
         </Teleport>
 
+        <!-- TOAST -->
         <Transition name="slide">
             <div v-if="toast.show" class="toast">
                 {{ toast.message }}
@@ -257,6 +299,9 @@ import { ref, onMounted, reactive } from 'vue';
 import { get, post, put, del } from '@/services/apiService';
 
 const showCreate = ref(false);
+const showMyAnnouncements = ref(false);
+const toggleMyAnnouncements = () =>
+    (showMyAnnouncements.value = !showMyAnnouncements.value);
 const isPosting = ref(false);
 const toggleCreate = () => (showCreate.value = !showCreate.value);
 
@@ -269,6 +314,19 @@ const showModal = ref(false);
 const showDeleteModal = ref(false);
 const deleteTarget = ref(null);
 const editForm = ref({ id: null, title: '', content: '' });
+const organization = ref(null);
+
+const fetchOrganization = async () => {
+    try {
+        const res = await get('/org/profile');
+
+        const data = res?.data?.data ?? res?.data ?? res ?? null;
+
+        organization.value = data;
+    } catch (err) {
+        console.error('Failed to fetch org:', err);
+    }
+};
 
 const toast = reactive({ show: false, message: '' });
 const showToast = (msg) => {
@@ -374,6 +432,7 @@ onMounted(() => {
     fetchMyAnnouncements();
     fetchAllAnnouncements();
     fetchEvents();
+    fetchOrganization();
 });
 </script>
 
@@ -396,6 +455,29 @@ h1 {
     color: #7f1d1d;
     margin: 0;
 }
+.org-badge {
+    margin-top: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 6px 12px;
+    border-radius: 999px;
+
+    background: #064e3b;
+    color: gold;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    border: 2px solid gold;
+}
+
+.org-badge .verified {
+    font-size: 12px;
+    color: gold;
+    margin-left: 2px;
+}
 .subtext {
     font-size: 15px;
     color: #6b7280;
@@ -407,10 +489,10 @@ h1 {
 .my-announcements {
     background: white;
     border-radius: 16px;
-    padding: 24px;
+    padding: 20px;
     border: 1px solid #e5e7eb;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-    margin-bottom: 24px;
+    margin-bottom: 10px;
 }
 
 /* SECTION HEADERS */
@@ -418,6 +500,8 @@ h1 {
     cursor: pointer;
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
 }
 .section-header h2 {
     font-size: 18px;
@@ -450,10 +534,89 @@ h1 {
 .count {
     font-size: 12px;
     font-weight: 600;
+    width: 40px;
     color: #6b7280;
     background: #f3f4f6;
     padding: 4px 10px;
     border-radius: 999px;
+}
+
+/* CAMPUS ANNOUNCEMENTS */
+.poster {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    transition: 0.25s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.poster:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 18px 35px rgba(0, 0, 0, 0.12);
+}
+
+.announcement-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.announcement-card {
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+    transition: 0.2s ease;
+}
+
+.announcement-card:hover {
+    border-left: 6px solid #7f1d1d;
+}
+
+.poster-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.announcement-tag {
+    background: #064e3b !important;
+    color: white;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.date {
+    font-size: 12px;
+    background: #f3f4f6;
+    padding: 4px 8px;
+    border-radius: 6px;
+}
+
+.title {
+    font-size: 18px;
+    font-weight: 800;
+    margin-bottom: 8px;
+    color: #7f1d1d;
+}
+
+.posted-by {
+    font-size: 13px;
+    color: #7f1d1d;
+    margin-bottom: 10px;
+}
+
+.desc {
+    font-size: 14px;
+    color: #4b5563;
+    line-height: 1.6;
 }
 
 /* FORM & INPUTS */
@@ -521,6 +684,71 @@ textarea:focus {
     color: #4b5563;
     line-height: 1.6;
     margin: 0;
+}
+
+/* EVENTS */
+.empty {
+    padding: 20px;
+    border: 1px dashed #d1d5db;
+    border-radius: 10px;
+    text-align: center;
+    color: #6b7280;
+}
+
+.poster-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+}
+
+.poster {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    transition: 0.25s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.poster:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 18px 35px rgba(0, 0, 0, 0.12);
+}
+
+.poster-image {
+    width: 100%;
+    height: 180px;
+    overflow: hidden;
+}
+
+.poster-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* CONTENT */
+.poster-content {
+    padding: 16px;
+    flex: 1;
+}
+
+/* TOP */
+.poster-top {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.tag {
+    background: #7f1d1d;
+    color: white;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 10px;
+    font-weight: 700;
 }
 
 /* BUTTONS */

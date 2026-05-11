@@ -5,63 +5,43 @@
                 <div class="card" role="dialog" aria-modal="true">
                     <div class="header">
                         <div>
-                            <h1>Create New Event</h1>
+                            <h1>Edit Event</h1>
                             <p class="subtext">
-                                Fill in the details to publish a new
-                                organization event
+                                Update the details of your organization event
                             </p>
                         </div>
-                        <button
-                            class="close-btn"
-                            @click="close"
-                            aria-label="Close modal"
-                        >
-                            ✕
-                        </button>
+
+                        <button class="close-btn" @click="close">✕</button>
                     </div>
 
-                    <form class="form" @submit.prevent="createEvent">
+                    <form class="form" @submit.prevent="updateEvent">
                         <div class="group">
-                            <label for="event_name">Event Name</label>
-                            <input
-                                id="event_name"
-                                v-model.trim="event.event_name"
-                                placeholder="e.g. General Assembly"
-                                required
-                            />
+                            <label>Event Name</label>
+                            <input v-model="event.event_name" />
                         </div>
 
                         <div class="row">
                             <div class="group">
-                                <label for="date">Date</label>
+                                <label>Date</label>
                                 <input
-                                    id="date"
                                     type="date"
                                     v-model="event.date"
                                     :min="
                                         new Date().toLocaleDateString('en-CA')
                                     "
-                                    required
                                 />
                             </div>
 
                             <div class="group">
-                                <label for="location">Location</label>
-                                <input
-                                    id="location"
-                                    v-model.trim="event.location"
-                                    placeholder="e.g. Auditorium"
-                                    required
-                                />
+                                <label>Location</label>
+                                <input v-model="event.location" />
                             </div>
                         </div>
 
                         <div class="group">
-                            <label for="description">Description</label>
+                            <label>Description</label>
                             <textarea
-                                id="description"
-                                v-model.trim="event.description"
-                                placeholder="Describe the event..."
+                                v-model="event.description"
                                 rows="4"
                             ></textarea>
                         </div>
@@ -71,14 +51,14 @@
                             class="primary"
                             :disabled="isLoading"
                         >
-                            <span v-if="isLoading">Creating...</span>
-                            <span v-else>Create Event</span>
+                            <span v-if="isLoading">Saving...</span>
+                            <span v-else>Save Changes</span>
                         </button>
                     </form>
                 </div>
 
                 <Transition name="slide-up">
-                    <div v-if="toast.show" class="toast" :class="toast.type">
+                    <div v-if="toast.show" class="toast">
                         {{ toast.message }}
                     </div>
                 </Transition>
@@ -88,73 +68,95 @@
 </template>
 
 <script setup>
-import { reactive, ref } from 'vue';
-import { post } from '@/services/apiService';
+import { reactive, ref, watch } from 'vue';
+import { get, put } from '@/services/apiService';
 
 const props = defineProps({
     modelValue: Boolean,
+    eventId: Number,
 });
 
-const emit = defineEmits(['update:modelValue', 'created']);
+const emit = defineEmits(['update:modelValue', 'updated']);
 
 const isLoading = ref(false);
 
+/* MODAL CLOSE */
 const close = () => {
     if (isLoading.value) return;
     emit('update:modelValue', false);
 };
 
-/* FORM STATE */
-const emptyEvent = () => ({
+/* EVENT STATE */
+const event = reactive({
     event_name: '',
     date: '',
     location: '',
     description: '',
 });
 
-const event = reactive(emptyEvent());
-
-/* TOAST STATE */
+/* TOAST */
 const toast = reactive({
     show: false,
     message: '',
-    type: 'success',
 });
 
-const showToast = (msg, type = 'success') => {
+const showToast = (msg) => {
     toast.message = msg;
-    toast.type = type;
     toast.show = true;
-    setTimeout(() => {
-        toast.show = false;
-    }, 3000);
+    setTimeout(() => (toast.show = false), 2500);
 };
 
-/* CREATE LOGIC */
-const createEvent = async () => {
+/* LOAD EVENT */
+const loadEvent = async () => {
+    if (!props.eventId) return;
+
+    try {
+        const res = await get(`/org/events/${props.eventId}`);
+        const data = res?.data?.data ?? res?.data ?? res;
+
+        event.event_name = data.event_name;
+        event.date = data.date;
+        event.location = data.location;
+        event.description = data.description;
+    } catch (err) {
+        showToast('Failed to load event');
+        console.error(err);
+    }
+};
+
+/* UPDATE EVENT */
+const updateEvent = async () => {
     if (isLoading.value) return;
 
     isLoading.value = true;
-    try {
-        await post('/org/events', event);
 
-        showToast('Event Created Successfully!');
-        Object.assign(event, emptyEvent());
+    try {
+        await put(`/org/events/${props.eventId}`, event);
+
+        showToast('Event updated successfully');
 
         setTimeout(() => {
-            emit('created');
+            emit('updated');
             close();
-        }, 1000);
-    } catch (e) {
-        showToast('Creation failed. Please try again.', 'error');
+        }, 800);
+    } catch (err) {
+        console.error(err);
+        showToast('Update failed');
     } finally {
         isLoading.value = false;
     }
 };
+
+/* WATCH OPEN */
+watch(
+    () => props.modelValue,
+    (open) => {
+        if (open) loadEvent();
+    }
+);
 </script>
 
 <style scoped>
-/* ANIMATIONS */
 .fade-enter-active,
 .fade-leave-active {
     transition: opacity 0.3s ease;
@@ -168,12 +170,7 @@ const createEvent = async () => {
 .slide-up-leave-active {
     transition: all 0.3s ease;
 }
-.slide-up-enter-from {
-    transform: translate(-50%, 20px);
-    opacity: 0;
-}
 
-/* LAYOUT */
 .overlay {
     position: fixed;
     inset: 0;
@@ -189,10 +186,9 @@ const createEvent = async () => {
     width: 90%;
     max-width: 600px;
     background: white;
-    position: relative;
     border-radius: 16px;
     padding: 32px;
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
 }
 
 .header {
@@ -202,45 +198,43 @@ const createEvent = async () => {
 }
 
 h1 {
-    font-size: 24px;
+    font-size: 22px;
     font-weight: 800;
-    color: #111827;
     margin: 0;
+    color: #111827;
 }
+
 .subtext {
-    color: #6b7280;
     font-size: 14px;
-    margin: 4px 0 0 0;
+    color: #6b7280;
+    margin-top: 4px;
 }
 
 .close-btn {
-    background: transparent;
     border: none;
-    color: #6b7280;
+    background: transparent;
     font-size: 22px;
-    font-weight: 400;
-    line-height: 1;
     cursor: pointer;
-    padding: 4px;
-    transition: 0.2s;
+    color: #6b7280;
 }
 
 .close-btn:hover {
     color: #7f1d1d;
-    transform: scale(1.1);
 }
 
-/* FORM ELEMENTS */
+/* FORM */
 .form {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 18px;
 }
+
 .row {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 16px;
+    gap: 14px;
 }
+
 .group {
     display: flex;
     flex-direction: column;
@@ -258,39 +252,32 @@ textarea {
     padding: 12px;
     border: 1px solid #d1d5db;
     border-radius: 8px;
-    font-size: 15px;
-    transition: border-color 0.2s;
+    font-size: 14px;
 }
 
 input:focus,
 textarea:focus {
-    border-color: #7f1d1d;
     outline: none;
+    border-color: #7f1d1d;
     box-shadow: 0 0 0 3px rgba(127, 29, 29, 0.1);
 }
 
-/* BUTTONS */
+/* BUTTON */
 .primary {
-    padding: 14px;
+    padding: 12px;
     background: #7f1d1d;
     color: white;
-    border: #7f1d1d 3px solid;
+    border: 3px solid #7f1d1d;
     border-radius: 8px;
     font-weight: 700;
     cursor: pointer;
-    transition: 0.3s;
+    transition: 0.2s;
 }
 
-.primary:hover:not(:disabled) {
+.primary:hover {
     background: #064e3b;
-    color: #fbbf24;
-    border-color: #fbbf24;
-}
-
-.primary:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-    filter: grayscale(1);
+    color: gold;
+    border-color: gold;
 }
 
 /* TOAST */
@@ -299,16 +286,10 @@ textarea:focus {
     bottom: 30px;
     left: 50%;
     transform: translateX(-50%);
-    padding: 12px 24px;
-    border-radius: 12px;
+    background: #7f1d1d;
     color: white;
+    padding: 12px 20px;
+    border-radius: 12px;
     font-weight: 600;
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-    z-index: 10000;
-    background: #7f1d1d; /* Fallback */
-}
-
-.toast.error {
-    background: #dc2626;
 }
 </style>

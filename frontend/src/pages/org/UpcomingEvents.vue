@@ -50,7 +50,7 @@
                     <p class="desc">{{ event.description }}</p>
 
                     <div class="actions">
-                        <button class="btn edit" @click="edit(event.event_id)">
+                        <button class="btn edit" @click="openEdit(event)">
                             Edit
                         </button>
                         <button
@@ -64,8 +64,17 @@
             </div>
         </div>
 
+        <!-- CREATE EVENT MODAL -->
         <CreateEventModal v-model="showCreate" @created="fetchEvents" />
 
+        <!-- EDIT EVENT MODAL -->
+        <EditEventModal
+            v-model="showEdit"
+            :event-id="selectedEventId"
+            @updated="fetchEvents"
+        />
+
+        <!-- DELETE EVENT MODAL -->
         <Teleport to="body">
             <Transition name="fade">
                 <div
@@ -100,11 +109,10 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
 import { get, del } from '@/services/apiService';
 import CreateEventModal from '@/components/CreateEventModal.vue';
+import EditEventModal from '@/components/EditEventModal.vue';
 
-const router = useRouter();
 const events = ref([]);
 const isLoading = ref(true);
 const isDeleting = ref(false);
@@ -112,6 +120,14 @@ const isDeleting = ref(false);
 const showCreate = ref(false);
 const showDeleteModal = ref(false);
 const selectedEvent = ref(null);
+
+const showEdit = ref(false);
+const selectedEventId = ref(null);
+
+const openEdit = (event) => {
+    selectedEventId.value = event.event_id;
+    showEdit.value = true;
+};
 
 const fetchEvents = async () => {
     isLoading.value = true;
@@ -129,8 +145,6 @@ const formatDate = (dateString) => {
     if (!dateString) return '';
     return new Date(dateString).toLocaleDateString();
 };
-
-const edit = (id) => router.push(`/org/events/edit/${id}`);
 
 const confirmDelete = (event) => {
     selectedEvent.value = event;

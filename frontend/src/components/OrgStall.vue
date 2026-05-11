@@ -20,9 +20,7 @@
         </div>
 
         <!-- IMPORTANT FIX HERE -->
-        <button class="stall-btn" @click="$emit('view', org)">
-            View Details
-        </button>
+        <button class="stall-btn" @click="$emit('view', org)">Details</button>
     </div>
 </template>
 
@@ -39,7 +37,7 @@ defineEmits(['view']);
 
 <style scoped>
 .stall {
-    width: clamp(170px, 12vw, 240px);
+    width: clamp(170px, 12vw, 200px);
     background: white;
     border-radius: 12px;
     padding: 14px;

@@ -165,8 +165,8 @@ const filteredOrgs = computed(() => {
 /* ROW GROUPING */
 const groupedRows = computed(() => {
     const rows = [];
-    for (let i = 0; i < filteredOrgs.value.length; i += 5) {
-        rows.push(filteredOrgs.value.slice(i, i + 5));
+    for (let i = 0; i < filteredOrgs.value.length; i += 4) {
+        rows.push(filteredOrgs.value.slice(i, i + 4));
     }
     return rows;
 });

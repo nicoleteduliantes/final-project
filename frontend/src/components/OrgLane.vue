@@ -36,7 +36,7 @@
                         Close
                     </span>
 
-                    <span v-else key="open" class="eye-icon"> 👁 </span>
+                    <span v-else key="open" class="icon"> View Orgs </span>
                 </transition>
             </button>
         </div>
@@ -162,16 +162,15 @@ const handleView = (org) => {
     pointer-events: none;
 }
 
-/* SHOW ONLY ON ROW HOVER */
+/* ROW HOVER */
 .lane:hover .row-focus-btn {
     opacity: 1;
     transform: scale(1);
     pointer-events: auto;
 }
 
-/* BIG EYE */
-.eye-icon {
-    font-size: 38px;
+.icon {
+    font-size: 12px;
     line-height: 1;
 }
 
