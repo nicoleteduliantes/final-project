@@ -107,11 +107,6 @@ onMounted(fetchPrograms);
     margin-bottom: 15px;
 }
 
-.header-row h1 {
-    font-size: 22px;
-    font-weight: 600;
-}
-
 .controls {
     display: flex;
     gap: 10px;

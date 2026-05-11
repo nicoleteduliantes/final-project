@@ -2,10 +2,9 @@
     <div class="page">
         <!-- HEADER -->
         <div class="header">
-            <h2>Register Organization</h2>
+            <h1>Organization Registration</h1>
             <p class="subtext">
-                Create and register a new student organization under OSA
-                management system
+                Create and register a new student organization
             </p>
         </div>
 
@@ -141,9 +140,8 @@ const registerOrg = async () => {
     margin-bottom: 30px;
 }
 
-h2 {
+h1 {
     color: #7f1d1d;
-    font-size: 28px;
     margin-bottom: 6px;
 }
 

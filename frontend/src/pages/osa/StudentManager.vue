@@ -1,7 +1,7 @@
 <template>
     <div class="page">
         <div class="header-row">
-            <h1>Student Directory (OSA)</h1>
+            <h1>Student Directory</h1>
             <div class="search-box">
                 <input
                     v-model="searchQuery"
@@ -104,11 +104,6 @@ const filteredStudents = computed(() => {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 15px;
-}
-
-.header-row h1 {
-    font-size: 22px;
-    font-weight: 600;
 }
 
 .search-box input {

@@ -1,7 +1,7 @@
 <template>
     <div class="page">
         <div class="header-row">
-            <h2>Organization Management</h2>
+            <h1>Global Organization Manager</h1>
             <div class="controls">
                 <select v-model="statusFilter" class="status-select">
                     <option value="">All Statuses</option>
@@ -116,11 +116,6 @@ onMounted(fetchData);
     justify-content: space-between;
     align-items: center;
     margin-bottom: 15px;
-}
-
-.header-row h2 {
-    font-size: 22px;
-    font-weight: 600;
 }
 
 .controls {
