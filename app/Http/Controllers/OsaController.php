@@ -17,9 +17,17 @@ class OsaController extends Controller
             'org_name'    => 'required|string|max:255|unique:organizations,org_name',
             'category'    => 'required|in:Academic,Civic,Cultural,Sports,Fraternities/Sororities,Other',
             'description' => 'nullable|string',
-            'password'    => 'required|string|min:8',
+            'password'    => ['required','string','min:8'],
             'status'      => 'required|in:Registered,Expired',
-        ]);
+        ],
+        
+        [
+            'org_name'    => 'Organizaton Name is a required field',
+            'category'    => 'Category is a required field',
+            'password'    => 'Password is a reuired field',
+            'password.min'=> 'Password must be 8 characters minimum' 
+        ]   
+        );
 
         //Create the record
         $organization = Organization::create([
