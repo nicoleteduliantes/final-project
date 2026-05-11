@@ -90,8 +90,9 @@ const getInitials = (name = '') => {
 <style scoped>
 /* PAGE */
 .page {
-    padding-top: 20px;
+    padding: clamp(20px, 10vw, 50px);
     min-height: 100vh;
+    width: 100%;
 }
 
 /* HEADER */

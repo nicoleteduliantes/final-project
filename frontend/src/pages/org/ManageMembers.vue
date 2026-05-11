@@ -110,10 +110,9 @@ onMounted(fetchMembers);
 <style scoped>
 /* PAGE */
 .page {
-    padding-left: 20px;
-    padding-top: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
+    padding: clamp(20px, 10vw, 50px);
+    min-height: 100vh;
+    width: 100%;
 }
 
 /* HEADER */

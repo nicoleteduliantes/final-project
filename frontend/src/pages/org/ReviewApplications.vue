@@ -1,5 +1,5 @@
 <template>
-    <div class="page-container">
+    <div class="page">
         <header class="page-header">
             <div class="title-group">
                 <h1>Review Applications</h1>
@@ -201,12 +201,10 @@ onMounted(fetchApplications);
 </script>
 
 <style scoped>
-/* GENERAL LAYOUT */
-.page-container {
-    padding-left: 20px;
-    padding-top: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
+.page {
+    padding: clamp(20px, 10vw, 50px);
+    min-height: 100vh;
+    width: 100%;
 }
 
 .page-header {

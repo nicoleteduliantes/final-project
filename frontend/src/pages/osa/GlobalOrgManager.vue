@@ -106,11 +106,11 @@ onMounted(fetchData);
 
 <style scoped>
 .page {
-    padding: 20px;
-    padding-top: 0;
+    padding: clamp(20px, 10vw, 50px);
+    min-height: 100vh;
+    width: 100%;
 }
 
-/* New Header Styles */
 .header-row {
     display: flex;
     justify-content: space-between;
@@ -146,7 +146,6 @@ onMounted(fetchData);
     color: #6b7280;
 }
 
-/* Existing Table Styles */
 .table-container {
     background: white;
     border-radius: 10px;

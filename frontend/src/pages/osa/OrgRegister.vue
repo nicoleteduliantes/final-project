@@ -43,12 +43,10 @@
                         placeholder="Describe the organization..."
                     ></textarea>
                 </div>
-                
+
                 <div class="group">
                     <label>Password</label>
-                    <input
-                        v-model="org.password"
-                    />
+                    <input v-model="org.password" />
                 </div>
 
                 <div class="group">
@@ -58,7 +56,9 @@
                         readonly
                         class="readonly-input"
                     />
-                    <small class="hint">Automatically set to 1 year from today</small>
+                    <small class="hint"
+                        >Automatically set to 1 year from today</small
+                    >
                 </div>
 
                 <button class="primary" @click="registerOrg">
@@ -91,7 +91,7 @@ const org = reactive({
     org_name: '',
     category: '',
     description: '',
-    password:'',
+    password: '',
 
     // NEW FIELDS
     status: 'Registered',
@@ -101,14 +101,12 @@ const org = reactive({
 const registerOrg = async () => {
     try {
         const response = await post('/osa/organizations', org);
-        console.log('REGISTER RESPONSE:', response); 
+        console.log('REGISTER RESPONSE:', response);
 
         if (response.status === 'success') {
             alert('Organization registered successfuly!');
             router.push('/osa/orgs');
-        }
-        
-        else {
+        } else {
             console.log('VALIDATION ERRORS:', response.errors);
             alert(response.message || 'Registration failed');
         }
@@ -121,13 +119,9 @@ const registerOrg = async () => {
 
 <style scoped>
 .page {
+    padding: clamp(20px, 10vw, 50px);
+    min-height: 100vh;
     width: 100%;
-    padding-left: 20px;
-    padding-top: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    text-align: left;
 }
 
 /* CARD */
