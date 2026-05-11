@@ -11,6 +11,16 @@ async function request(endpoint, method, data = null) {
         body: data ? JSON.stringify(data) : null,
     });
 
+    if (!res.ok) {
+        const errorData = await res.json().catch(() => ({}));
+        throw new Error(errorData.message || `Server error: ${res.status}`);
+    }
+
+    const contentType = res.headers.get('content-type');
+    if (!contentType || !contentType.includes('application/json')) {
+        return null;
+    }
+
     return await res.json();
 }
 
