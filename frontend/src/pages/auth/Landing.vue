@@ -26,7 +26,7 @@
             <div class="identity-block">
                 <img src="@/assets/iskonek-logo.png" class="main-logo" />
 
-                <div class="id-badge">STUDENT ORGANIZATION ACCESS</div>
+                <div class="id-badge">CAMPUS CONNECTIONS AND COMMUNITY</div>
             </div>
 
             <p class="subtitle">
@@ -122,8 +122,6 @@ import { RouterLink } from 'vue-router';
     box-shadow:
         0 6px 20px rgba(0, 0, 0, 0.18),
         0 0 0 2px rgba(255, 255, 255, 0.4);
-
-    transform: rotate(1deg);
 }
 
 /* BADGE */
@@ -188,38 +186,31 @@ import { RouterLink } from 'vue-router';
 .student {
     background: #7f1d1d;
     color: white;
-    transform: rotate(-2deg);
 }
 
 .admin {
     background: #facc15;
     color: #1f2937;
-    transform: rotate(2deg);
-}
-
-.student,
-.admin {
-    transition: all 0.25s ease;
 }
 
 .student:hover {
-    transform: translateY(-4px) rotate(1deg);
-
     background: #064e3b;
     color: gold;
     border: 3px solid gold;
 
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    scale: 1.03;
+    transition: all 0.25s ease;
 }
 
 .admin:hover {
-    transform: translateY(-4px) scale(1) rotate(0deg);
-
     background: #064e3b;
     color: gold;
     border: 3px solid gold;
 
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    scale: 1.03;
+    transition: all 0.25s ease;
 }
 
 /* PUSH PINS */

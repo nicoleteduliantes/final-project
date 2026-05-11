@@ -1,70 +1,78 @@
 <template>
     <div class="page">
+        <<<<<<< HEAD
         <h1 class="page-title">Student Dashboard</h1>
+        =======
+        <header class="header">
+            <div>
+                <h1>Dashboard</h1>
+                <p class="subtext">
+                    Stay updated with the latest campus news and events
+                </p>
+            </div>
+        </header>
+        >>>>>>> de8e8ca (Student: Discover & Dashboard, Org: Dashboard,
+        Announcement, Events, Osa: No changes)
+
+        <h1 class="page-title">Dashboard</h1>
 
         <!-- ANNOUNCEMENTS -->
         <section class="section">
-            <h2 class="section-title">Announcements</h2>
+            <h2 class="section-title">Campus Announcements</h2>
 
             <div v-if="announcements.length === 0" class="empty">
                 No announcements found.
             </div>
 
-            <div v-else>
+            <div v-else class="announcement-stack">
                 <div
-                    class="announcement-card poster"
+                    class="poster announcement-card"
                     v-for="ann in announcements"
                     :key="ann.announcement_id"
-                    style="margin-bottom: 12px"
                 >
                     <div class="poster-content">
                         <div class="poster-top">
-                            <span class="tag">ANNOUNCEMENT</span>
-                            <span class="date">{{ ann.date_posted }}</span>
+                            <span class="tag announcement-tag"
+                                >ANNOUNCEMENT</span
+                            >
+                            <span class="date">{{
+                                formatDate(ann.date_posted)
+                            }}</span>
                         </div>
 
-                        <h3 class="title" style="margin-top: 8px">
-                            {{ ann.title }}
-                        </h3>
+                        <h3 class="title">{{ ann.title }}</h3>
 
-                        <p
-                            class="location"
-                            style="font-weight: 700; color: #7f1d1d"
-                        >
+                        <p class="posted-by">
                             Posted by:
-                            {{
-                                ann.osa_id
-                                    ? 'Office of the Student Affairs'
-                                    : ann.organization?.org_name ||
-                                      'Organization'
-                            }}
+                            <b>
+                                {{
+                                    ann.osa_id
+                                        ? 'Office of the Student Affairs'
+                                        : ann.organization?.org_name ||
+                                          'Organization'
+                                }}
+                            </b>
                         </p>
 
-                        <p class="desc">
-                            {{ ann.content }}
-                        </p>
+                        <p class="desc">{{ ann.content }}</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- UPCOMING EVENTS -->
         <section class="section">
             <h2 class="section-title">Upcoming Events</h2>
 
-            <!-- EMPTY STATE -->
             <div v-if="events.length === 0" class="empty">
                 No upcoming events found.
             </div>
 
-            <!-- POSTER GRID -->
             <div v-else class="poster-grid">
                 <div
                     class="poster"
                     v-for="event in events"
                     :key="event.event_id"
                 >
-                    <!-- IMAGE -->
                     <div class="poster-image">
                         <img
                             :src="
@@ -75,36 +83,23 @@
                         />
                     </div>
 
-                    <!-- CONTENT -->
                     <div class="poster-content">
-                        <!-- TOP -->
                         <div class="poster-top">
+                            <<<<<<< HEAD
                             <span class="tag">{{ event.event_host }}</span>
                             <span class="date">{{ event.date }}</span>
+                            =======
+                            <span class="tag">EVENT</span>
+                            <span class="date">{{
+                                formatDate(event.date)
+                            }}</span>
                         </div>
 
-                        <!-- TITLE -->
-                        <h3 class="title">
-                            {{ event.event_name }}
-                        </h3>
+                        <h3 class="title">{{ event.event_name }}</h3>
 
-                        <!-- LOCATION -->
                         <p class="location">📍 {{ event.location }}</p>
 
-                        <!-- DESCRIPTION -->
-                        <p class="desc">
-                            {{ event.description }}
-                        </p>
-
-                        <!-- ACTION -->
-                        <div class="actions">
-                            <RouterLink
-                                :to="'/event/' + event.event_id"
-                                class="btn link"
-                            >
-                                View Event
-                            </RouterLink>
-                        </div>
+                        <p class="desc">{{ event.description }}</p>
                     </div>
                 </div>
             </div>
@@ -118,6 +113,11 @@ import { get } from '@/services/apiService';
 
 const events = ref([]);
 const announcements = ref([]);
+
+const formatDate = (dateString) => {
+    if (!dateString) return '';
+    return new Date(dateString).toLocaleDateString();
+};
 
 const fetchData = async () => {
     try {
@@ -135,11 +135,22 @@ onMounted(fetchData);
 </script>
 
 <style scoped>
-/* TITLE */
-.page-title {
-    font-size: 24px;
-    font-weight: 800;
-    margin-bottom: 16px;
+.page {
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* HEADER */
+.header {
+    margin-bottom: 20px;
+    padding-top: 20px;
+}
+
+.subtext {
+    margin-top: 4px;
+    font-size: 14px;
+    color: #6b7280;
 }
 
 /* SECTION */
@@ -155,33 +166,30 @@ onMounted(fetchData);
 
 /* EMPTY */
 .empty {
-    padding: 16px;
+    padding: 20px;
     border: 1px dashed #d1d5db;
     border-radius: 10px;
     text-align: center;
     color: #6b7280;
 }
 
-/* GRID */
+/* GRID - MATCHES ORG VIEW */
 .poster-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 18px;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
 }
 
-/* POSTER */
+/* POSTER - MATCHES ORG VIEW */
 .poster {
     background: white;
     border-radius: 16px;
     overflow: hidden;
-
     border: 1px solid #e5e7eb;
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
-
+    transition: 0.25s ease;
     display: flex;
     flex-direction: column;
-
-    transition: 0.25s ease;
 }
 
 .poster:hover {
@@ -189,9 +197,10 @@ onMounted(fetchData);
     box-shadow: 0 18px 35px rgba(0, 0, 0, 0.12);
 }
 
-/* IMAGE */
+/* IMAGE - MATCHES ORG VIEW (180px height) */
 .poster-image {
-    height: 160px;
+    width: 100%;
+    height: 180px;
     overflow: hidden;
 }
 
@@ -203,9 +212,7 @@ onMounted(fetchData);
 
 /* CONTENT */
 .poster-content {
-    padding: 14px;
-    display: flex;
-    flex-direction: column;
+    padding: 16px;
     flex: 1;
 }
 
@@ -213,87 +220,67 @@ onMounted(fetchData);
 .poster-top {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    margin-bottom: 10px;
 }
 
-/* TAG */
 .tag {
     background: #7f1d1d;
     color: white;
-
-    padding: 3px 10px;
+    padding: 4px 10px;
     border-radius: 999px;
-
     font-size: 10px;
     font-weight: 700;
 }
 
-/* DATE */
-.date {
-    font-size: 12px;
-    color: #6b7280;
+.announcement-tag {
+    background: #064e3b;
 }
 
-/* TITLE */
+.date {
+    font-size: 12px;
+    background: #f3f4f6;
+    padding: 4px 8px;
+    border-radius: 6px;
+}
+
+/* TYPOGRAPHY */
 .title {
-    margin: 10px 0 4px;
+    margin: 0;
     font-size: 18px;
     font-weight: 800;
 }
 
-/* LOCATION */
+.posted-by {
+    font-size: 13px;
+    color: #7f1d1d;
+    margin: 6px 0;
+}
+
 .location {
     font-size: 13px;
     color: #4b5563;
-    margin-bottom: 6px;
+    margin: 4px 0;
 }
 
-/* DESCRIPTION */
 .desc {
     font-size: 13px;
-    color: #4b5563;
+    color: #6b7280;
+    margin-top: 8px;
     line-height: 1.5;
 }
 
-/* ACTION */
-.actions {
-    margin-top: auto;
-    padding-top: 12px;
-}
-
-/* BUTTON */
-.btn {
+/* ANNOUNCEMENT SPECIFIC */
+.announcement-stack {
     display: flex;
-    justify-content: center;
-    align-items: center;
-
-    width: 100%;
-    padding: 8px;
-
-    border-radius: 10px;
-    font-size: 13px;
-    font-weight: 700;
-
-    text-decoration: none;
-
-    box-sizing: border-box;
+    flex-direction: column;
+    gap: 12px;
 }
 
-/* LINK */
-.link {
-    background: white;
-    color: #7f1d1d;
-    border: 2px solid #7f1d1d;
-}
-
-.link:hover {
-    background: #7f1d1d;
-    color: white;
-}
-
-/* ANNOUNCEMENT */
 .announcement-card {
-    padding: 14px;
-    font-size: 14px;
+    border-left: 1px solid #e5e7eb;
+}
+
+.announcement-card:hover {
+    border-left: 6px solid #7f1d1d;
 }
 </style>

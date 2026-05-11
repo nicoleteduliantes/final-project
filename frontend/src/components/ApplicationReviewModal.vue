@@ -50,14 +50,13 @@
                 <main class="modal-body">
                     <header class="doc-header">
                         <h4>Review Application</h4>
-                        <p>
-                            Applied for
-                            {{ app?.applied_committee || 'N/A' }}
-                        </p>
+                        <p>Applied for {{ app?.applied_committee || 'N/A' }}</p>
                     </header>
 
+                    <!-- COVER LETTER -->
                     <section class="doc-section">
                         <h5 class="section-title">Cover Letter</h5>
+
                         <div class="doc-paper">
                             {{
                                 app?.cover_letter || 'No cover letter provided'
@@ -65,23 +64,24 @@
                         </div>
                     </section>
 
+                    <!-- SKILLS (RAW) -->
                     <section class="doc-section">
                         <h5 class="section-title">Skills</h5>
 
-                        <div class="skills-flex">
-                            <template v-if="parsedSkills.length">
-                                <span
-                                    v-for="skill in parsedSkills"
-                                    :key="skill"
-                                    class="skill-tag"
-                                >
-                                    {{ skill }}
-                                </span>
-                            </template>
+                        <div class="doc-paper">
+                            {{ app?.skills || 'No skills listed' }}
+                        </div>
+                    </section>
 
-                            <span v-else class="skill-tag empty">
-                                No skills listed
-                            </span>
+                    <!-- EXPERIENCE (RAW FIX) -->
+                    <section class="doc-section">
+                        <h5 class="section-title">Previous Experience</h5>
+
+                        <div class="doc-paper">
+                            {{
+                                app?.previous_experience ||
+                                'No experience provided'
+                            }}
                         </div>
                     </section>
                 </main>
@@ -91,17 +91,9 @@
 </template>
 
 <script setup>
-import { computed } from 'vue';
-
 const props = defineProps({
-    modelValue: {
-        type: Boolean,
-        default: false,
-    },
-    app: {
-        type: Object,
-        default: () => ({}),
-    },
+    modelValue: Boolean,
+    app: Object,
 });
 
 const emit = defineEmits(['close', 'update']);
@@ -119,17 +111,6 @@ const getInitials = (name = '') =>
         .map((n) => n[0])
         .join('')
         .toUpperCase();
-
-const parsedSkills = computed(() => {
-    const raw = props.app?.skills;
-
-    if (!raw || typeof raw !== 'string') return [];
-
-    return raw
-        .split(',')
-        .map((s) => s.trim())
-        .filter(Boolean);
-});
 </script>
 
 <style scoped>
