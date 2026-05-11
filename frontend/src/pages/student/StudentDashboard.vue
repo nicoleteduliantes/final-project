@@ -1,6 +1,6 @@
 <template>
     <div class="page">
-        <h1 class="page-title">Dashboard</h1>
+        <h1 class="page-title">Student Dashboard</h1>
 
         <!-- ANNOUNCEMENTS -->
         <section class="section">
@@ -79,7 +79,7 @@
                     <div class="poster-content">
                         <!-- TOP -->
                         <div class="poster-top">
-                            <span class="tag">{{event.event_host}}</span>
+                            <span class="tag">{{ event.event_host }}</span>
                             <span class="date">{{ event.date }}</span>
                         </div>
 
