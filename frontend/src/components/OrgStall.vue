@@ -39,7 +39,7 @@ defineEmits(['view']);
 
 <style scoped>
 .stall {
-    width: clamp(170px, 12vw, 240px);
+    width: clamp(170px, 12vw, 200px);
     background: white;
     border-radius: 12px;
     padding: 14px;

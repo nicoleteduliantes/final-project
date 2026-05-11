@@ -117,5 +117,14 @@ defineEmits(['update-category', 'toggle']);
     border: 1px solid #f1f5f9;
     cursor: pointer;
     font-size: 13px;
+    background-color: white;
+    color: #333;
+    border-left: #7f1d1d 5px solid;
+}
+
+.cat-btn:hover,
+.cat-btn:active {
+    background-color: #7f1d1d;
+    color: white;
 }
 </style>
