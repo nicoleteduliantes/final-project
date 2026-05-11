@@ -32,22 +32,40 @@
 
                 <!-- ACTIONS -->
                 <div class="modal-actions">
+                    
                     <button
-                        class="apply-btn"
-                        :disabled="isMember(org.org_id)"
-                        :class="{ disabled: isMember(org.org_id) }"
-                        @click="!isMember(org.org_id) && $emit('apply', org)"
-                    >
-                        Apply to Join
-                    </button>
-
-                    <button
-                        v-if="isMember(org.org_id)"
+                       v-if="isMember(org.org_id) === 'Accepted'"
                         class="member-status"
                         disabled
                     >
                         ✓ Already a Member
                     </button>
+
+                    <button
+                       v-else-if="isMember(org.org_id) === 'Pending'"
+                        class="member-status"
+                        disabled
+                    >
+                        ⏳ Application Pending
+                    </button>
+
+                    <button
+                        v-else-if="org.application_status === 'closed'"
+                        class="member-status"
+                        disabled
+                    >
+                        🚫 Application Closed
+                    </button>
+
+                    <button
+                        v-else
+                        class="apply-btn"
+                        @click= "$emit('apply', org)"
+                    >
+                        Apply to Join
+                    </button>
+
+                    
                 </div>
             </div>
         </div>

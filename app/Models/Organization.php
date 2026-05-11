@@ -17,9 +17,15 @@ class Organization extends Authenticatable
         'description', 
         'expiration',
         'status',
+        'application_status',
         'password'
     ];
     protected $hidden = ['password'];
+
+    protected $attributes = [
+        'application_status' => 'closed',
+    ];
+    
     public $incrementing = true;
     /**
      * Tells Laravel to use 'org_id' for authentication instead of 'email'
@@ -36,5 +42,9 @@ class Organization extends Authenticatable
 
     public function announcements() {
         return $this->hasMany(Announcement::class, 'org_id');
+    }
+
+    public function isAcceptingApplications(): bool {
+        return $this->application_status === 'open' && $this->status === 'registered';
     }
 }

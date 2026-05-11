@@ -1,16 +1,13 @@
 <template>
     <div class="page">
         <div class="header-row">
-            <h1>List of Organizations</h1>
-
+            <h2>Organization Management</h2>
             <div class="controls">
-                <select v-model="selectedStatus" class="status-select">
-                    <option value="">All Status</option>
-                    <option v-for="s in statuses" :key="s" :value="s">
-                        {{ s }}
-                    </option>
+                <select v-model="statusFilter" class="status-select">
+                    <option value="">All Statuses</option>
+                    <option value="Registered">Registered</option>
+                    <option value="Expired">Expired</option>
                 </select>
-
                 <div class="search-box">
                     <input
                         v-model="search"
@@ -24,60 +21,39 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Organization</th>
-                        <th>College</th>
+                        <th>Organization Name</th>
                         <th>Status</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
-
                 <tbody>
-                    <tr v-for="org in filteredOrganizations" :key="org.id">
-                        <td class="name-column">
-                            {{ org.org_name }}
-                        </td>
-
-                        <td>
-                            <span class="college-tag">
-                                {{ org.college ?? 'N/A' }}
-                            </span>
-                        </td>
-
+                    <tr v-for="org in filteredOrgs" :key="org.org_id">
+                        <td class="name-column">{{ org.org_name }}</td>
                         <td>
                             <span :class="['status', org.status]">
-                                {{ org.status || 'N/A' }}
+                                {{ org.status }}
                             </span>
                         </td>
-
                         <td>
                             <div class="actions">
                                 <button
-                                    v-if="org.status === 'Registered'"
-                                    class="btn expire"
-                                    @click="updateStatus(org.id, 'Expired')"
-                                >
-                                    Expire
-                                </button>
-
-                                <button
-                                    v-if="org.status === 'Expired'"
                                     class="btn reactivate"
-                                    @click="updateStatus(org.id, 'Registered')"
+                                    :class="{
+                                        active: org.status === 'Expired',
+                                    }"
+                                    :disabled="org.status === 'Registered'"
+                                    @click="reactivateOrg(org)"
                                 >
                                     Reactivate
                                 </button>
-
-                                <span v-if="!org.status" class="badge">
-                                    No actions
-                                </span>
                             </div>
                         </td>
                     </tr>
                 </tbody>
             </table>
 
-            <div v-if="filteredOrganizations.length === 0" class="empty-msg">
-                No organizations found
+            <div v-if="filteredOrgs.length === 0" class="empty-msg">
+                No organizations found.
             </div>
         </div>
     </div>
@@ -89,44 +65,43 @@ import { get, post } from '@/services/apiService';
 
 const organizations = ref([]);
 const search = ref('');
-const selectedStatus = ref('');
+const statusFilter = ref('');
 
-const statuses = ['Registered', 'Expired'];
-
-const fetchOrganizations = async () => {
+const fetchData = async () => {
     try {
-        const res = await get('/osa/organizations');
+        const res = await get('/organizations');
         organizations.value = res.data ?? res;
-    } catch (err) {
-        console.error('Fetch failed:', err);
+    } catch (error) {
+        console.error('Error fetching organizations:', error);
     }
 };
 
-const updateStatus = async (id, status) => {
-    try {
-        await post(`/osa/organizations/${id}/status`, { status });
-
-        const org = organizations.value.find((o) => o.id === id);
-        if (org) org.status = status;
-    } catch (err) {
-        console.error('Update failed:', err);
-    }
-};
-
-const filteredOrganizations = computed(() => {
+// Filtering Logic
+const filteredOrgs = computed(() => {
     return organizations.value.filter((org) => {
-        const matchesSearch =
-            org.org_name?.toLowerCase().includes(search.value.toLowerCase()) ||
-            org.college?.toLowerCase().includes(search.value.toLowerCase());
+        const orgName = org.org_name.toLowerCase();
+        const query = search.value.toLowerCase();
 
+        const matchesSearch = orgName.includes(query);
         const matchesStatus =
-            !selectedStatus.value || org.status === selectedStatus.value;
+            !statusFilter.value || org.status === statusFilter.value;
 
         return matchesSearch && matchesStatus;
     });
 });
 
-onMounted(fetchOrganizations);
+const reactivateOrg = async (org) => {
+    try {
+        await post(`/organizations/reactivate/${org.org_id}`);
+        org.status = 'Registered';
+        alert(`${org.org_name} has been reactivated.`);
+    } catch (error) {
+        console.error('Laravel Error:', error.response?.data || error.message);
+        alert('Failed to reactivate. Check console for details.');
+    }
+};
+
+onMounted(fetchData);
 </script>
 
 <style scoped>
@@ -135,7 +110,7 @@ onMounted(fetchOrganizations);
     padding-top: 0;
 }
 
-/* HEADER */
+/* New Header Styles */
 .header-row {
     display: flex;
     justify-content: space-between;
@@ -143,7 +118,7 @@ onMounted(fetchOrganizations);
     margin-bottom: 15px;
 }
 
-.header-row h1 {
+.header-row h2 {
     font-size: 22px;
     font-weight: 600;
 }
@@ -151,7 +126,6 @@ onMounted(fetchOrganizations);
 .controls {
     display: flex;
     gap: 10px;
-    align-items: center;
 }
 
 .search-box input,
@@ -162,7 +136,17 @@ onMounted(fetchOrganizations);
     font-size: 14px;
 }
 
-/* TABLE */
+.search-box input {
+    width: 200px;
+}
+
+.empty-msg {
+    text-align: center;
+    padding: 30px;
+    color: #6b7280;
+}
+
+/* Existing Table Styles */
 .table-container {
     background: white;
     border-radius: 10px;
@@ -175,10 +159,6 @@ table {
     border-collapse: collapse;
 }
 
-thead {
-    background: #f3f4f6;
-}
-
 th,
 td {
     padding: 12px 15px;
@@ -186,26 +166,23 @@ td {
     font-size: 14px;
 }
 
+thead {
+    background: #f3f4f6;
+}
+
 tbody tr {
     border-top: 1px solid #eee;
 }
 
-tbody tr:hover {
-    background-color: #f9fafb;
-}
-
 .name-column {
     font-weight: 600;
-    color: #111827;
 }
 
-/* STATUS */
 .status {
     display: inline-block;
     padding: 4px 8px;
     border-radius: 999px;
     font-size: 12px;
-    text-transform: capitalize;
 }
 
 .status.Registered {
@@ -218,52 +195,28 @@ tbody tr:hover {
     color: #991b1b;
 }
 
-/* ACTIONS */
-.actions {
-    display: flex;
-    gap: 8px;
-}
-
-/* BUTTONS */
 .btn {
-    padding: 6px 10px;
+    padding: 6px 12px;
     font-size: 13px;
     border-radius: 6px;
     border: none;
-    cursor: pointer;
     font-weight: 600;
-}
-
-.expire {
-    background: #dc2626;
-    color: white;
-}
-
-.expire:hover {
-    background: #b91c1c;
+    transition: all 0.2s ease;
 }
 
 .reactivate {
+    background: #e5e7eb;
+    color: #9ca3af;
+    cursor: not-allowed;
+}
+
+.reactivate.active {
     background: #16a34a;
     color: white;
+    cursor: pointer;
 }
 
-.reactivate:hover {
+.reactivate.active:hover {
     background: #15803d;
-}
-
-/* BADGE */
-.badge {
-    font-size: 12px;
-    background: #e5e7eb;
-    padding: 6px 8px;
-    border-radius: 6px;
-}
-
-/* EMPTY */
-.empty-msg {
-    text-align: center;
-    padding: 30px;
-    color: #6b7280;
 }
 </style>

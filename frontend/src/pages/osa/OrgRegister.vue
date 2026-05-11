@@ -100,13 +100,21 @@ const org = reactive({
 
 const registerOrg = async () => {
     try {
-        await post('/osa/organizations', org);
+        const response = await post('/osa/organizations', org);
+        console.log('REGISTER RESPONSE:', response); 
 
-        alert('Organization Registered!');
-        router.push('/osa/orgs');
-    } catch (error) {
-        alert('Registration failed.');
-        console.error(error);
+        if (response.status === 'success') {
+            alert('Organization registered successfuly!');
+            router.push('/osa/orgs');
+        }
+        
+        else {
+            console.log('VALIDATION ERRORS:', response.errors);
+            alert(response.message || 'Registration failed');
+        }
+    } catch (err) {
+        console.error('Network error:', err);
+        alert(err.message || 'Could not connect to the server.');
     }
 };
 </script>

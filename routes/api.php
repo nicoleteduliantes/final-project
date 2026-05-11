@@ -35,6 +35,7 @@ Route::middleware(['auth:sanctum', 'abilities:osa'])->group(function () {
     Route::delete('/osa/organizations/{id}', [OsaController::class, 'destroy']);
     Route::get('/osa/students', [OsaController::class, 'studentDirectory']);
     Route::get('/osa/degree-programs', [DegreeProgramController::class, 'getProgramsWithColleges']);
+    Route::post('/organizations/reactivate/{id}', [OrganizationController::class, 'reactivate']);
 });
 
 /* ORGANIZATION */
@@ -59,6 +60,10 @@ Route::middleware(['auth:sanctum', 'abilities:org'])->group(function () {
     Route::get('/announcements/my', [AnnouncementController::class, 'myAnnouncements']);
     Route::put('/announcements/{id}', [AnnouncementController::class, 'update']);
     Route::delete('/announcements/{id}', [AnnouncementController::class, 'destroy']);
+
+    // Org Profile
+    Route::get('/org/profile', [OrganizationController::class, 'show']);
+    Route::put('/org/status', [OrganizationController::class, 'updateStatus']);
 });
 
 /* STUDENT (AUTHENTICATED) */

@@ -13,10 +13,17 @@ class EventController extends Controller
     {
         $request->validate([
             'event_name' => 'required|string|max:255',
-            'date'       => 'required|date',
+            'date'       => ['required', 'date', 'after_or_equal:today'],
             'location'   => 'required|string',
             'description' => 'nullable|string',
-        ]);
+        ], 
+            [
+                'event_name'   => 'Event Name is a required field',
+                'date'         =>  'Date is a required field.',
+                'date.after_or_equal' => 'You cannot schedule an event for a past date.',
+                'location'     => 'Location is a required field'
+            ]
+        );
 
        
         $user = $request->user();
@@ -33,6 +40,7 @@ class EventController extends Controller
         ]);
 
         return response()->json([
+            'status'  => 'success',
             'message' => 'Event created successfully!',
             'event'   => $event
         ], 201);
@@ -61,6 +69,21 @@ class EventController extends Controller
     // UPDATE EVENT
     public function update(Request $request, $id)
     {
+
+         $request->validate([
+            'event_name' => 'required|string|max:255',
+            'date'       => ['required', 'date', 'after_or_equal:today'],
+            'location'   => 'required|string',
+            'description' => 'nullable|string',
+        ], 
+            [
+                'event_name'   => 'Event Name is a required field',
+                'date'         =>  'Date is a required field.',
+                'date.after_or_equal' => 'You cannot schedule an event for a past date.',
+                'location'     => 'Location is a required field'
+            ]
+        );
+
         //Ensures organizations  can edit only their own event
         $event = Event::where ('event_id', $id)
                     ->where('org_id', $request->user()->org_id)
@@ -73,7 +96,9 @@ class EventController extends Controller
             'description' => $request->description,
         ]);
 
-        return response()->json(['message' => 'Updated!']);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Event updated succesfully!']);
     }
 
     // DELETE EVENT

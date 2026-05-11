@@ -72,6 +72,14 @@
             @close="selectedApp = null"
             @update="handleUpdate"
         />
+
+        <button class="red-pill-button" @click="toggleApplicationStatus">
+            {{
+                orgApplicationStatus === 'open'
+                    ? 'Close Applications'
+                    : 'Open Applications'
+            }}
+        </button>
     </div>
 </template>
 
@@ -84,10 +92,14 @@ import ApplicationReviewModal from '@/components/ApplicationReviewModal.vue';
 const applications = ref([]);
 const selectedApp = ref(null);
 const selectedStatus = ref('');
+const orgApplicationStatus = ref('closed');
 
 /* FETCH */
 const fetchApplications = async () => {
     try {
+        const orgResponse = await get('/org/profile');
+        orgApplicationStatus.value = orgResponse.application_status;
+
         const response = await get('/org/applications');
 
         applications.value = response.map((item) => ({
@@ -119,6 +131,22 @@ const fetchApplications = async () => {
         }));
     } catch (error) {
         console.error('Fetch error:', error);
+    }
+};
+
+const toggleApplicationStatus = async () => {
+    const newStatus = orgApplicationStatus.value === 'open' ? 'closed' : 'open';
+    const confirmMsg = `Are you sure you want to ${newStatus.toUpperCase()} applications?`;
+
+    if (!confirm(confirmMsg)) return;
+
+    try {
+        await put('/org/status', { application_status: newStatus });
+        orgApplicationStatus.value = newStatus;
+        alert(`Applications are now ${newStatus}.`);
+    } catch (error) {
+        alert('Failed to update status.');
+        console.error(error);
     }
 };
 
@@ -346,9 +374,13 @@ onMounted(fetchApplications);
     font-size: 13px;
     color: #6b7280;
     line-height: 1.5;
+
     display: -webkit-box;
-    -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
+
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+
     overflow: hidden;
 }
 
@@ -361,5 +393,39 @@ onMounted(fetchApplications);
     font-size: 12px;
     font-weight: 700;
     color: #7f1d1d;
+}
+
+.red-pill-button {
+    /* Positioning */
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+    z-index: 1000;
+
+    /* Styling */
+    background-color: #7f1d1d;
+    color: white;
+    padding: 14px 32px;
+    border-radius: 50px;
+    font-weight: 700;
+    font-size: 14px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+
+    /* Effects */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.red-pill-button:hover {
+    background-color: #064e3b; /* Changes to UP Green on hover */
+    color: #facc15; /* Text turns gold on hover */
+    border-color: #facc15;
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);
+}
+
+.red-pill-button:active {
+    transform: translateY(-2px);
 }
 </style>

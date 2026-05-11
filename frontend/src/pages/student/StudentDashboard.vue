@@ -1,14 +1,8 @@
 <template>
     <div class="page">
-        <header class="header">
-            <div>
-                <h1>Dashboard</h1>
-                <p class="subtext">
-                    Stay updated with the latest campus news and events
-                </p>
-            </div>
-        </header>
+        <h1 class="page-title">Dashboard</h1>
 
+        <!-- ANNOUNCEMENTS -->
         <section class="section">
             <h2 class="section-title">Campus Announcements</h2>
 
@@ -78,9 +72,7 @@
                     <div class="poster-content">
                         <div class="poster-top">
                             <span class="tag">EVENT</span>
-                            <span class="date">{{
-                                formatDate(event.date)
-                            }}</span>
+                            <span class="date">{{ event.date }}</span>
                         </div>
 
                         <h3 class="title">{{ event.event_name }}</h3>

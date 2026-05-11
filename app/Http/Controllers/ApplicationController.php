@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Membership;
 use App\Models\ApplicationDetail;
+use App\Models\Membership;
+use App\Models\Organization;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -11,6 +12,21 @@ class ApplicationController extends Controller
 {
     public function store(Request $request)
     {
+
+    $org = Organization::find($request->org_id);
+
+    if (!$org) {
+        return response()->json(['message' => 'Organization not found.'], 404);
+    }
+
+    // Block the application if the application_status is not 'Open'
+    if ($org->application_status !== 'open') {
+        return response()->json([
+            'status' => 'error',
+            'message' => 'Sorry, this organization is currently not accepting applications.'
+        ], 403); 
+    }
+
         try {
             return DB::transaction(function () use ($request) {
                 $membership = Membership::create([
