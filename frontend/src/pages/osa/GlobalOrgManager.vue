@@ -1,6 +1,21 @@
 <template>
     <div class="page">
-        <h2>Organization Management</h2>
+        <div class="header-row">
+            <h2>Organization Management</h2>
+            <div class="controls">
+                <select v-model="statusFilter" class="status-select">
+                    <option value="">All Statuses</option>
+                    <option value="Registered">Registered</option>
+                    <option value="Expired">Expired</option>
+                </select>
+                <div class="search-box">
+                    <input
+                        v-model="search"
+                        placeholder="Search organizations..."
+                    />
+                </div>
+            </div>
+        </div>
 
         <div class="table-container">
             <table>
@@ -12,15 +27,13 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="org in organizations" :key="org.org_id">
+                    <tr v-for="org in filteredOrgs" :key="org.org_id">
                         <td class="name-column">{{ org.org_name }}</td>
-
                         <td>
                             <span :class="['status', org.status]">
                                 {{ org.status }}
                             </span>
                         </td>
-
                         <td>
                             <div class="actions">
                                 <button
@@ -38,15 +51,21 @@
                     </tr>
                 </tbody>
             </table>
+
+            <div v-if="filteredOrgs.length === 0" class="empty-msg">
+                No organizations found.
+            </div>
         </div>
     </div>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, computed, onMounted } from 'vue';
 import { get, post } from '@/services/apiService';
 
 const organizations = ref([]);
+const search = ref('');
+const statusFilter = ref('');
 
 const fetchData = async () => {
     try {
@@ -56,6 +75,20 @@ const fetchData = async () => {
         console.error('Error fetching organizations:', error);
     }
 };
+
+// Filtering Logic
+const filteredOrgs = computed(() => {
+    return organizations.value.filter((org) => {
+        const orgName = org.org_name.toLowerCase();
+        const query = search.value.toLowerCase();
+
+        const matchesSearch = orgName.includes(query);
+        const matchesStatus =
+            !statusFilter.value || org.status === statusFilter.value;
+
+        return matchesSearch && matchesStatus;
+    });
+});
 
 const reactivateOrg = async (org) => {
     try {
@@ -77,6 +110,43 @@ onMounted(fetchData);
     padding-top: 0;
 }
 
+/* New Header Styles */
+.header-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.header-row h2 {
+    font-size: 22px;
+    font-weight: 600;
+}
+
+.controls {
+    display: flex;
+    gap: 10px;
+}
+
+.search-box input,
+.status-select {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.search-box input {
+    width: 200px;
+}
+
+.empty-msg {
+    text-align: center;
+    padding: 30px;
+    color: #6b7280;
+}
+
+/* Existing Table Styles */
 .table-container {
     background: white;
     border-radius: 10px;
@@ -108,7 +178,6 @@ tbody tr {
     font-weight: 600;
 }
 
-/* STATUS TAGS */
 .status {
     display: inline-block;
     padding: 4px 8px;
@@ -126,7 +195,6 @@ tbody tr {
     color: #991b1b;
 }
 
-/* BUTTONS */
 .btn {
     padding: 6px 12px;
     font-size: 13px;
@@ -136,14 +204,12 @@ tbody tr {
     transition: all 0.2s ease;
 }
 
-/* Default state: Gray/Disabled (for Registered orgs) */
 .reactivate {
     background: #e5e7eb;
     color: #9ca3af;
     cursor: not-allowed;
 }
 
-/* Clickable state: Green (for Expired orgs) */
 .reactivate.active {
     background: #16a34a;
     color: white;
