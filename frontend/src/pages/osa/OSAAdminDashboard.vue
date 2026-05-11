@@ -1,12 +1,10 @@
 <template>
     <div class="page">
         <div class="header">
-            <h1>Office of Student Affairs</h1>
-            <p class="subtext">
-                Manage announcements and monitor campus events
-            </p>
+            <h1>Office of Student Affairs Dashboard</h1>
         </div>
 
+        <!-- POST NEW ANNOUNCEMENT -->
         <div class="announcement-section">
             <div class="section-header" @click="toggleCreate">
                 <h2>
@@ -23,7 +21,7 @@
                         <label>Title</label>
                         <input
                             v-model.trim="newAnnouncement.title"
-                            placeholder="Enter announcement title"
+                            placeholder="e.g. Membership applications are now open!"
                         />
                     </div>
 
@@ -31,8 +29,8 @@
                         <label>Content</label>
                         <textarea
                             v-model.trim="newAnnouncement.content"
+                            placeholder="Write your announcement details here..."
                             rows="4"
-                            placeholder="Write announcement details..."
                         ></textarea>
                     </div>
 
@@ -49,84 +47,118 @@
             </Transition>
         </div>
 
+        <!-- MY ANNOUNCEMENTS -->
         <div class="my-announcements">
-            <div class="list-header">
-                <h2>My Announcements</h2>
+            <div class="section-header" @click="toggleMyAnnouncements">
+                <h2>
+                    My Announcements
+                    <span
+                        class="arrow"
+                        :class="{ 'is-active': showMyAnnouncements }"
+                    >
+                        ▼
+                    </span>
+                </h2>
+
                 <span class="count">{{ myAnnouncements.length }} total</span>
             </div>
 
-            <div
-                v-if="!myAnnouncements || myAnnouncements.length === 0"
-                class="empty"
-            >
-                <div class="empty-icon">📢</div>
-                <p>No announcements yet.</p>
-            </div>
-
-            <div v-else class="announcement-list">
-                <div
-                    v-for="ann in myAnnouncements"
-                    :key="ann.announcement_id"
-                    class="announcement-item"
-                >
-                    <div class="info">
-                        <div class="item-header">
-                            <h3>{{ ann.title }}</h3>
-                            <small>{{ formatDate(ann.date_posted) }}</small>
-                        </div>
-                        <p>{{ ann.content }}</p>
+            <Transition name="expand">
+                <div v-if="showMyAnnouncements">
+                    <div v-if="myAnnouncements.length === 0" class="empty">
+                        <div class="empty-icon">📢</div>
+                        <p>
+                            No announcements yet. Share something with your
+                            organization!
+                        </p>
                     </div>
 
-                    <div class="actions">
-                        <button class="btn edit" @click="openEdit(ann)">
-                            Edit
-                        </button>
-                        <button class="btn delete" @click="confirmDelete(ann)">
-                            Delete
-                        </button>
+                    <div v-else class="announcement-stack">
+                        <div
+                            class="poster announcement-card"
+                            v-for="ann in myAnnouncements"
+                            :key="ann.announcement_id"
+                        >
+                            <div class="poster-content">
+                                <div class="poster-top">
+                                    <span class="tag announcement-tag">{{
+                                        organization?.org_name || 'My Post'
+                                    }}</span>
+                                    <span class="date">
+                                        {{ formatDate(ann.date_posted) }}
+                                    </span>
+                                </div>
+
+                                <h3 class="title">{{ ann.title }}</h3>
+
+                                <p class="desc">{{ ann.content }}</p>
+
+                                <div class="actions" style="margin-top: 12px">
+                                    <button
+                                        class="btn edit"
+                                        @click="openEdit(ann)"
+                                    >
+                                        Edit
+                                    </button>
+                                    <button
+                                        class="btn delete"
+                                        @click="confirmDelete(ann)"
+                                    >
+                                        Delete
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </Transition>
         </div>
 
-        <div class="my-announcements">
-            <div class="list-header">
-                <h2>Campus-wide Announcements</h2>
-                <span class="count">{{ allAnnouncements.length }} total</span>
-            </div>
+        <!-- CAMPUS-WIDE ANNOUNCEMENTS -->
+        <section class="section">
+            <h2 class="section-title">Campus-wide Announcements</h2>
 
             <div v-if="allAnnouncements.length === 0" class="empty">
                 <p>No campus announcements found.</p>
             </div>
 
-            <div v-else class="announcement-list">
+            <div v-else class="announcement-stack">
                 <div
+                    class="poster announcement-card"
                     v-for="ann in allAnnouncements"
                     :key="ann.announcement_id"
-                    class="announcement-item"
                 >
-                    <div class="info">
-                        <div class="item-header">
-                            <h3>{{ ann.title }}</h3>
-                            <small>{{ formatDate(ann.date_posted) }}</small>
+                    <div class="poster-content">
+                        <div class="poster-top">
+                            <span class="tag announcement-tag"
+                                >ANNOUNCEMENT</span
+                            >
+                            <span class="date">
+                                {{ formatDate(ann.date_posted) }}
+                            </span>
                         </div>
-                        <p style="margin-bottom: 8px">
-                            <small
-                                >Posted by:
-                                <b>{{
+
+                        <h3 class="title">{{ ann.title }}</h3>
+
+                        <p class="posted-by">
+                            Posted by:
+                            <b>
+                                {{
                                     ann.osa_id
                                         ? 'Office of the Student Affairs'
                                         : ann.organization?.org_name ||
                                           'Organization'
-                                }}</b></small
-                            >
+                                }}
+                            </b>
                         </p>
-                        <p>{{ ann.content }}</p>
+
+                        <p class="desc">{{ ann.content }}</p>
                     </div>
                 </div>
             </div>
-        </div>
+        </section>
 
+        <!-- EVENTS -->
         <section class="section">
             <h2 class="section-title">Upcoming Events</h2>
 
@@ -158,29 +190,17 @@
                             }}</span>
                         </div>
 
-                        <h3 class="title">
-                            {{ event.event_name }}
-                        </h3>
+                        <h3 class="title">{{ event.event_name }}</h3>
 
                         <p class="location">📍 {{ event.location }}</p>
 
-                        <p class="desc">
-                            {{ event.description }}
-                        </p>
-
-                        <div class="actions" style="margin-top: 15px">
-                            <RouterLink
-                                :to="'/event/' + event.event_id"
-                                class="btn link"
-                            >
-                                View Event
-                            </RouterLink>
-                        </div>
+                        <p class="desc">{{ event.description }}</p>
                     </div>
                 </div>
             </div>
         </section>
 
+        <!-- EDIT MODAL -->
         <Teleport to="body">
             <Transition name="fade">
                 <div
@@ -211,7 +231,6 @@
                             >
                                 Save Changes
                             </button>
-
                             <button class="cancel-btn" @click="closeModal">
                                 Cancel
                             </button>
@@ -221,6 +240,7 @@
             </Transition>
         </Teleport>
 
+        <!-- DELETE MODAL -->
         <Teleport to="body">
             <Transition name="fade">
                 <div
@@ -243,7 +263,6 @@
                             >
                                 Delete
                             </button>
-
                             <button
                                 class="cancel-btn"
                                 @click="showDeleteModal = false"
@@ -256,6 +275,7 @@
             </Transition>
         </Teleport>
 
+        <!-- TOAST -->
         <Transition name="slide">
             <div v-if="toast.show" class="toast">
                 {{ toast.message }}
@@ -278,6 +298,9 @@ const newAnnouncement = ref({
 });
 
 const myAnnouncements = ref([]);
+const showMyAnnouncements = ref(false);
+const toggleMyAnnouncements = () =>
+    (showMyAnnouncements.value = !showMyAnnouncements.value);
 const allAnnouncements = ref([]);
 const events = ref([]);
 
@@ -454,14 +477,35 @@ onMounted(() => {
     margin-bottom: 30px;
     padding-top: 20px;
 }
-
 h1 {
     font-size: 28px;
     font-weight: 800;
     color: #7f1d1d;
     margin: 0;
 }
+.org-badge {
+    margin-top: 8px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
 
+    padding: 6px 12px;
+    border-radius: 999px;
+
+    background: #064e3b;
+    color: gold;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    border: 2px solid gold;
+}
+
+.org-badge .verified {
+    font-size: 12px;
+    color: gold;
+    margin-left: 2px;
+}
 .subtext {
     font-size: 15px;
     color: #6b7280;
@@ -473,10 +517,10 @@ h1 {
 .my-announcements {
     background: white;
     border-radius: 16px;
-    padding: 24px;
+    padding: 20px;
     border: 1px solid #e5e7eb;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-    margin-bottom: 24px;
+    margin-bottom: 10px;
 }
 
 /* SECTION HEADERS */
@@ -484,8 +528,9 @@ h1 {
     cursor: pointer;
     display: flex;
     align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
 }
-
 .section-header h2 {
     font-size: 18px;
     font-weight: 800;
@@ -494,13 +539,11 @@ h1 {
     gap: 10px;
     width: 100%;
 }
-
 .arrow {
     font-size: 20px;
     transition: transform 0.3s ease;
     color: #7f1d1d;
 }
-
 .arrow.is-active {
     transform: rotate(180deg);
 }
@@ -511,36 +554,111 @@ h1 {
     align-items: center;
     margin-bottom: 20px;
 }
-
 .list-header h2 {
     font-size: 18px;
     font-weight: 800;
     margin: 0;
 }
-
 .count {
     font-size: 12px;
     font-weight: 600;
+    width: 40px;
     color: #6b7280;
     background: #f3f4f6;
     padding: 4px 10px;
     border-radius: 999px;
 }
 
-/* FORM */
+/* CAMPUS ANNOUNCEMENTS */
+.poster {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    transition: 0.25s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.poster:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 18px 35px rgba(0, 0, 0, 0.12);
+}
+
+.announcement-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.announcement-card {
+    background: white;
+    border-radius: 16px;
+    padding: 20px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
+    transition: 0.2s ease;
+}
+
+.announcement-card:hover {
+    border-left: 6px solid #7f1d1d;
+}
+
+.poster-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.announcement-tag {
+    background: #064e3b !important;
+    color: white;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.date {
+    font-size: 12px;
+    background: #f3f4f6;
+    padding: 4px 8px;
+    border-radius: 6px;
+}
+
+.title {
+    font-size: 18px;
+    font-weight: 800;
+    margin-bottom: 8px;
+    color: #7f1d1d;
+}
+
+.posted-by {
+    font-size: 13px;
+    color: #7f1d1d;
+    margin-bottom: 10px;
+}
+
+.desc {
+    font-size: 14px;
+    color: #4b5563;
+    line-height: 1.6;
+}
+
+/* FORM & INPUTS */
 .announcement-form {
     display: flex;
     flex-direction: column;
     gap: 16px;
     padding-top: 20px;
 }
-
 .input-group {
     display: flex;
     flex-direction: column;
     gap: 6px;
 }
-
 .input-group label {
     font-size: 13px;
     font-weight: 700;
@@ -563,47 +681,102 @@ textarea:focus {
     box-shadow: 0 0 0 3px rgba(127, 29, 29, 0.1);
 }
 
-/* ANNOUNCEMENT LIST */
+/* LIST ITEMS */
 .announcement-item {
     padding: 20px 0;
     border-bottom: 1px solid #f3f4f6;
     display: flex;
     flex-direction: column;
     gap: 12px;
-    transition: all 0.25s ease;
 }
-
-.announcement-item:hover {
-    transform: translateY(-2px);
-}
-
 .announcement-item:last-child {
     border-bottom: none;
 }
-
 .item-header {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
 }
-
 .item-header h3 {
     font-size: 17px;
     font-weight: 700;
     margin: 0;
     color: #111827;
 }
-
 .item-header small {
     color: #9ca3af;
     font-weight: 500;
 }
-
 .announcement-item p {
     font-size: 14px;
     color: #4b5563;
     line-height: 1.6;
     margin: 0;
+}
+
+/* EVENTS */
+.empty {
+    padding: 20px;
+    border: 1px dashed #d1d5db;
+    border-radius: 10px;
+    text-align: center;
+    color: #6b7280;
+}
+
+.poster-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 20px;
+}
+
+.poster {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    transition: 0.25s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+.poster:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 18px 35px rgba(0, 0, 0, 0.12);
+}
+
+.poster-image {
+    width: 100%;
+    height: 180px;
+    overflow: hidden;
+}
+
+.poster-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* CONTENT */
+.poster-content {
+    padding: 16px;
+    flex: 1;
+}
+
+/* TOP */
+.poster-top {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.tag {
+    background: #7f1d1d;
+    color: white;
+    padding: 4px 10px;
+    border-radius: 999px;
+    font-size: 10px;
+    font-weight: 700;
 }
 
 /* BUTTONS */
@@ -617,7 +790,7 @@ textarea:focus {
     border-radius: 10px;
     font-weight: 700;
     cursor: pointer;
-    transition: all 0.25s ease;
+    transition: 0.2s;
     font-size: 13px;
     border: 2px solid #cba9a9;
 }
@@ -633,26 +806,21 @@ textarea:focus {
     background: #064e3b;
     color: gold;
     border-color: gold;
-    transform: translateY(-2px);
 }
 
 .delete:hover {
     background: #7f1d1d;
     color: white;
     border-color: gold;
-    transform: translateY(-2px);
-}
-
-.primary-btn {
-    background: #7f1d1d;
-    color: white;
-    border-color: #7f1d1d;
 }
 
 .cancel-btn,
 .delete-confirm-btn {
     flex: 1;
     padding: 12px;
+    border-radius: 10px;
+    font-weight: 700;
+    cursor: pointer;
 }
 
 .cancel-btn {
@@ -680,96 +848,11 @@ textarea:focus {
     display: flex;
     gap: 8px;
 }
-
-/* EVENTS */
-.section {
-    margin-top: 32px;
+.actions .btn {
+    flex: 0 1 auto;
 }
 
-.section-title {
-    font-size: 18px;
-    font-weight: 800;
-    margin-bottom: 16px;
-}
-
-.poster-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 18px;
-}
-
-.poster {
-    background: white;
-    border-radius: 16px;
-    overflow: hidden;
-    border: 1px solid #e5e7eb;
-    transition: 0.25s ease;
-}
-
-.poster:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 20px rgba(0, 0, 0, 0.08);
-}
-
-.poster-image {
-    height: 160px;
-}
-
-.poster-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-.poster-content {
-    padding: 14px;
-}
-
-.poster-top {
-    display: flex;
-    justify-content: space-between;
-}
-
-.tag {
-    background: #7f1d1d;
-    color: white;
-    padding: 3px 10px;
-    border-radius: 999px;
-    font-size: 10px;
-    font-weight: 700;
-}
-
-.date {
-    font-size: 12px;
-    color: #6b7280;
-}
-
-.title {
-    margin: 10px 0 4px;
-    font-size: 18px;
-    font-weight: 800;
-}
-
-.location,
-.desc {
-    font-size: 13px;
-    color: #4b5563;
-}
-
-/* EMPTY */
-.empty {
-    padding: 40px;
-    text-align: center;
-    border: 2px dashed #e5e7eb;
-    border-radius: 12px;
-}
-
-.empty-icon {
-    font-size: 32px;
-    margin-bottom: 10px;
-}
-
-/* MODALS */
+/* MODAL STYLES */
 .modal-overlay {
     position: fixed;
     inset: 0;
@@ -790,10 +873,34 @@ textarea:focus {
     box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
 }
 
+.modal-header h2 {
+    color: #111827;
+    margin-top: 0;
+}
+.modal-header p {
+    color: #6b7280;
+    line-height: 1.5;
+}
+
 .modal-actions {
     display: flex;
     gap: 12px;
     margin-top: 24px;
+}
+
+/* EMPTY STATE */
+.empty {
+    padding: 40px;
+    text-align: center;
+    border: 2px dashed #e5e7eb;
+    border-radius: 12px;
+}
+.empty-icon {
+    font-size: 32px;
+    margin-bottom: 10px;
+}
+.empty p {
+    color: #6b7280;
 }
 
 /* TOAST */
@@ -813,23 +920,21 @@ textarea:focus {
 /* ANIMATIONS */
 .expand-enter-active,
 .expand-leave-active {
-    transition: all 0.35s ease;
+    transition: all 0.3s ease;
     max-height: 500px;
     overflow: hidden;
 }
-
 .expand-enter-from,
 .expand-leave-to {
     max-height: 0;
     opacity: 0;
-    transform: translateY(-10px);
+    padding-top: 0;
 }
 
 .fade-enter-active,
 .fade-leave-active {
-    transition: opacity 0.25s ease;
+    transition: opacity 0.2s;
 }
-
 .fade-enter-from,
 .fade-leave-to {
     opacity: 0;
@@ -839,14 +944,9 @@ textarea:focus {
 .slide-leave-active {
     transition: all 0.3s ease;
 }
-
-.slide-enter-from {
-    opacity: 0;
-    transform: translateX(40px);
-}
-
+.slide-enter-from,
 .slide-leave-to {
+    transform: translateX(50px);
     opacity: 0;
-    transform: translateX(40px);
 }
 </style>

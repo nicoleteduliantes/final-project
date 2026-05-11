@@ -4,7 +4,7 @@
 
         <!-- ANNOUNCEMENTS -->
         <section class="section">
-            <h2 class="section-title">Campus Announcements</h2>
+            <h2 class="section-title">Campus-wide Announcements</h2>
 
             <div v-if="announcements.length === 0" class="empty">
                 No announcements found.
@@ -146,7 +146,7 @@ onMounted(fetchData);
     margin-bottom: 12px;
 }
 
-/* EMPTY */
+/* EVENTS */
 .empty {
     padding: 20px;
     border: 1px dashed #d1d5db;
@@ -155,14 +155,12 @@ onMounted(fetchData);
     color: #6b7280;
 }
 
-/* GRID - MATCHES ORG VIEW */
 .poster-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 20px;
 }
 
-/* POSTER - MATCHES ORG VIEW */
 .poster {
     background: white;
     border-radius: 16px;
@@ -179,7 +177,6 @@ onMounted(fetchData);
     box-shadow: 0 18px 35px rgba(0, 0, 0, 0.12);
 }
 
-/* IMAGE - MATCHES ORG VIEW (180px height) */
 .poster-image {
     width: 100%;
     height: 180px;
@@ -251,7 +248,7 @@ onMounted(fetchData);
     line-height: 1.5;
 }
 
-/* ANNOUNCEMENT SPECIFIC */
+/* ANNOUNCEMENT */
 .announcement-stack {
     display: flex;
     flex-direction: column;
