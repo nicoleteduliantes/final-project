@@ -133,7 +133,8 @@ a:hover {
     color: #7f1d1d;
 }
 
-a.router-link-active {
+a.router-link-active,
+.logout-item:hover {
     background: #034a2e;
     color: gold;
     border: 2px solid gold;
@@ -167,12 +168,6 @@ a.router-link-active {
     cursor: pointer;
     transition: 0.2s;
     border: 3px solid transparent;
-}
-
-.logout-item:hover {
-    background: white;
-    color: #7f1d1d;
-    border-color: gold;
 }
 
 .sidebar.collapsed .logout-item {
