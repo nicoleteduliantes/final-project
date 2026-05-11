@@ -96,7 +96,7 @@ const form = reactive({
 const isIdValid = computed(() => {
     const currentYear = new Date().getFullYear();
     const regex = /^20\d{2}-\d{5}$/; // Matches 20XX-XXXXX
-    
+
     if (!regex.test(form.student_id)) return false;
 
     const inputYear = parseInt(form.student_id.substring(0, 4));
@@ -108,7 +108,7 @@ const resetForm = () => {
     // Reset Login fields
     email.value = '';
     password.value = '';
-    
+
     // Reset Register Form
     Object.assign(form, {
         student_id: '',
@@ -152,7 +152,7 @@ const login = async () => {
         }
     } catch (err) {
         console.error(err);
-        alert(err.message||'Server error');
+        alert(err.message || 'Server error');
     }
 };
 
@@ -161,21 +161,19 @@ const register = async () => {
     try {
         const response = await post('/register-student', form);
 
-        console.log('REGISTER RESPONSE:', response); 
+        console.log('REGISTER RESPONSE:', response);
 
         if (response.status === 'success') {
             alert('Registration Successful!');
             resetForm();
             isRegister.value = false; //switch to login
-        }
-        
-        else {
+        } else {
             console.log('VALIDATION ERRORS:', response.errors);
             alert(response.message || 'Registration failed');
         }
     } catch (err) {
         console.error('Network error:', err);
-        alert(err.message||'Could not connect to the server.');
+        alert(err.message || 'Could not connect to the server.');
     }
 };
 
