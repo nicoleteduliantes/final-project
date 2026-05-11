@@ -21,9 +21,9 @@ class StudentSeeder extends Seeder
             ],
             [
                 'student_id' => '2025-08076',
-                'last_name'  => 'Gelecania',
+                'last_name'  => 'Gellecania',
                 'first_name' => 'Ezra Ysabela',
-                'up_email'   => 'eggelecnia@up.edu.ph',
+                'up_email'   => 'eggellecania@up.edu.ph',
                 'degprog_id' => '12',
                 'password'   => Hash::make('student123'),
             ],
@@ -39,7 +39,7 @@ class StudentSeeder extends Seeder
                 'student_id' => '2025-08078',
                 'last_name'  => 'Caña',
                 'first_name' => 'Aiyesha Threa',
-                'up_email'   => 'ascana@up.edu.ph', // Note: removed 'ñ' from email for safety
+                'up_email'   => 'ascaña@up.edu.ph', // Note: removed 'ñ' from email for safety
                 'degprog_id' => '12',
                 'password'   => Hash::make('student123'),
             ],
