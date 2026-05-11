@@ -20,8 +20,6 @@ import OrgDashboard from '@/pages/org/OrgDashboard.vue';
 import ManageMembers from '@/pages/org/ManageMembers.vue';
 import ReviewApplications from '@/pages/org/ReviewApplications.vue';
 import UpcomingEvents from '@/pages/org/UpcomingEvents.vue';
-import NewEvent from '@/pages/org/NewEvent.vue';
-import EventEditor from '@/pages/org/EventEditor.vue';
 
 /* OSA */
 import OSAAdminDashboard from '@/pages/osa/OSAAdminDashboard.vue';
@@ -47,7 +45,7 @@ const routes = [
                 redirect: '/dashboard',
             },
 
-            /* ===================== STUDENT ===================== */
+            /* STUDENT */
 
             {
                 path: 'dashboard',
@@ -67,7 +65,6 @@ const routes = [
                 meta: { role: 'student' },
             },
 
-            /* Org Profile (FIXED PARAM) */
             {
                 path: 'org/:id',
                 component: OrgProfile,
@@ -76,16 +73,7 @@ const routes = [
                 },
             },
 
-            // /* Application Form */
-            // {
-            //     path: 'apply/:org_id',
-            //     component: ApplicationForm,
-            //     meta: {
-            //         role: 'student',
-            //     },
-            // },
-
-            /* ===================== ORG ===================== */
+            /* ORG */
 
             {
                 path: 'org/dashboard',
@@ -111,19 +99,7 @@ const routes = [
                 meta: { role: 'org' },
             },
 
-            {
-                path: 'org/events/new',
-                component: NewEvent,
-                meta: { role: 'org' },
-            },
-
-            {
-                path: 'org/events/edit/:id',
-                component: EventEditor,
-                meta: { role: 'org' },
-            },
-
-            /* ===================== OSA ===================== */
+            /* OSA */
 
             {
                 path: 'osa/dashboard',
@@ -163,7 +139,7 @@ const router = createRouter({
     routes,
 });
 
-/* ===================== AUTH GUARD ===================== */
+/* AUTH GUARD */
 router.beforeEach((to, from, next) => {
     const auth = useAuthStore();
 

@@ -34,27 +34,25 @@ const router = useRouter();
 const auth = useAuthStore();
 
 const login = async () => {
+    try {
+        const res = await post('/admin/login', {
+            id: email.value,
+            password: password.value,
+            type: type.value,
+        });
 
-    try{
-    const res = await post('/admin/login', {
-        id: email.value,
-        password: password.value,
-        type: type.value,
-    });
-
-    if (res.token) {
-        if (type.value === 'org') {
-            auth.loginOrg(res.user, res.token);
-            router.push('/org/dashboard');
-        } else {
-            auth.loginOsa(res.user, res.token);
-            router.push('/osa/dashboard');
+        if (res.token) {
+            if (type.value === 'org') {
+                auth.loginOrg(res.user, res.token);
+                router.push('/org/dashboard');
+            } else {
+                auth.loginOsa(res.user, res.token);
+                router.push('/osa/dashboard');
+            }
         }
+    } catch (err) {
+        alert(err.message || 'Login failed! Check your credentials.');
     }
-    } catch(err) {
-        alert(err.message||'Login failed! Check your credentials.');
-    }
-
 };
 </script>
 
