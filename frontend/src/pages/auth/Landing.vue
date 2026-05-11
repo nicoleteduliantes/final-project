@@ -235,20 +235,14 @@ onUnmounted(() => {
     transition: all 0.25s ease;
 }
 
-.student:hover {
-    background: #064e3b;
-    color: gold;
-    border: 3px solid gold;
-
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-}
-
+.student:hover,
 .admin:hover {
     background: #064e3b;
     color: gold;
     border: 3px solid gold;
 
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    scale: 1.03;
 }
 
 /* PUSH PINS */
