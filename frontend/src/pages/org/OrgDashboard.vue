@@ -3,7 +3,8 @@
         <div class="header">
             <h1>Organization Dashboard</h1>
             <p class="subtext">
-                Post and manage your organization announcements
+                Post and manage your organization announcements and monitor
+                campus events
             </p>
         </div>
 
@@ -89,6 +90,92 @@
             </div>
         </div>
 
+        <div class="my-announcements">
+            <div class="list-header">
+                <h2>Campus-wide Announcements</h2>
+                <span class="count">{{ allAnnouncements.length }} total</span>
+            </div>
+
+            <div v-if="allAnnouncements.length === 0" class="empty">
+                <p>No campus announcements found.</p>
+            </div>
+
+            <div v-else class="announcement-list">
+                <div
+                    v-for="ann in allAnnouncements"
+                    :key="ann.announcement_id"
+                    class="announcement-item"
+                >
+                    <div class="info">
+                        <div class="item-header">
+                            <h3>{{ ann.title }}</h3>
+                            <small>{{ formatDate(ann.date_posted) }}</small>
+                        </div>
+                        <p style="margin-bottom: 8px">
+                            <small
+                                >Posted by:
+                                <b>{{
+                                    ann.osa_id
+                                        ? 'Office of the Student Affairs'
+                                        : ann.organization?.org_name ||
+                                          'Organization'
+                                }}</b></small
+                            >
+                        </p>
+                        <p>{{ ann.content }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section class="section">
+            <h2 class="section-title">Upcoming Events</h2>
+
+            <div v-if="events.length === 0" class="empty">
+                <p>No upcoming events found.</p>
+            </div>
+
+            <div v-else class="poster-grid">
+                <div
+                    class="poster"
+                    v-for="event in events"
+                    :key="event.event_id"
+                >
+                    <div class="poster-image">
+                        <img
+                            :src="
+                                event.image_url ||
+                                'https://images.unsplash.com/photo-1523580494863-6f3031224c94?auto=format&fit=crop&w=1200&q=80'
+                            "
+                            alt="event poster"
+                        />
+                    </div>
+
+                    <div class="poster-content">
+                        <div class="poster-top">
+                            <span class="tag">{{ event.event_host }}</span>
+                            <span class="date">{{
+                                formatDate(event.date)
+                            }}</span>
+                        </div>
+
+                        <h3 class="title">{{ event.event_name }}</h3>
+                        <p class="location">📍 {{ event.location }}</p>
+                        <p class="desc">{{ event.description }}</p>
+
+                        <div class="actions" style="margin-top: 15px">
+                            <RouterLink
+                                :to="'/event/' + event.event_id"
+                                class="btn link"
+                            >
+                                View Event
+                            </RouterLink>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <Teleport to="body">
             <Transition name="fade">
                 <div
@@ -109,7 +196,6 @@
                                 rows="5"
                             ></textarea>
                         </div>
-
                         <div class="modal-actions">
                             <button
                                 class="primary-btn"
@@ -139,7 +225,6 @@
                             Are you sure you want to delete
                             <b>"{{ deleteTarget?.title }}"</b>?
                         </p>
-
                         <div class="modal-actions">
                             <button
                                 class="delete-confirm-btn"
@@ -177,10 +262,12 @@ const toggleCreate = () => (showCreate.value = !showCreate.value);
 
 const newAnnouncement = ref({ title: '', content: '' });
 const myAnnouncements = ref([]);
+const allAnnouncements = ref([]);
+const events = ref([]); // New State
+
 const showModal = ref(false);
 const showDeleteModal = ref(false);
 const deleteTarget = ref(null);
-
 const editForm = ref({ id: null, title: '', content: '' });
 
 const toast = reactive({ show: false, message: '' });
@@ -199,7 +286,27 @@ const fetchMyAnnouncements = async () => {
         const data = res?.data?.data ?? res?.data ?? res ?? [];
         myAnnouncements.value = Array.isArray(data) ? data : [];
     } catch (error) {
-        console.error('Fetch failed:', error);
+        console.error(error);
+    }
+};
+
+const fetchAllAnnouncements = async () => {
+    try {
+        const res = await get('/announcements');
+        const data = res?.data?.data ?? res?.data ?? res ?? [];
+        allAnnouncements.value = Array.isArray(data) ? data : [];
+    } catch (error) {
+        console.error(error);
+    }
+};
+
+const fetchEvents = async () => {
+    try {
+        const res = await get('/events');
+        const data = res?.data?.data ?? res?.data ?? res ?? [];
+        events.value = Array.isArray(data) ? data : [];
+    } catch (error) {
+        console.error(error);
     }
 };
 
@@ -216,7 +323,7 @@ const postAnnouncement = async () => {
         await post('/announcements', newAnnouncement.value);
         newAnnouncement.value = { title: '', content: '' };
         showCreate.value = false;
-        await fetchMyAnnouncements();
+        await Promise.all([fetchMyAnnouncements(), fetchAllAnnouncements()]);
         showToast('Announcement posted!');
     } catch (error) {
         showToast('Failed to post.');
@@ -263,7 +370,11 @@ const deleteAnnouncement = async () => {
     }
 };
 
-onMounted(fetchMyAnnouncements);
+onMounted(() => {
+    fetchMyAnnouncements();
+    fetchAllAnnouncements();
+    fetchEvents();
+});
 </script>
 
 <style scoped>

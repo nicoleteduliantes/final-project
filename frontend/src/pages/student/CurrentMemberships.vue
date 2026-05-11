@@ -47,8 +47,7 @@
                                 membership.status?.toLowerCase() === 'pending'
                                     ? membership.application_detail
                                           ?.applied_committee || 'N/A'
-                                    : membership.assigned_committee ||
-                                      'General Member'
+                                    : membership.assigned_committee
                             }}
                         </p>
                     </div>
