@@ -13,7 +13,6 @@ import AdminLogin from '@/pages/auth/AdminLogin.vue';
 import StudentDashboard from '@/pages/student/StudentDashboard.vue';
 import Discover from '@/pages/student/Discover.vue';
 import CurrentMemberships from '@/pages/student/CurrentMemberships.vue';
-import OrgProfile from '@/pages/student/OrgProfile.vue';
 
 /* ORG */
 import OrgDashboard from '@/pages/org/OrgDashboard.vue';
@@ -63,14 +62,6 @@ const routes = [
                 path: 'memberships',
                 component: CurrentMemberships,
                 meta: { role: 'student' },
-            },
-
-            {
-                path: 'org/:id',
-                component: OrgProfile,
-                meta: {
-                    role: 'student',
-                },
             },
 
             /* ORG */
