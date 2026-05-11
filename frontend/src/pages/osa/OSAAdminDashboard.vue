@@ -282,22 +282,12 @@ const toggleCreate = () => {
 const fetchMyAnnouncements = async () => {
     try {
         const res = await get('/osa/announcements/my');
-
-        let data = [];
-
-        if (Array.isArray(res)) {
-            data = res;
-        } else if (Array.isArray(res?.data)) {
-            data = res.data;
-        } else if (Array.isArray(res?.data?.data)) {
-            data = res.data.data;
-        }
-
-        announcements.value = data;
+        const data = res?.data?.data ?? res?.data ?? res ?? [];
+        announcements.value = Array.isArray(data) ? data : [];
     } catch (err) {
-        console.error('FETCH ERROR:', err);
-        announcements.value = [];
+        console.error(err);
         showToast('Failed to load announcements');
+        announcements.value = [];
     }
 };
 
