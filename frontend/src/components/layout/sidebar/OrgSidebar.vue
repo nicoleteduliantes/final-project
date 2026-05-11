@@ -28,10 +28,6 @@
             <router-link to="/org/events">
                 🎉 <span v-if="!collapsed">Events</span>
             </router-link>
-
-            <router-link to="/org/events/new">
-                ➕ <span v-if="!collapsed">New Event</span>
-            </router-link>
         </nav>
 
         <!-- LOGOUT -->

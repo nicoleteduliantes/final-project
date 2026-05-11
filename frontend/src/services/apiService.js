@@ -1,15 +1,20 @@
 import { API_BASE_URL } from '@/config/api';
 
 async function request(endpoint, method, data = null) {
-    const res = await fetch(`${API_BASE_URL}${endpoint}`, {
+    const options = {
         method,
         headers: {
-            'Content-Type': 'application/json',
             Accept: 'application/json',
             Authorization: `Bearer ${localStorage.getItem('AUTH_TOKEN')}`,
         },
-        body: data ? JSON.stringify(data) : null,
-    });
+    };
+
+    if (data) {
+        options.headers['Content-Type'] = 'application/json';
+        options.body = JSON.stringify(data);
+    }
+
+    const res = await fetch(`${API_BASE_URL}${endpoint}`, options);
 
     return await res.json();
 }
