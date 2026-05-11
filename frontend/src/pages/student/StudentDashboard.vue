@@ -71,11 +71,7 @@
 
                     <div class="poster-content">
                         <div class="poster-top">
-                            <<<<<<< HEAD
                             <span class="tag">{{ event.event_host }}</span>
-                            <span class="date">{{ event.date }}</span>
-                            =======
-                            <span class="tag">EVENT</span>
                             <span class="date">{{
                                 formatDate(event.date)
                             }}</span>

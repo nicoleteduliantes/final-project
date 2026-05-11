@@ -80,7 +80,7 @@ const createEvent = async () => {
         }
     } catch (err) {
         console.error('Network error:', err);
-        alert('Could not connect to the server.');
+        alert(err.message||'Could not connect to the server.');
     }
 };
 </script>

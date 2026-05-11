@@ -34,6 +34,8 @@ const router = useRouter();
 const auth = useAuthStore();
 
 const login = async () => {
+
+    try{
     const res = await post('/admin/login', {
         id: email.value,
         password: password.value,
@@ -48,9 +50,11 @@ const login = async () => {
             auth.loginOsa(res.user, res.token);
             router.push('/osa/dashboard');
         }
-    } else {
-        alert('Login failed! Check your credentials.');
     }
+    } catch(err) {
+        alert(err.message||'Login failed! Check your credentials.');
+    }
+
 };
 </script>
 
