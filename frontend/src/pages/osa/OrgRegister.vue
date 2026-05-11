@@ -1,13 +1,18 @@
 <template>
     <div class="page">
-        <div class="card">
-            <h2>Register Organization</h2>
+        <!-- HEADER -->
+        <div class="header">
+            <h1>Organization Registration</h1>
             <p class="subtext">
-                Fill in the details to register a new student organization
+                Create and register a new student organization
             </p>
+        </div>
 
-            <div class="form">
-                <div class="group">
+        <!-- FORM -->
+        <div class="form">
+            <!-- ROW GRID -->
+            <div class="grid">
+                <div class="group full">
                     <label>Organization Name</label>
                     <input
                         v-model="org.org_name"
@@ -18,7 +23,7 @@
                 <div class="group">
                     <label>Category</label>
                     <select v-model="org.category">
-                        <option disabled value="">Select a category</option>
+                        <option disabled value="">Select category</option>
                         <option>Academic</option>
                         <option>Civic</option>
                         <option>Cultural</option>
@@ -28,7 +33,6 @@
                     </select>
                 </div>
 
-                <!-- STATUS -->
                 <div class="group">
                     <label>Status</label>
                     <select v-model="org.status">
@@ -36,31 +40,38 @@
                     </select>
                 </div>
 
-                <div class="group">
+                <div class="group full">
                     <label>Description</label>
                     <textarea
                         v-model="org.description"
-                        placeholder="Describe the organization..."
+                        placeholder="Describe the organization's purpose, mission, and activities..."
                     ></textarea>
                 </div>
-                
+
                 <div class="group">
                     <label>Password</label>
                     <input
                         v-model="org.password"
+                        type="password"
+                        placeholder="Create organization password"
                     />
                 </div>
 
                 <div class="group">
-                    <label>Registration Valid Until</label>
+                    <label>Valid Until</label>
                     <input
                         :value="org.expiration"
                         readonly
                         class="readonly-input"
                     />
-                    <small class="hint">Automatically set to 1 year from today</small>
+                    <small class="hint">
+                        Automatically set to 1 year from registration
+                    </small>
                 </div>
+            </div>
 
+            <!-- ACTION -->
+            <div class="actions">
                 <button class="primary" @click="registerOrg">
                     Register Organization
                 </button>
@@ -91,7 +102,7 @@ const org = reactive({
     org_name: '',
     category: '',
     description: '',
-    password:'',
+    password: '',
 
     // NEW FIELDS
     status: 'Registered',
@@ -101,14 +112,12 @@ const org = reactive({
 const registerOrg = async () => {
     try {
         const response = await post('/osa/organizations', org);
-        console.log('REGISTER RESPONSE:', response); 
+        console.log('REGISTER RESPONSE:', response);
 
         if (response.status === 'success') {
             alert('Organization registered successfuly!');
             router.push('/osa/orgs');
-        }
-        
-        else {
+        } else {
             console.log('VALIDATION ERRORS:', response.errors);
             alert(response.message || 'Registration failed');
         }
@@ -121,44 +130,46 @@ const registerOrg = async () => {
 
 <style scoped>
 .page {
+    padding: clamp(20px, 10vw, 50px);
+    min-height: 100vh;
     width: 100%;
-    padding-left: 20px;
-    padding-top: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    text-align: left;
 }
 
-/* CARD */
-.card {
-    width: 100%;
-    max-width: 650px;
-    background: white;
-    padding: 28px;
-    border-radius: 14px;
-    border-left: 5px solid #7f1d1d;
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+/* HEADER */
+.header {
+    margin-bottom: 30px;
 }
 
-/* TEXT */
-h2 {
-    margin-bottom: 4px;
+h1 {
+    color: #7f1d1d;
+    margin-bottom: 6px;
 }
 
 .subtext {
     color: #6b7280;
-    font-size: 13px;
-    margin-bottom: 20px;
+    font-size: 14px;
 }
 
 /* FORM */
 .form {
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 24px;
 }
 
+/* GRID */
+.grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 18px 20px;
+}
+
+/* FULL WIDTH */
+.full {
+    grid-column: span 2;
+}
+
+/* GROUP */
 .group {
     display: flex;
     flex-direction: column;
@@ -167,60 +178,89 @@ h2 {
 label {
     font-size: 13px;
     font-weight: 600;
-    margin-bottom: 4px;
+    margin-bottom: 6px;
+    color: #374151;
 }
 
 /* INPUTS */
 input,
 select,
 textarea {
-    padding: 10px;
-    border-radius: 8px;
-    border: 1px solid #d1d5db;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1px solid #e5e7eb;
+    background: white;
     font-family: inherit;
+    transition: 0.2s;
 }
 
 input:focus,
 select:focus,
 textarea:focus {
+    border-color: #064e3b;
+    box-shadow: 0 0 0 2px rgba(6, 78, 59, 0.1);
     outline: none;
-    border-color: #7f1d1d;
 }
 
 textarea {
-    min-height: 100px;
+    min-height: 140px;
     resize: vertical;
 }
 
+/* READONLY */
 .readonly-input {
-    background-color: #f3f4f6;
+    background: #f3f4f6;
+    border-style: dashed;
     color: #6b7280;
     cursor: not-allowed;
-    border-style: dashed;
 }
 
+/* HINT */
 .hint {
     font-size: 11px;
     color: #9ca3af;
     margin-top: 4px;
 }
 
+/* ACTIONS */
+.actions {
+    margin-top: 10px;
+}
+
 /* BUTTON */
 .primary {
-    margin-top: 8px;
-    padding: 12px;
+    padding: 14px 18px;
     background: #7f1d1d;
     color: white;
     border: none;
-    border-radius: 8px;
+    border-radius: 10px;
     font-weight: 600;
     cursor: pointer;
     transition: 0.2s;
+    width: 260px;
 }
 
 .primary:hover {
     background: #064e3b;
     color: gold;
-    border: gold 2px solid;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+    .page {
+        padding: 25px;
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
+    }
+
+    .full {
+        grid-column: span 1;
+    }
+
+    .primary {
+        width: 100%;
+    }
 }
 </style>

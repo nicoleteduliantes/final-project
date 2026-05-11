@@ -118,15 +118,22 @@ onMounted(fetchData);
 
 <style scoped>
 .page {
-    padding: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
+    padding: clamp(20px, 10vw, 50px);
+    min-height: 100vh;
+    width: 100%;
 }
 
 /* HEADER */
 .header {
     margin-bottom: 20px;
     padding-top: 20px;
+}
+
+h1 {
+    margin: 0;
+    font-size: clamp(26px, 2vw, 38px);
+    font-weight: 900;
+    color: #7f1d1d;
 }
 
 .subtext {

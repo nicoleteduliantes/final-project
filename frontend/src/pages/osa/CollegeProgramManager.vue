@@ -95,8 +95,9 @@ onMounted(fetchPrograms);
 
 <style scoped>
 .page {
-    padding: 20px;
-    padding-top: 0;
+    padding: clamp(20px, 10vw, 50px);
+    min-height: 100vh;
+    width: 100%;
 }
 
 .header-row {
@@ -104,11 +105,6 @@ onMounted(fetchPrograms);
     justify-content: space-between;
     align-items: center;
     margin-bottom: 15px;
-}
-
-.header-row h1 {
-    font-size: 22px;
-    font-weight: 600;
 }
 
 .controls {

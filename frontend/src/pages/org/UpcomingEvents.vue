@@ -1,5 +1,5 @@
 <template>
-    <div class="page-container">
+    <div class="page">
         <header class="header">
             <div>
                 <h1>Upcoming Events</h1>
@@ -170,11 +170,10 @@ onMounted(fetchEvents);
 </script>
 
 <style scoped>
-.page-container {
-    padding-left: 20px;
-    padding-top: 20px;
-    max-width: 1200px;
-    margin: 0 auto;
+.page {
+    padding: clamp(20px, 10vw, 50px);
+    min-height: 100vh;
+    width: 100%;
 }
 
 /* HEADER */
@@ -187,7 +186,6 @@ onMounted(fetchEvents);
 }
 
 h1 {
-    font-size: 26px;
     font-weight: 800;
     margin: 0;
     color: #7f1d1d;

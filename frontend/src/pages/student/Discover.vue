@@ -180,14 +180,12 @@ const isMember = (orgId) => {
 </script>
 
 <style scoped>
-/* unchanged styles */
 * {
     box-sizing: border-box;
 }
 
 .map-page {
-    background: white;
-    padding: clamp(16px, 2vw, 32px);
+    padding: clamp(20px, 10vw, 50px);
     min-height: 100vh;
     width: 100%;
 }

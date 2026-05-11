@@ -37,7 +37,7 @@ const sidebarComponent = computed(() => {
     display: flex;
     height: 100vh;
     width: 100%;
-    overflow-x: none; /* Prevents horizontal scrollbar */
+    overflow-x: none;
 }
 
 /* MAIN CONTENT */
@@ -52,7 +52,6 @@ const sidebarComponent = computed(() => {
     padding-left: 120px;
 }
 
-/* when sidebar is collapsed */
 .layout .sidebar.collapsed ~ .main {
     margin-left: 0px;
     padding-left: 50px;
