@@ -36,6 +36,12 @@ Route::middleware(['auth:sanctum', 'abilities:osa'])->group(function () {
     Route::get('/osa/students', [OsaController::class, 'studentDirectory']);
     Route::get('/osa/degree-programs', [DegreeProgramController::class, 'getProgramsWithColleges']);
     Route::post('/organizations/reactivate/{id}', [OrganizationController::class, 'reactivate']);
+
+    // osa announcements
+    Route::post('/osa/announcements', [AnnouncementController::class, 'store']);
+    Route::get('/osa/announcements/my', [AnnouncementController::class, 'myAnnouncements']);
+    Route::put('/osa/announcements/{id}', [AnnouncementController::class, 'update']);
+    Route::delete('/osa/announcements/{id}', [AnnouncementController::class, 'destroy']);
 });
 
 /* ORGANIZATION */

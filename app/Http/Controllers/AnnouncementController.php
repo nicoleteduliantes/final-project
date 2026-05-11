@@ -7,88 +7,133 @@ use Illuminate\Http\Request;
 
 class AnnouncementController extends Controller
 {
-    // STUDENT FEED (all announcements)
+    /* =========================
+       PUBLIC FEED (STUDENTS)
+    ========================== */
     public function index()
     {
-        return Announcement::with(['organization', 'osa'])
-            ->orderBy('date_posted', 'desc')
-            ->get();
+        return response()->json(
+            Announcement::with(['organization', 'osa'])
+                ->orderBy('date_posted', 'desc')
+                ->get()
+        );
     }
 
-    // ORG OWN ANNOUNCEMENTS
+    /* =========================
+       ORG / OSA OWN POSTS
+    ========================== */
     public function myAnnouncements()
-{
-    $user = auth()->user();
+    {
+        $user = auth()->user();
 
-    $orgId = $user->org_id;
+        $orgId = $user->org_id ?? null;
+        $osaId = $user->osa_id ?? null;
 
-    if (!$orgId) {
-        return response()->json([]);
+        $query = Announcement::query();
+
+        if ($orgId) {
+            $query->where('org_id', $orgId);
+        } elseif ($osaId) {
+            $query->where('osa_id', $osaId);
+        } else {
+            return response()->json([]);
+        }
+
+        return response()->json(
+            $query->orderBy('date_posted', 'desc')->get()
+        );
     }
 
-    return response()->json(
-        Announcement::where('org_id', $orgId)
-            ->orderBy('date_posted', 'desc')
-            ->get()
-    );
-}
+    /* =========================
+       CREATE ANNOUNCEMENT
+       (ORG OR OSA)
+    ========================== */
+    public function store(Request $request)
+    {
+        $user = auth()->user();
 
-    // CREATE ANNOUNCEMENT
-public function store(Request $request)
-{
-    $user = auth()->user();
+        $orgId = $user->org_id ?? null;
+        $osaId = $user->osa_id ?? null;
 
-    $orgId = $user->org_id;
+        if (!$orgId && !$osaId) {
+            return response()->json([
+                'message' => 'Unauthorized: no org or OSA account linked'
+            ], 403);
+        }
 
-    if (!$orgId) {
+        $announcement = Announcement::create([
+            'title' => $request->title,
+            'content' => $request->content,
+            'date_posted' => now()->toDateString(),
+            'org_id' => $orgId,
+            'osa_id' => $osaId,
+        ]);
+
+        return response()->json($announcement);
+    }
+
+    /* =========================
+       UPDATE (ORG OR OSA OWNER)
+    ========================== */
+    public function update(Request $request, $id)
+    {
+        $user = auth()->user();
+
+        $announcement = Announcement::where('announcement_id', $id)->firstOrFail();
+
+        // ORG OWNER
+        if ($user->org_id && $announcement->org_id === $user->org_id) {
+            $announcement->update([
+                'title' => $request->title,
+                'content' => $request->content,
+            ]);
+
+            return response()->json([
+                'message' => 'Updated successfully',
+                'data' => $announcement
+            ]);
+        }
+
+        // OSA OWNER
+        if ($user->osa_id && $announcement->osa_id === $user->osa_id) {
+            $announcement->update([
+                'title' => $request->title,
+                'content' => $request->content,
+            ]);
+
+            return response()->json([
+                'message' => 'Updated successfully',
+                'data' => $announcement
+            ]);
+        }
+
         return response()->json([
-            'message' => 'User is not linked to an organization'
+            'message' => 'Unauthorized'
         ], 403);
     }
 
-    $announcement = Announcement::create([
-        'title' => $request->title,
-        'content' => $request->content,
-        'date_posted' => now()->toDateString(),
-        'org_id' => $orgId,
-        'osa_id' => null,
-    ]);
-
-    return response()->json($announcement);
-}
-
-    // UPDATE ANNOUNCEMENT (ORG ONLY)
-    public function update(Request $request, $id)
+    /* =========================
+       DELETE (ORG OR OSA OWNER)
+    ========================== */
+    public function destroy($id)
     {
-        $orgId = auth()->user()->organization->org_id;
+        $user = auth()->user();
 
-        $announcement = Announcement::where('announcement_id', $id)
-            ->where('org_id', $orgId)
-            ->firstOrFail();
+        $announcement = Announcement::where('announcement_id', $id)->firstOrFail();
 
-        $announcement->update([
-            'title' => $request->title,
-            'content' => $request->content,
-        ]);
+        $isOrgOwner = $user->org_id && $announcement->org_id === $user->org_id;
+        $isOsaOwner = $user->osa_id && $announcement->osa_id === $user->osa_id;
+
+        if (!$isOrgOwner && !$isOsaOwner) {
+            return response()->json([
+                'message' => 'Unauthorized'
+            ], 403);
+        }
+
+        $announcement->delete();
 
         return response()->json([
-            'message' => 'Updated successfully',
-            'data' => $announcement
+            'message' => 'Deleted successfully'
         ]);
     }
-
-    public function destroy($id)
-{
-    $orgId = auth()->user()->org_id;
-
-    $announcement = Announcement::where('announcement_id', $id)
-        ->where('org_id', $orgId)
-        ->firstOrFail();
-
-    $announcement->delete();
-
-    return response()->json([
-        'message' => 'Deleted successfully'
-    ]);
-}
 }
