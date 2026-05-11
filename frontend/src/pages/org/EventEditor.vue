@@ -67,12 +67,20 @@ const loadEvent = async () => {
 
 const updateEvent = async () => {
     try {
-        await put(`/org/events/${eventId}`, event);
-        alert('Event updated successfully!');
-        router.push('/org/events');
-    } catch (error) {
-        alert('Update failed.');
-        console.error(error);
+        const response = await put(`/org/events/${eventId}`, event);
+
+        if (response.status === 'success') {
+            alert('Event updated succesfully!');
+            router.push('/org/events');
+        }
+        
+        else {
+            console.log('VALIDATION ERRORS:', response.errors);
+            alert(response.message || 'Event update failed');
+        }
+    } catch (err) {
+        console.error('Network error:', err);
+        alert('Could not connect to the server.');
     }
 };
 

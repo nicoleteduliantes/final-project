@@ -65,11 +65,22 @@ const event = reactive({
 
 const createEvent = async () => {
     try {
-        await post('/org/events', event);
-        alert('Event Created!');
-        router.push('/org/events');
-    } catch (e) {
-        alert('Creation failed.');
+        const response = await post('/org/events', event);
+        
+        console.log('CREATE EVENT:', response); 
+
+        if (response.status === 'success') {
+            alert('Event Creation Successful!');
+            router.push('/org/events');
+        }
+        
+        else {
+            console.log('VALIDATION ERRORS:', response.errors);
+            alert(response.message || 'Event Creation failed');
+        }
+    } catch (err) {
+        console.error('Network error:', err);
+        alert('Could not connect to the server.');
     }
 };
 </script>
