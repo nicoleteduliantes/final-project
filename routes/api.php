@@ -40,17 +40,26 @@ Route::middleware(['auth:sanctum', 'abilities:osa'])->group(function () {
 
 /* ORGANIZATION */
 Route::middleware(['auth:sanctum', 'abilities:org'])->group(function () {
+    // Events
     Route::post('/org/events', [EventController::class, 'store']);
     Route::get('/org/events', [EventController::class, 'index']);
     Route::get('/org/events/{id}', [EventController::class, 'show']);
     Route::put('/org/events/{id}', [EventController::class, 'update']);
     Route::delete('/org/events/{id}', [EventController::class, 'destroy']);
 
+    // Review Applications
     Route::get('/org/applications', [OrgApplicationController::class, 'index']);
     Route::put('/org/applications/{id}', [OrgApplicationController::class, 'update']);
 
+    // Manage Members
     Route::get('/org/members', [OrgApplicationController::class, 'show']);
     Route::delete('/org/members/{id}', [OrgApplicationController::class, 'destroy']);
+
+    // Announcements
+    Route::post('/announcements', [AnnouncementController::class, 'store']);
+    Route::get('/announcements/my', [AnnouncementController::class, 'myAnnouncements']);
+    Route::put('/announcements/{id}', [AnnouncementController::class, 'update']);
+    Route::delete('/announcements/{id}', [AnnouncementController::class, 'destroy']);
 
     Route::get('/org/profile', [OrganizationController::class, 'show']);
     Route::put('/org/status', [OrganizationController::class, 'updateStatus']);

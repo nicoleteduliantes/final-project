@@ -52,7 +52,7 @@
                 :categoriesOpen="categoriesOpen"
                 :getColor="getColor"
                 @toggle="categoriesOpen = !categoriesOpen"
-                @select="selectedCategory = $event"
+                @update-category="selectedCategory = $event"
             />
 
             <main class="map-container">
@@ -106,8 +106,7 @@ onMounted(async () => {
     userMemberships.value = mem.data ?? mem;
 });
 
-/* MODAL HANDLERS (FIXED) */
-
+/* MODALS */
 const openOrgModal = (org) => {
     selectedOrg.value = org;
 };
@@ -136,10 +135,7 @@ const toggleRowFocus = (index) => {
     focusedRow.value = focusedRow.value === index ? null : index;
 };
 
-/* =======================
-   DATA HELPERS
-======================= */
-
+/* DATA */
 const categories = computed(() => [
     ...new Set(orgs.value.map((o) => o.category).filter(Boolean)),
 ]);
@@ -152,6 +148,7 @@ const getColor = (cat) => {
     return palette[i % palette.length];
 };
 
+/* FIXED FILTER (category + search properly reactive) */
 const filteredOrgs = computed(() => {
     const q = search.value.toLowerCase();
 
@@ -167,6 +164,7 @@ const filteredOrgs = computed(() => {
     });
 });
 
+/* ROW GROUPING */
 const groupedRows = computed(() => {
     const rows = [];
     for (let i = 0; i < filteredOrgs.value.length; i += 5) {
@@ -183,6 +181,7 @@ const isMember = (orgId) => {
 </script>
 
 <style scoped>
+/* unchanged styles */
 * {
     box-sizing: border-box;
 }
@@ -194,7 +193,6 @@ const isMember = (orgId) => {
     width: 100%;
 }
 
-/* HEADER */
 .header {
     margin-bottom: 18px;
 }
@@ -212,7 +210,6 @@ h1 {
     font-size: clamp(14px, 1vw, 16px);
 }
 
-/* SEARCH */
 .topbar {
     margin-bottom: 24px;
     padding: 16px;
@@ -239,14 +236,12 @@ h1 {
     border: 1px solid #e2e8f0;
 }
 
-/* LAYOUT */
 .layout {
     display: flex;
     gap: 24px;
     align-items: flex-start;
 }
 
-/* MAP */
 .map-container {
     flex: 1;
     background: white;
