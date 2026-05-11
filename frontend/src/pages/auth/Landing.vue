@@ -4,17 +4,16 @@
         <div class="overlay"></div>
 
         <!-- FLOATING CAMPUS ELEMENTS -->
-        <div class="floating sticker2">📌</div>
-        <div class="floating sticker3">🎓</div>
-        <div class="floating sticker4">📚</div>
-        <div class="floating sticker5">📅</div>
-        <div class="floating sticker6">📣</div>
-        <div class="floating sticker7">⭐</div>
-        <div class="floating sticker8">🎨</div>
-        <div class="floating sticker9">📝</div>
-        <div class="floating sticker10">🏛️</div>
-        <div class="floating sticker11">💡</div>
-        <div class="floating sticker12">📍</div>
+        <div
+            v-for="(emoji, index) in stickers"
+            :key="index"
+            :class="['parallax-layer', `sticker${index}`]"
+            :style="getStickerStyle(index)"
+        >
+            <div class="floating">
+                {{ emoji }}
+            </div>
+        </div>
 
         <!-- PUSH PINS -->
         <div class="pin pin1"></div>
@@ -48,7 +47,45 @@
 </template>
 
 <script setup>
-import { RouterLink } from 'vue-router';
+import { ref, onMounted, onUnmounted } from 'vue';
+
+const stickers = [
+    '🎓',
+    '📚',
+    '📌',
+    '✨',
+    '📝',
+    '💻',
+    '🏫',
+    '🎨',
+    '📖',
+    '🌟',
+    '🧠',
+];
+
+const mouseX = ref(0);
+const mouseY = ref(0);
+
+const handleMouseMove = (e) => {
+    mouseX.value = (e.clientX / window.innerWidth - 0.5) * 2;
+    mouseY.value = (e.clientY / window.innerHeight - 0.5) * 2;
+};
+
+const getStickerStyle = (index) => {
+    const intensity = ((index % 5) + 1) * 10;
+
+    return {
+        transform: `translate(${mouseX.value * intensity}px, ${mouseY.value * intensity}px)`,
+    };
+};
+
+onMounted(() => {
+    window.addEventListener('mousemove', handleMouseMove);
+});
+
+onUnmounted(() => {
+    window.removeEventListener('mousemove', handleMouseMove);
+});
 </script>
 
 <style scoped>
@@ -193,14 +230,17 @@ import { RouterLink } from 'vue-router';
     color: #1f2937;
 }
 
+.student,
+.admin {
+    transition: all 0.25s ease;
+}
+
 .student:hover {
     background: #064e3b;
     color: gold;
     border: 3px solid gold;
 
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-    scale: 1.03;
-    transition: all 0.25s ease;
 }
 
 .admin:hover {
@@ -209,8 +249,6 @@ import { RouterLink } from 'vue-router';
     border: 3px solid gold;
 
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
-    scale: 1.03;
-    transition: all 0.25s ease;
 }
 
 /* PUSH PINS */
@@ -238,19 +276,23 @@ import { RouterLink } from 'vue-router';
 }
 
 /* FLOATING CAMPUS ICONS */
+
+.parallax-layer {
+    position: absolute;
+    transition: transform 0.2s ease-out;
+    pointer-events: none;
+    z-index: 1;
+    will-change: transform;
+}
+
 .floating {
     position: absolute;
-    z-index: 2;
-
-    background: rgba(255, 255, 255, 0.14);
-    backdrop-filter: blur(6px);
-
-    padding: 8px;
-    border-radius: 14px;
-
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.12);
-
-    animation: float 5s ease-in-out infinite;
+    font-size: 2rem;
+    animation: float 6s ease-in-out infinite;
+    transition: transform 0.15s ease-out;
+    pointer-events: none;
+    will-change: transform;
+    z-index: 1;
 }
 
 /* top left */
@@ -324,10 +366,10 @@ import { RouterLink } from 'vue-router';
 @keyframes float {
     0%,
     100% {
-        transform: translateY(0px) rotate(0deg);
+        transform: translateY(0px);
     }
     50% {
-        transform: translateY(-12px) rotate(3deg);
+        transform: translateY(-12px);
     }
 }
 
