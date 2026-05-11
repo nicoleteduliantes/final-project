@@ -61,6 +61,7 @@ Route::middleware(['auth:sanctum', 'abilities:org'])->group(function () {
     Route::put('/announcements/{id}', [AnnouncementController::class, 'update']);
     Route::delete('/announcements/{id}', [AnnouncementController::class, 'destroy']);
 
+    // Org Profile
     Route::get('/org/profile', [OrganizationController::class, 'show']);
     Route::put('/org/status', [OrganizationController::class, 'updateStatus']);
 });

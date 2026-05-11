@@ -304,6 +304,5 @@ onMounted(fetchData);
 /* ANNOUNCEMENT */
 .announcement-card {
     padding: 14px;
-    font-size: 14px;
 }
 </style>

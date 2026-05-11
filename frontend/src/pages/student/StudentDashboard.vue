@@ -1,8 +1,8 @@
 <template>
     <div class="page">
-<<<<<<< HEAD
+        <<<<<<< HEAD
         <h1 class="page-title">Student Dashboard</h1>
-=======
+        =======
         <header class="header">
             <div>
                 <h1>Dashboard</h1>
@@ -11,8 +11,12 @@
                 </p>
             </div>
         </header>
->>>>>>> de8e8ca (Student: Discover & Dashboard, Org: Dashboard, Announcement, Events, Osa: No changes)
+        >>>>>>> de8e8ca (Student: Discover & Dashboard, Org: Dashboard,
+        Announcement, Events, Osa: No changes)
 
+        <h1 class="page-title">Dashboard</h1>
+
+        <!-- ANNOUNCEMENTS -->
         <section class="section">
             <h2 class="section-title">Campus Announcements</h2>
 
@@ -81,15 +85,14 @@
 
                     <div class="poster-content">
                         <div class="poster-top">
-<<<<<<< HEAD
+                            <<<<<<< HEAD
                             <span class="tag">{{ event.event_host }}</span>
                             <span class="date">{{ event.date }}</span>
-=======
+                            =======
                             <span class="tag">EVENT</span>
                             <span class="date">{{
                                 formatDate(event.date)
                             }}</span>
->>>>>>> de8e8ca (Student: Discover & Dashboard, Org: Dashboard, Announcement, Events, Osa: No changes)
                         </div>
 
                         <h3 class="title">{{ event.event_name }}</h3>
