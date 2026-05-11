@@ -129,6 +129,13 @@ onMounted(fetchData);
     padding-top: 20px;
 }
 
+h1 {
+    margin: 0;
+    font-size: clamp(26px, 2vw, 38px);
+    font-weight: 900;
+    color: #7f1d1d;
+}
+
 .subtext {
     margin-top: 4px;
     font-size: 14px;

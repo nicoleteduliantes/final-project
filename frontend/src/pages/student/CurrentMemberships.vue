@@ -102,7 +102,7 @@ const getInitials = (name = '') => {
 
 h1 {
     margin: 0;
-    font-size: 26px;
+    font-size: clamp(26px, 2vw, 38px);
     font-weight: 900;
     color: #7f1d1d;
 }
