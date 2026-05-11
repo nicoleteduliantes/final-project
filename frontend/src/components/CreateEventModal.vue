@@ -38,6 +38,7 @@
                                     id="date"
                                     type="date"
                                     v-model="event.date"
+                                    :min="new Date().toLocaleDateString('en-CA')"
                                     required
                                 />
                             </div>

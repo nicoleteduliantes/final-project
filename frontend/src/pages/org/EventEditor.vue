@@ -13,7 +13,8 @@
                 <div class="row">
                     <div class="group">
                         <label>Date</label>
-                        <input type="date" v-model="event.date" />
+                        <input type="date" v-model="event.date"
+                        :min="new Date().toLocaleDateString('en-CA')" />
                     </div>
 
                     <div class="group">
