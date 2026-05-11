@@ -157,7 +157,8 @@ onMounted(fetchEvents);
 
 <style scoped>
 .page-container {
-    padding: 20px;
+    padding-left: 20px;
+    padding-top: 20px;
     max-width: 1200px;
     margin: 0 auto;
 }
@@ -175,7 +176,7 @@ h1 {
     font-size: 26px;
     font-weight: 800;
     margin: 0;
-    color: #111827;
+    color: #7f1d1d;
 }
 .subtext {
     font-size: 14px;

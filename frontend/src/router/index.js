@@ -13,7 +13,6 @@ import AdminLogin from '@/pages/auth/AdminLogin.vue';
 import StudentDashboard from '@/pages/student/StudentDashboard.vue';
 import Discover from '@/pages/student/Discover.vue';
 import CurrentMemberships from '@/pages/student/CurrentMemberships.vue';
-import ApplicationForm from '@/pages/student/ApplicationForm.vue';
 import OrgProfile from '@/pages/student/OrgProfile.vue';
 
 /* ORG */
@@ -77,14 +76,14 @@ const routes = [
                 },
             },
 
-            /* Application Form */
-            {
-                path: 'apply/:org_id',
-                component: ApplicationForm,
-                meta: {
-                    role: 'student',
-                },
-            },
+            // /* Application Form */
+            // {
+            //     path: 'apply/:org_id',
+            //     component: ApplicationForm,
+            //     meta: {
+            //         role: 'student',
+            //     },
+            // },
 
             /* ===================== ORG ===================== */
 

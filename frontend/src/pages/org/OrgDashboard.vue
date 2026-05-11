@@ -268,7 +268,10 @@ onMounted(fetchMyAnnouncements);
 
 <style scoped>
 .page {
-    max-width: 900px;
+    padding-left: 20px;
+    padding-top: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 /* HEADER */
@@ -279,7 +282,7 @@ onMounted(fetchMyAnnouncements);
 h1 {
     font-size: 28px;
     font-weight: 800;
-    color: #111827;
+    color: #7f1d1d;
     margin: 0;
 }
 .subtext {
