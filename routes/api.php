@@ -35,6 +35,7 @@ Route::middleware(['auth:sanctum', 'abilities:osa'])->group(function () {
     Route::delete('/osa/organizations/{id}', [OsaController::class, 'destroy']);
     Route::get('/osa/students', [OsaController::class, 'studentDirectory']);
     Route::get('/osa/degree-programs', [DegreeProgramController::class, 'getProgramsWithColleges']);
+    Route::post('/organizations/reactivate/{id}', [OrganizationController::class, 'reactivate']);
 });
 
 /* ORGANIZATION */

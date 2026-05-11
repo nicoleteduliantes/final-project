@@ -6,6 +6,7 @@ use App\Models\Organization;
 use App\Models\Membership;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class OrganizationController extends Controller
 {
@@ -63,6 +64,21 @@ class OrganizationController extends Controller
         return response()->json([
             'message' => 'Status updated!',
             'new_status' => $org->application_status
+        ]);
+    }
+
+    public function reactivate($org_id)
+    {
+        $org = Organization::findOrFail($org_id);
+
+        $org->update([
+            'status' => 'Registered',
+            'expiration' => Carbon::now()->addYear(), 
+        ]);
+
+        return response()->json([
+            'message' => 'Organization reactivated successfully',
+            'org' => $org
         ]);
     }
 }
