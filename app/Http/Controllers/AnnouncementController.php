@@ -27,12 +27,13 @@ public function index()
 
     // Student flow
     $appliedOrgIds = \App\Models\ApplicationDetail::whereHas('membership', function ($q) use ($user) {
-        $q->where('student_id', $user->student_id);
-    })
-    ->with('membership')
-    ->get()
-    ->pluck('membership.org_id')
-    ->unique();
+    $q->where('student_id', $user->student_id)
+      ->where('status', 'pending');
+        })
+        ->with('membership')
+        ->get()
+        ->pluck('membership.org_id')
+        ->unique();
 
     $announcements = Announcement::with('organization')
         ->where(function ($query) use ($appliedOrgIds) {
