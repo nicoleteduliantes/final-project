@@ -395,4 +395,11 @@ onUnmounted(() => {
         height: 38px;
     }
 }
+
+@media (max-width: 480px) {
+    .content {
+        width: 100%;
+        max-width: 310px;
+    }
+}
 </style>

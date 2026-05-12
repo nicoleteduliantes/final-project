@@ -170,4 +170,83 @@ a.router-link-active,
 .sidebar.collapsed .logout-item {
     justify-content: center;
 }
+
+/* MOBILE */
+@media (max-width: 480px) {
+    /* prevent page background peeking */
+    html,
+    body {
+        overflow-x: hidden;
+        overflow-y: hidden;
+    }
+
+    /* EXPANDED STATE (FULL SCREEN) */
+    .sidebar:not(.collapsed) {
+        width: 100%;
+        height: 100%;
+
+        position: fixed;
+        inset: 0;
+        z-index: 999;
+
+        display: flex;
+        flex-direction: column;
+
+        padding: 10px;
+        box-sizing: border-box;
+        overflow: hidden;
+    }
+
+    /* TOP */
+    .logo {
+        width: 120px;
+        max-width: 70%;
+        flex-shrink: 0;
+        overflow: visible;
+    }
+
+    .toggle {
+        font-size: 22px;
+        background: transparent;
+        border: none;
+        color: #7f1d1d;
+        padding: 0px;
+        margin-left: 50px;
+
+        cursor: pointer;
+
+        flex-shrink: 0;
+        z-index: 10;
+
+        display: block;
+        visibility: visible;
+        opacity: 1;
+    }
+
+    .sidebar.collapsed .toggle {
+        margin-left: 0px;
+    }
+
+    .sidebar.collapsed {
+        height: 100%;
+        overflow: hidden;
+    }
+
+    .nav {
+        margin-top: 20px;
+        flex: 1;
+        overflow-y: auto;
+    }
+
+    .nav a {
+        padding: 12px;
+        font-size: 16px;
+    }
+
+    /* LOGOUT pinned properly */
+    .logout-item {
+        flex-shrink: 0;
+        padding: 12px;
+    }
+}
 </style>

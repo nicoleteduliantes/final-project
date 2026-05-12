@@ -32,9 +32,8 @@
 
                 <!-- ACTIONS -->
                 <div class="modal-actions">
-                    
                     <button
-                       v-if="isMember(org.org_id) === 'Accepted'"
+                        v-if="isMember(org.org_id) === 'Accepted'"
                         class="member-status"
                         disabled
                     >
@@ -42,7 +41,7 @@
                     </button>
 
                     <button
-                       v-else-if="isMember(org.org_id) === 'Pending'"
+                        v-else-if="isMember(org.org_id) === 'Pending'"
                         class="member-status"
                         disabled
                     >
@@ -60,12 +59,10 @@
                     <button
                         v-else
                         class="apply-btn"
-                        @click= "$emit('apply', org)"
+                        @click="$emit('apply', org)"
                     >
                         Apply to Join
                     </button>
-
-                    
                 </div>
             </div>
         </div>
@@ -240,6 +237,68 @@ defineEmits(['close', 'apply']);
     to {
         transform: scale(1);
         opacity: 1;
+    }
+}
+
+@media (max-width: 768px) {
+    .modal-content {
+        width: 95%;
+        max-width: 420px;
+        border-radius: 14px;
+    }
+
+    .banner-wrapper {
+        height: 140px; /* ↓ smaller banner */
+    }
+
+    .modal-body {
+        padding: 14px;
+        gap: 6px;
+    }
+
+    .title {
+        font-size: 18px; /* ↓ shrink title */
+    }
+
+    .modal-cat {
+        font-size: 10px;
+    }
+
+    .modal-description {
+        font-size: 12px;
+        margin: 6px 0 12px;
+        line-height: 1.4;
+    }
+
+    .close-btn {
+        width: 32px;
+        height: 32px;
+        font-size: 12px;
+    }
+
+    .apply-btn,
+    .member-status {
+        padding: 10px;
+        font-size: 12px;
+    }
+}
+
+/* EXTRA SMALL PHONES */
+@media (max-width: 480px) {
+    .modal-content {
+        width: 96%;
+    }
+
+    .banner-wrapper {
+        height: 120px;
+    }
+
+    .title {
+        font-size: 16px;
+    }
+
+    .modal-description {
+        font-size: 11px;
     }
 }
 </style>

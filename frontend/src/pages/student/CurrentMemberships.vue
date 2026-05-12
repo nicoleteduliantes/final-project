@@ -267,4 +267,138 @@ h1 {
     filter: blur(10px);
     border-radius: 50%;
 }
+
+/* =========================================
+   ISKONEK STUDENT PAGES - MOBILE RESPONSIVE
+========================================= */
+
+/* Global student layout improvements */
+@media (max-width: 1024px) {
+    .student-layout,
+    .dashboard,
+    .content-wrapper {
+        flex-direction: column !important;
+    }
+}
+
+/* ===== DASHBOARD / FEED LAYOUT ===== */
+@media (max-width: 768px) {
+    /* Page spacing */
+    .page {
+        padding: 20px !important;
+        overflow: hidden;
+    }
+
+    /* Headers */
+    .header {
+        margin-bottom: 16px;
+    }
+
+    .header h1 {
+        font-size: 1.4rem !important;
+    }
+
+    /* Org badges */
+    .org-badge {
+        font-size: 0.9rem;
+        justify-content: center;
+    }
+
+    /* Announcement / Event stacks */
+    .announcement-stack,
+    .poster-grid {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 12px;
+    }
+
+    /* Cards */
+    .poster,
+    .announcement-card,
+    .card {
+        width: 100% !important;
+        border-radius: 10px;
+    }
+
+    /* Card content spacing */
+    .poster-content {
+        padding: 12px !important;
+    }
+
+    /* Titles */
+    .title {
+        font-size: 1.1rem !important;
+    }
+
+    /* Text */
+    .desc,
+    .posted-by,
+    .location {
+        font-size: 0.9rem !important;
+    }
+
+    /* Buttons */
+    .btn,
+    .primary-btn,
+    .cancel-btn,
+    .delete-confirm-btn {
+        width: 100% !important;
+        margin-top: 6px;
+    }
+
+    /* Actions stack vertically */
+    .actions {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+    }
+
+    /* Filters / search bars */
+    .filters {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    /* Input spacing */
+    input,
+    select,
+    textarea {
+        font-size: 16px !important;
+    }
+
+    /* Tables (if used in student pages) */
+    table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+}
+
+/* ===== SMALL PHONES ===== */
+@media (max-width: 480px) {
+    .page {
+        margin-left: 20px;
+    }
+    .header h1 {
+        font-size: 1.2rem !important;
+    }
+
+    .org-badge {
+        font-size: 0.85rem;
+    }
+
+    .title {
+        font-size: 1rem !important;
+    }
+
+    .poster-content {
+        padding: 10px !important;
+    }
+
+    .page {
+        padding: 10px !important;
+        overflow: hidden;
+    }
+}
 </style>
