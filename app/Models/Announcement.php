@@ -8,7 +8,14 @@ class Announcement extends Model
 {
     protected $primaryKey = 'announcement_id';
 
-    protected $fillable = ['title', 'content', 'date_posted', 'org_id', 'osa_id'];
+    protected $fillable = [
+    'title',
+    'content',
+    'audience',
+    'date_posted',
+    'org_id',
+    'osa_id',
+];
 
     public function organization() {
         return $this->belongsTo(Organization::class, 'org_id');

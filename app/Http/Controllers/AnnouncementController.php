@@ -11,13 +11,40 @@ class AnnouncementController extends Controller
        PUBLIC FEED (STUDENTS)
     ========================== */
     public function index()
-    {
-        return response()->json(
-            Announcement::with(['organization', 'osa'])
-                ->orderBy('date_posted', 'desc')
-                ->get()
-        );
+{
+    $user = auth()->user();
+
+    if (!$user) {
+        return response()->json([
+            'message' => 'Unauthenticated'
+        ], 401);
     }
+
+    $appliedOrgIds = \App\Models\ApplicationDetail::whereHas('membership', function ($q) use ($user) {
+        $q->where('student_id', $user->student_id);
+    })
+    ->with('membership')
+    ->get()
+    ->pluck('membership.org_id')
+    ->unique();
+
+    $announcements = Announcement::with('organization')
+        ->where(function ($query) use ($appliedOrgIds) {
+
+            $query->where('audience', 'all');
+
+            if ($appliedOrgIds->isNotEmpty()) {
+                $query->orWhere(function ($q) use ($appliedOrgIds) {
+                    $q->where('audience', 'applicants')
+                      ->whereIn('org_id', $appliedOrgIds);
+                });
+            }
+        })
+        ->latest()
+        ->get();
+
+    return response()->json($announcements);
+}
 
     /* =========================
        ORG / OSA OWN POSTS
@@ -64,6 +91,7 @@ class AnnouncementController extends Controller
         $announcement = Announcement::create([
             'title' => $request->title,
             'content' => $request->content,
+            'audience' => $request->audience ?? 'all',
             'date_posted' => now()->toDateString(),
             'org_id' => $orgId,
             'osa_id' => $osaId,
