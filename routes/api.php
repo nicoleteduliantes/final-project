@@ -27,6 +27,7 @@ Route::get('/degree-programs', [DegreeProgramController::class, 'index']);
 Route::get('/organizations', [OrganizationController::class, 'index']);
 Route::get('/announcements', [AnnouncementController::class, 'index']);
 
+
 /* OSA */
 Route::middleware(['auth:sanctum', 'abilities:osa'])->group(function () {
     Route::post('/osa/organizations', [OsaController::class, 'store']);
@@ -82,5 +83,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/memberships', [MembershipController::class, 'index']);
     Route::get('/events', [StudentController::class, 'index']);
 
+});
+
+/* ANNOUNCEMENT */
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/announcements', [AnnouncementController::class, 'index']);
 });
 

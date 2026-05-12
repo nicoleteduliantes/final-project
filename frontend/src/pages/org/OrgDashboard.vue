@@ -44,6 +44,17 @@
                         ></textarea>
                     </div>
 
+                    <div class="input-group">
+                        <label>Who can see this?</label>
+
+                        <select v-model="newAnnouncement.audience">
+                            <option value="all">🌐 All Students</option>
+                            <option value="applicants">
+                                👥 Applicants Only
+                            </option>
+                        </select>
+                    </div>
+
                     <button
                         class="primary-btn"
                         @click="postAnnouncement"
@@ -100,6 +111,14 @@
                                 </div>
 
                                 <h3 class="title">{{ ann.title }}</h3>
+
+                                <p class="audience-label">
+                                    {{
+                                        ann.audience === 'applicants'
+                                            ? '👥 Applicants Only'
+                                            : '🌐 All Students'
+                                    }}
+                                </p>
 
                                 <p class="desc">{{ ann.content }}</p>
 
@@ -305,7 +324,11 @@ const toggleMyAnnouncements = () =>
 const isPosting = ref(false);
 const toggleCreate = () => (showCreate.value = !showCreate.value);
 
-const newAnnouncement = ref({ title: '', content: '' });
+const newAnnouncement = ref({
+    title: '',
+    content: '',
+    audience: 'all',
+});
 const myAnnouncements = ref([]);
 const allAnnouncements = ref([]);
 const events = ref([]); // New State
@@ -379,7 +402,11 @@ const postAnnouncement = async () => {
     isPosting.value = true;
     try {
         await post('/announcements', newAnnouncement.value);
-        newAnnouncement.value = { title: '', content: '' };
+        newAnnouncement.value = {
+            title: '',
+            content: '',
+            audience: 'all',
+        };
         showCreate.value = false;
         await Promise.all([fetchMyAnnouncements(), fetchAllAnnouncements()]);
         showToast('Announcement posted!');
@@ -603,6 +630,22 @@ h1 {
     font-weight: 800;
     margin-bottom: 8px;
     color: #7f1d1d;
+}
+
+select {
+    width: 100%;
+    padding: 12px;
+    border-radius: 12px;
+    border: 1px solid #ddd;
+    background: white;
+    font-size: 14px;
+}
+
+.audience-label {
+    font-size: 13px;
+    color: #666;
+    font-weight: 600;
+    margin-bottom: 8px;
 }
 
 .posted-by {
