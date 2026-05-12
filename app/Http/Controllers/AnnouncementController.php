@@ -15,35 +15,57 @@ public function index()
     $user = auth()->user();
 
     if (!$user) {
-        return response()->json(['message' => 'Unauthenticated'], 401);
+        return response()->json([
+            'message' => 'Unauthenticated'
+        ], 401);
     }
 
-    // Superadmin override
+    // OSA superadmin sees everything
     if ($user->osa_id) {
         return Announcement::with('organization')
             ->latest()
             ->get();
     }
 
-    // Student flow
+    // Pending applicants
     $appliedOrgIds = \App\Models\ApplicationDetail::whereHas('membership', function ($q) use ($user) {
-    $q->where('student_id', $user->student_id)
-      ->where('status', 'pending');
-        })
-        ->with('membership')
-        ->get()
-        ->pluck('membership.org_id')
-        ->unique();
+        $q->where('student_id', $user->student_id)
+          ->where('status', 'pending');
+    })
+    ->with('membership')
+    ->get()
+    ->pluck('membership.org_id')
+    ->unique();
+
+    // Accepted members
+    $memberOrgIds = \App\Models\ApplicationDetail::whereHas('membership', function ($q) use ($user) {
+        $q->where('student_id', $user->student_id)
+          ->where('status', 'accepted');
+    })
+    ->with('membership')
+    ->get()
+    ->pluck('membership.org_id')
+    ->unique();
 
     $announcements = Announcement::with('organization')
-        ->where(function ($query) use ($appliedOrgIds) {
+        ->where(function ($query) use ($appliedOrgIds, $memberOrgIds) {
 
+            // All
             $query->where('audience', 'all');
 
+            // Pending applicants only
             if ($appliedOrgIds->isNotEmpty()) {
                 $query->orWhere(function ($q) use ($appliedOrgIds) {
                     $q->where('audience', 'applicants')
                       ->whereIn('org_id', $appliedOrgIds);
+                });
+            }
+
+            // Accepted members only
+            if ($memberOrgIds->isNotEmpty()) {
+                $query->orWhere(function ($q) use ($memberOrgIds) {
+                    $q->where('audience', 'members')
+                      ->whereIn('org_id', $memberOrgIds);
                 });
             }
         })
@@ -52,6 +74,7 @@ public function index()
 
     return response()->json($announcements);
 }
+
 
     /* =========================
        ORG / OSA OWN POSTS

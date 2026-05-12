@@ -52,6 +52,7 @@
                             <option value="applicants">
                                 👥 Applicants Only
                             </option>
+                            <option value="members">👥 Members Only</option>
                         </select>
                     </div>
 
@@ -113,11 +114,7 @@
                                 <h3 class="title">{{ ann.title }}</h3>
 
                                 <p class="audience-label">
-                                    {{
-                                        ann.audience === 'applicants'
-                                            ? '👥 Applicants Only'
-                                            : '🌐 All Students'
-                                    }}
+                                    {{ getAudienceLabel(ann.audience) }}
                                 </p>
 
                                 <p class="desc">{{ ann.content }}</p>
@@ -324,6 +321,12 @@ const toggleMyAnnouncements = () =>
 const isPosting = ref(false);
 const toggleCreate = () => (showCreate.value = !showCreate.value);
 
+const getAudienceLabel = (audience) => {
+    if (audience === 'applicants') return '👥 Applicants Only';
+    if (audience === 'members') return '👥 Members Only';
+    return '🌐 All Students';
+};
+
 const newAnnouncement = ref({
     title: '',
     content: '',
@@ -331,7 +334,7 @@ const newAnnouncement = ref({
 });
 const myAnnouncements = ref([]);
 const allAnnouncements = ref([]);
-const events = ref([]); // New State
+const events = ref([]);
 
 const showModal = ref(false);
 const showDeleteModal = ref(false);
