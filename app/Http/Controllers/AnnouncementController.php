@@ -10,16 +10,22 @@ class AnnouncementController extends Controller
     /* =========================
        PUBLIC FEED (STUDENTS)
     ========================== */
-    public function index()
+public function index()
 {
     $user = auth()->user();
 
     if (!$user) {
-        return response()->json([
-            'message' => 'Unauthenticated'
-        ], 401);
+        return response()->json(['message' => 'Unauthenticated'], 401);
     }
 
+    // Superadmin override
+    if ($user->osa_id) {
+        return Announcement::with('organization')
+            ->latest()
+            ->get();
+    }
+
+    // Student flow
     $appliedOrgIds = \App\Models\ApplicationDetail::whereHas('membership', function ($q) use ($user) {
         $q->where('student_id', $user->student_id);
     })
