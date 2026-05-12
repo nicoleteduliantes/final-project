@@ -39,10 +39,6 @@
 
             <!-- FOOTER -->
             <div class="modal-footer">
-                <button class="secondary" @click="$emit('close')">
-                    Cancel
-                </button>
-
                 <button class="primary" @click="submit">
                     Submit Application
                 </button>
