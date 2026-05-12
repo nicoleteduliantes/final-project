@@ -135,4 +135,56 @@ defineEmits(['update-category', 'toggle']);
 .cat-btn.active:hover {
     filter: brightness(0.95);
 }
+
+@media (max-width: 768px) {
+    .sidebar {
+        width: 180px;
+        padding: 14px;
+        border-radius: 14px;
+    }
+
+    .sidebar.collapsed {
+        width: 50px;
+        padding: 14px 8px;
+    }
+
+    .sidebar-toggle {
+        font-size: 10px;
+        margin-bottom: 10px;
+    }
+
+    .arrow {
+        width: 28px;
+        height: 28px;
+        font-size: 14px;
+        border-radius: 8px;
+    }
+
+    .cat-list {
+        gap: 6px;
+    }
+
+    .cat-btn {
+        padding: 8px 10px;
+        font-size: 11px;
+        border-radius: 8px;
+        border-left: 4px solid var(--cat-color);
+    }
+}
+
+@media (max-width: 480px) {
+    .sidebar {
+        width: 160px;
+        padding: 12px;
+    }
+
+    .cat-btn {
+        padding: 7px 8px;
+        font-size: 10px;
+    }
+
+    .sidebar-toggle {
+        font-size: 9px;
+    }
+}
 </style>

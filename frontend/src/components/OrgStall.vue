@@ -95,4 +95,57 @@ defineEmits(['view']);
     background: #7f1d1d;
     color: white;
 }
+
+@media (max-width: 768px) {
+    .stall {
+        width: 150px; /* ↓ smaller fixed size for grid feel */
+        padding: 10px;
+        border-radius: 10px;
+    }
+
+    .stall-name {
+        font-size: 12px;
+        min-height: auto;
+    }
+
+    .stall-cat {
+        font-size: 10px;
+    }
+
+    .stall-banner img {
+        height: 80px; /* ↓ shrink image */
+        border-radius: 6px;
+    }
+
+    .stall-desc {
+        font-size: 11px;
+        margin-bottom: 10px;
+    }
+
+    .stall-btn {
+        padding: 6px;
+        font-size: 10px;
+        border-radius: 6px;
+    }
+}
+
+/* EXTRA SMALL PHONES */
+@media (max-width: 480px) {
+    .stall {
+        width: 140px;
+        padding: 8px;
+    }
+
+    .stall-banner img {
+        height: 70px;
+    }
+
+    .stall-name {
+        font-size: 11px;
+    }
+
+    .stall-desc {
+        font-size: 10px;
+    }
+}
 </style>

@@ -253,4 +253,95 @@ h1 {
     flex-direction: column;
     gap: 30px;
 }
+
+@media (max-width: 768px) {
+    /* PAGE SPACING */
+    .map-page {
+        padding: 20px !important;
+        padding-left: 25px !important;
+    }
+
+    /* HEADER */
+    .header {
+        margin-bottom: 10px;
+        padding-left: 0 !important;
+    }
+
+    h1 {
+        font-size: 18px !important;
+    }
+
+    .subtext {
+        font-size: 12px !important;
+        line-height: 1.3;
+    }
+
+    /* SEARCH BAR */
+    .topbar {
+        padding: 10px;
+        margin-bottom: 12px;
+    }
+
+    .search-box input {
+        font-size: 13px;
+        padding: 10px 10px 10px 38px;
+    }
+
+    /* STACK LAYOUT */
+    .layout {
+        flex-direction: column !important;
+        gap: 12px;
+
+        max-width: 100%;
+        overflow-y: hidden;
+        min-height: 0;
+    }
+
+    .layout > *:first-child {
+        width: 100% !important;
+        max-width: 100% !important;
+        overflow-x: auto;
+    }
+
+    .map-container {
+        flex: 1;
+        background: white;
+        padding: clamp(18px, 2vw, 36px);
+        border-radius: 20px;
+        border: 1px solid #e2e8f0;
+
+        overflow-y: auto;
+        overflow-x: auto;
+
+        min-height: 0;
+    }
+
+    .walkway {
+        gap: 14px;
+        min-width: max-content;
+    }
+
+    .walkway > div {
+        display: flex;
+        flex-wrap: nowrap !important;
+        gap: 10px;
+        min-width: max-content;
+    }
+
+    .stall,
+    .org-card,
+    .card {
+        flex: 0 0 auto;
+    }
+}
+
+@media (max-width: 480px) {
+    .walkway {
+        gap: 10px;
+    }
+
+    .walkway > div {
+        gap: 8px;
+    }
+}
 </style>

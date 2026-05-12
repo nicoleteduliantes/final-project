@@ -269,4 +269,129 @@ h1 {
 .announcement-card:hover {
     border-left: 6px solid #7f1d1d;
 }
+
+/* MOBILE RESPONSIVE */
+
+/* Global student layout improvements */
+@media (max-width: 1024px) {
+    .student-layout,
+    .dashboard,
+    .content-wrapper {
+        flex-direction: column !important;
+    }
+}
+
+/* ===== DASHBOARD / FEED LAYOUT ===== */
+@media (max-width: 768px) {
+    /* Page spacing */
+    .page {
+        padding: 20px !important;
+        margin-left: 20px;
+    }
+
+    /* Headers */
+    .header {
+        margin-bottom: 16px;
+    }
+
+    h1 {
+        font-size: 1.1rem !important;
+    }
+
+    h2 {
+        font-size: 0.8rem !important;
+    }
+
+    /* Org badges */
+    .org-badge {
+        font-size: 0.9rem;
+    }
+
+    /* Announcement / Event stacks */
+    .announcement-stack,
+    .poster-grid {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 12px;
+    }
+
+    /* Cards */
+    .poster,
+    .announcement-card,
+    .card {
+        width: 100% !important;
+        border-radius: 10px;
+    }
+
+    /* Card content spacing */
+    .poster-content {
+        padding: 12px !important;
+    }
+
+    /* Titles */
+    .title {
+        font-size: 0.5rem !important;
+    }
+
+    /* Text */
+    .desc,
+    .posted-by,
+    .location {
+        font-size: 0.9rem !important;
+    }
+}
+
+/* ===== SMALL PHONES ===== */
+@media (max-width: 480px) {
+    .header h1 {
+        font-size: 1.2rem !important;
+    }
+
+    .empty {
+        font-size: 0.8rem !important;
+    }
+
+    .org-badge {
+        font-size: 0.85rem;
+    }
+
+    .title {
+        font-size: 0.9rem !important;
+    }
+
+    /* Announcement / Event stacks */
+    .announcement-stack,
+    .poster-grid {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 10px;
+    }
+
+    /* Cards */
+    .poster,
+    .announcement-card,
+    .card {
+        width: 90% !important;
+        border-radius: 10px;
+    }
+
+    .posted-by,
+    .date,
+    .announcement-tag {
+        font-size: 0.7rem !important;
+    }
+
+    .desc {
+        font-size: 0.7rem !important;
+    }
+
+    .poster-content {
+        font-size: 0.8rem !important;
+        padding: 10px !important;
+    }
+
+    .page {
+        padding: 10px !important;
+    }
+}
 </style>
