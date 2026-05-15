@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Hash;
 
 class StudentSeeder extends Seeder
 {
+    /* Students seeder for demonstration purposes */
     public function run(): void
     {
         $students = [
@@ -39,7 +40,7 @@ class StudentSeeder extends Seeder
                 'student_id' => '2025-08078',
                 'last_name'  => 'Caña',
                 'first_name' => 'Aiyesha Threa',
-                'up_email'   => 'ascaña@up.edu.ph', // Note: removed 'ñ' from email for safety
+                'up_email'   => 'ascaña@up.edu.ph',
                 'degprog_id' => '12',
                 'password'   => Hash::make('student123'),
             ],
