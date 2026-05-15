@@ -9,6 +9,7 @@ use Carbon\Carbon; // For the expiration attribute (makes it easier to handle ti
 
 class OrganizationSeeder extends Seeder
 {
+    /* Organizations seeder for demonstration purposes */
     public function run(): void
     {
         $organizations = [

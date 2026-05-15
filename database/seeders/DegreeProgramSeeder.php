@@ -9,9 +9,7 @@ use App\Models\DegreeProgram;
 
 class DegreeProgramSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
+    /* Degprogs and colleges seeder for demonstration purposes */
     public function run(): void
     {
         $academicData = [
