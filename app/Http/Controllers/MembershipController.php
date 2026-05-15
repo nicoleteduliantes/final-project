@@ -5,9 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\JsonResponse;
 use App\Models\Membership;
 
+/* =============================
+     MEMBERSHIP (STUDENT SIDE)
+   ============================= */
+
 class MembershipController extends Controller
 {
-    // GET all memberships for logged-in user
+    /* Get all memberships for logged-in user */
     public function index(): JsonResponse
     {
         $userId = auth()->id();
@@ -24,7 +28,7 @@ class MembershipController extends Controller
         return response()->json($memberships);
     }
 
-    // DELETE member (REMOVE from organization)
+    /* Delete member (Remove from organization) */
     public function destroy($id): JsonResponse
     {
         try {

@@ -9,18 +9,21 @@ use Illuminate\Support\Facades\Hash;
 
 class StudentController extends Controller
 {
-    protected $allowedDomain = 'up.edu.ph'; // allowable domain for the up email address
+    protected $allowedDomain = 'up.edu.ph'; /* allowable domain for the up email address */
 
-    // Registration function
+    /* ==================== 
+       STUDENT REGISTRATION 
+       ==================== */
     public function store(Request $request)
     {
 
-    //For student id validation
-    $currentYear = date('Y'); // Gets the current year 2026
+   
+    $currentYear = date('Y'); 
 
-        // Validate the incoming request data
+    /* Validate incoming request data */
         $validated = $request->validate(
             [
+            /* Student ID validation */
             'student_id'     => ['required', 
                                 'string',
                                 'unique:students,student_id',
@@ -31,7 +34,7 @@ class StudentController extends Controller
                                         $fail("Student ID is invalid.");
                                     }
                                 },
-                                ], //check student id format
+                                ], 
             'first_name'     => 'required|string|max:255',
             'last_name'      => 'required|string|max:255',
             'up_email'       => ['required',
@@ -42,7 +45,7 @@ class StudentController extends Controller
             'password'       => 'required|string|min:8',
         ],
         
-        // Custom error messages
+        
         ['student_id.regex' => 'The Student ID must follow the format 20XX-XXXXX.',
         'student_id.unique' => 'This Student ID is already registered.',
         'up_email.regex'  => "Please use your official @{$this->allowedDomain} email address.",
@@ -51,7 +54,7 @@ class StudentController extends Controller
 
         );
 
-        // Create student record
+        /* Create student record */
         $student = Student::create([
             'student_id'     => $validated['student_id'],
             'first_name'     => $validated['first_name'],
@@ -61,7 +64,6 @@ class StudentController extends Controller
             'password'       => Hash::make($validated['password']), 
         ]);
 
-        // Return a response 
         return response()->json([
             'status'  => 'success',
             'message' => 'Student registered successfully!',
@@ -73,10 +75,13 @@ class StudentController extends Controller
         ], 201);
     }
 
-    // Log in function
+
+    /* ================ 
+        STUDENT LOGIN 
+       ================ */
     public function login(Request $request)
 {
-    // Validate user input
+    /* Validate user credentials */
     $request->validate([
         'email'    => 'required|email',
         'password' => 'required|string'
@@ -88,17 +93,17 @@ class StudentController extends Controller
             ], 403);
         }
 
-    // Prepare credentials for the guard
+    /* Prepare credentials for the guard */
     $credentials = [
         'up_email' => $request->email,
         'password' => $request->password
     ];
 
-    // Attempt login using the 'student' guard
+    /* Attempt login using the 'student' guard */
     if (auth()->guard('student')->attempt($credentials)) {
         $student = auth()->guard('student')->user();
 
-        // Generate Token
+    /* Generate Token */
         $token = $student->createToken('student_token')->plainTextToken;
 
         return response()->json([
@@ -113,18 +118,18 @@ class StudentController extends Controller
         ], 200);
     }
 
-    // Fail Response
+    
     return response()->json([
         'status'  => 'error',
         'message' => 'The provided credentials do not match our records.'
     ], 401);
 }
-    //SHOW ALL EVENTS IN STUDENT DASHBOARD
+    /* SHOW ALL EVENTS IN STUDENT DASHBOARD */
      public function index()
     {
     
     $events = Event::with('organization')
-                       ->where('date', '>=', now()) //ensures that it will display upcoming events only
+                       ->where('date', '>=', now()) /* ensures that it will display upcoming events only */
                        ->orderBy('date', 'asc')
                        ->get();
 

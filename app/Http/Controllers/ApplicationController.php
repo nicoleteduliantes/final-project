@@ -8,6 +8,10 @@ use App\Models\Organization;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
+/* ============================
+    APPLICATION (STUDENT SIDE) 
+   ============================*/
+
 class ApplicationController extends Controller
 {
     public function store(Request $request)
@@ -19,7 +23,7 @@ class ApplicationController extends Controller
         return response()->json(['message' => 'Organization not found.'], 404);
     }
 
-    // Block the application if the application_status is not 'Open'
+    /* Block the application if the application_status is not 'Open'*/
     if ($org->application_status !== 'open') {
         return response()->json([
             'status' => 'error',
@@ -48,7 +52,7 @@ class ApplicationController extends Controller
                 return response()->json(['message' => 'Success'], 201);
             });
         } catch (\Exception $e) {
-            // This will send the EXACT error message to your browser console
+           
             return response()->json([
                 'error' => $e->getMessage(),
                 'line' => $e->getLine()

@@ -20,14 +20,14 @@ public function index()
         ], 401);
     }
 
-    // OSA superadmin sees everything
+    /*OSA superadmin sees everything*/
     if ($user->osa_id) {
         return Announcement::with('organization')
             ->latest()
             ->get();
     }
 
-    // Pending applicants
+    /*Pending applicants */
     $appliedOrgIds = \App\Models\ApplicationDetail::whereHas('membership', function ($q) use ($user) {
         $q->where('student_id', $user->student_id)
           ->where('status', 'pending');
@@ -37,7 +37,7 @@ public function index()
     ->pluck('membership.org_id')
     ->unique();
 
-    // Accepted members
+    /*Pending applicants */
     $memberOrgIds = \App\Models\ApplicationDetail::whereHas('membership', function ($q) use ($user) {
         $q->where('student_id', $user->student_id)
           ->where('status', 'accepted');
@@ -47,13 +47,15 @@ public function index()
     ->pluck('membership.org_id')
     ->unique();
 
+    /*Limiting Audience */
+
     $announcements = Announcement::with('organization')
         ->where(function ($query) use ($appliedOrgIds, $memberOrgIds) {
 
-            // All
+            /*ALL */
             $query->where('audience', 'all');
 
-            // Pending applicants only
+            /*Pending applicants only*/ 
             if ($appliedOrgIds->isNotEmpty()) {
                 $query->orWhere(function ($q) use ($appliedOrgIds) {
                     $q->where('audience', 'applicants')
@@ -61,7 +63,7 @@ public function index()
                 });
             }
 
-            // Accepted members only
+            /* Accepted members only */
             if ($memberOrgIds->isNotEmpty()) {
                 $query->orWhere(function ($q) use ($memberOrgIds) {
                     $q->where('audience', 'members')
@@ -139,7 +141,7 @@ public function index()
 
         $announcement = Announcement::where('announcement_id', $id)->firstOrFail();
 
-        // ORG OWNER
+        /* ORG OWNER */
         if ($user->org_id && $announcement->org_id === $user->org_id) {
             $announcement->update([
                 'title' => $request->title,
@@ -152,7 +154,7 @@ public function index()
             ]);
         }
 
-        // OSA OWNER
+        /* OSA OWNER */
         if ($user->osa_id && $announcement->osa_id === $user->osa_id) {
             $announcement->update([
                 'title' => $request->title,

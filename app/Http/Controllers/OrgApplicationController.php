@@ -6,21 +6,25 @@ use App\Models\Membership;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
+/* =========================
+    APPLICATION (ORG SIDE) 
+   =========================*/
 class OrgApplicationController extends Controller
 {
-//SHOW THE APPLICATIONS
+/* display applications */
  public function index()
     {
     
     $orgId = auth()->user()->org_id;
     $applications = Membership::with(['applicationDetail', 'student.degreeProgram.college' ])
-                       ->where('org_id', $orgId) //ensures that it will display applications for THIS ORG only
+                /* ensures that it will display applications for THIS ORG only */
+                       ->where('org_id', $orgId)
                        ->get();
 
         return response()->json($applications);
 }
 
-//DECIDE APPLICATION (ACCEPTED/REJECTED)
+/* Decide application (Accepted/Rejected) */
 public function update(Request $request, $id)
     {
         $request->validate([
@@ -30,7 +34,7 @@ public function update(Request $request, $id)
 
         $membership = Membership::with('applicationDetail')->findOrFail($id);
 
-        //added security, ensures the logged in org actually owns the application
+        /* ensures the logged in org actually owns the application */
         if ($membership->org_id !== auth()->user()->org_id) {
             return response()->json(['error' => 'Unauthorized'], 403);
     }
@@ -41,11 +45,9 @@ public function update(Request $request, $id)
         'expiration' => now()->addYear(), //sets membership expiration to 1 year
     ];
 
-    //applied committee becomes assigned committee
     if ($request->status === 'Accepted') {
         $updateData['assigned_committee'] = $membership->applicationDetail->applied_committee;
     } else {
-        // If rejected, ensure assigned_committee is null
         $updateData['assigned_committee'] = null;
     }
 
@@ -54,17 +56,23 @@ public function update(Request $request, $id)
     return response()->json(['message' => 'Application processed successfully!']);
 }
 
-//SHOW ACCEPTED MEMBERS
+/* ========================
+    MEMBERSHIP (ORG SIDE)
+   ======================== */
+
+/* Show Accepted applicants (Now Members) */
 public function show (){
     $orgId = auth()->user()->org_id;
 
     $members = Membership::with(['student', 'applicationDetail'])
         ->where('org_id', $orgId)
-        ->where('status', 'Accepted') // only shows those already accepted
+        ->where('status', 'Accepted')
         ->get();
 
     return response()->json($members);
 }
+
+/* Delete a Member */
 public function destroy($id)
 {
     try {

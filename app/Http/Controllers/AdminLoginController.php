@@ -7,6 +7,10 @@ use App\Models\Organization;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
+
+/*==============
+   ADMIN LOGIN 
+  ============== */
 class AdminLoginController extends Controller
 {
    public function adminLogin(Request $request)
@@ -25,14 +29,14 @@ class AdminLoginController extends Controller
         'password' => $credentials['password']
     ];
 
-    // 1. Attempt login
+/* LOGIN AUTHENTICATION */
     if (Auth::guard($guard)->attempt($authData)) {
         $user = Auth::guard($guard)->user();
 
-        // GENERATE TOKEN (The "Key" for Vue)
+/* GENERATE TOKEN */
         $token = $user->createToken('admin_token', [$guard])->plainTextToken;
 
-        // 3. RETURN JSON (What your Pinia store is waiting for)
+/* RETURN JSON*/
     return response()->json([
             'status' => 'success',
             'user'   => $user,

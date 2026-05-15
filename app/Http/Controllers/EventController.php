@@ -6,9 +6,13 @@ use App\Models\Organization;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
+/* ============================== 
+    EVENT MANAGEMENT (ORG SIDE)
+   ==============================*/
+
 class EventController extends Controller
 {
-    //CREATE EVENT
+    /*Create Event */
     public function store(Request $request)
     {
         $request->validate([
@@ -46,7 +50,7 @@ class EventController extends Controller
         ], 201);
     }
 
-    //GET ALL EVENTS
+    /* Get All Events */
     public function index(Request $request)
     {
     
@@ -57,16 +61,16 @@ class EventController extends Controller
         return response()->json($events);
 }
 
-    // GET A SINGLE EVENT (for the editor)
+    /* Get Single Event */
     public function show(Request $request, $id)
     {
-        //Ensures organizations only sees their own event
+        /* Ensures organizations only sees their own event */
         return Event::where ('event_id', $id)
                     ->where('org_id', $request->user()->org_id)
                     ->findOrFail($id);
     }
 
-    // UPDATE EVENT
+    /* Edit Event */
     public function update(Request $request, $id)
     {
 
@@ -84,7 +88,7 @@ class EventController extends Controller
             ]
         );
 
-        //Ensures organizations  can edit only their own event
+        /* Ensures organizations  can edit only their own event */
         $event = Event::where ('event_id', $id)
                     ->where('org_id', $request->user()->org_id)
                     ->findOrFail($id);
@@ -101,7 +105,7 @@ class EventController extends Controller
             'message' => 'Event updated succesfully!']);
     }
 
-    // DELETE EVENT
+    /* Delete Event */
     public function destroy(Request $request, $id)
     {
         $event = Event::where('event_id', $id)
