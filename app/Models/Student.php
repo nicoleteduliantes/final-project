@@ -6,6 +6,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/* students table */
 class Student extends Authenticatable
 {
     use HasApiTokens;
@@ -30,20 +31,13 @@ class Student extends Authenticatable
         return $this->password;
     }
 
-    /**
-     * Relationship to the DegreeProgram model
-     */
     public function degreeProgram(): BelongsTo
     {
-        // Foreign Key: degprog_id (on students table)
-        // Owner Key: degprog_id (on degree_programs table)
         return $this->belongsTo(DegreeProgram::class, 'degprog_id', 'degprog_id');
     }
 
     public function memberships()
     {
-        // Foreign Key: membership_id (on memberships table)
-        // Owner Key: membership_d (on memberships table)
         return $this->hasMany(Membership::class, 'student_id');
     }
 }

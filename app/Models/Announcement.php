@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/* announcement table */
 class Announcement extends Model
 {
     protected $primaryKey = 'announcement_id';

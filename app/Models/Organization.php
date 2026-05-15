@@ -5,12 +5,14 @@ namespace App\Models;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
+/* organizations table */
 class Organization extends Authenticatable
 {
     use HasApiTokens;
 
     protected $table = 'organizations'; 
     protected $primaryKey = 'org_id'; 
+
     protected $fillable = [
         'org_name', 
         'category', 
@@ -27,9 +29,7 @@ class Organization extends Authenticatable
     ];
     
     public $incrementing = true;
-    /**
-     * Tells Laravel to use 'org_id' for authentication instead of 'email'
-     */
+   
     public function getAuthIdentifierName()
     {
         return 'org_id';

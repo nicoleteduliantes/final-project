@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/* application_details table */
 class ApplicationDetail extends Model
 {   
     protected $table = 'application_details';
