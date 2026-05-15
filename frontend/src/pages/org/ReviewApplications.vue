@@ -394,13 +394,11 @@ onMounted(fetchApplications);
 }
 
 .red-pill-button {
-    /* Positioning */
     position: fixed;
     bottom: 40px;
     right: 40px;
     z-index: 1000;
 
-    /* Styling */
     background-color: #7f1d1d;
     color: white;
     padding: 14px 32px;
@@ -410,14 +408,13 @@ onMounted(fetchApplications);
     border: 2px solid rgba(255, 255, 255, 0.2);
     cursor: pointer;
 
-    /* Effects */
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .red-pill-button:hover {
-    background-color: #064e3b; /* Changes to UP Green on hover */
-    color: #facc15; /* Text turns gold on hover */
+    background-color: #064e3b;
+    color: #facc15;
     border-color: #facc15;
     transform: translateY(-5px);
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.4);

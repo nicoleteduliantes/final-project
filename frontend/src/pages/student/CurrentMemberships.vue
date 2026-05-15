@@ -192,7 +192,7 @@ h1 {
     color: #991b1b;
 }
 
-/* BODY FIX (IMPORTANT) */
+/* BODY FIX */
 .booth-body {
     display: flex;
     gap: 14px;
@@ -268,11 +268,7 @@ h1 {
     border-radius: 50%;
 }
 
-/* =========================================
-   ISKONEK STUDENT PAGES - MOBILE RESPONSIVE
-========================================= */
-
-/* Global student layout improvements */
+/* MOBILE */
 @media (max-width: 1024px) {
     .student-layout,
     .dashboard,
@@ -281,15 +277,12 @@ h1 {
     }
 }
 
-/* ===== DASHBOARD / FEED LAYOUT ===== */
 @media (max-width: 768px) {
-    /* Page spacing */
     .page {
         padding: 20px !important;
         overflow: hidden;
     }
 
-    /* Headers */
     .header {
         margin-bottom: 16px;
     }
@@ -298,13 +291,11 @@ h1 {
         font-size: 1.4rem !important;
     }
 
-    /* Org badges */
     .org-badge {
         font-size: 0.9rem;
         justify-content: center;
     }
 
-    /* Announcement / Event stacks */
     .announcement-stack,
     .poster-grid {
         display: flex !important;
@@ -312,7 +303,6 @@ h1 {
         gap: 12px;
     }
 
-    /* Cards */
     .poster,
     .announcement-card,
     .card {
@@ -320,24 +310,20 @@ h1 {
         border-radius: 10px;
     }
 
-    /* Card content spacing */
     .poster-content {
         padding: 12px !important;
     }
 
-    /* Titles */
     .title {
         font-size: 1.1rem !important;
     }
 
-    /* Text */
     .desc,
     .posted-by,
     .location {
         font-size: 0.9rem !important;
     }
 
-    /* Buttons */
     .btn,
     .primary-btn,
     .cancel-btn,
@@ -346,28 +332,24 @@ h1 {
         margin-top: 6px;
     }
 
-    /* Actions stack vertically */
     .actions {
         display: flex;
         flex-direction: column;
         gap: 6px;
     }
 
-    /* Filters / search bars */
     .filters {
         display: flex;
         flex-direction: column;
         gap: 10px;
     }
 
-    /* Input spacing */
     input,
     select,
     textarea {
         font-size: 16px !important;
     }
 
-    /* Tables (if used in student pages) */
     table {
         display: block;
         overflow-x: auto;
@@ -375,7 +357,7 @@ h1 {
     }
 }
 
-/* ===== SMALL PHONES ===== */
+/* EXTRA SMALL PHONES */
 @media (max-width: 480px) {
     .page {
         margin-left: 20px;

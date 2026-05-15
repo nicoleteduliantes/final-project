@@ -146,7 +146,7 @@ const getColor = (cat) => {
     return palette[i % palette.length];
 };
 
-/* FIXED FILTER (category + search properly reactive) */
+/* FILTER (category + search properly reactive) */
 const filteredOrgs = computed(() => {
     const q = search.value.toLowerCase();
 
@@ -255,13 +255,11 @@ h1 {
 }
 
 @media (max-width: 768px) {
-    /* PAGE SPACING */
     .map-page {
         padding: 20px !important;
         padding-left: 25px !important;
     }
 
-    /* HEADER */
     .header {
         margin-bottom: 10px;
         padding-left: 0 !important;
@@ -276,7 +274,6 @@ h1 {
         line-height: 1.3;
     }
 
-    /* SEARCH BAR */
     .topbar {
         padding: 10px;
         margin-bottom: 12px;
@@ -287,7 +284,6 @@ h1 {
         padding: 10px 10px 10px 38px;
     }
 
-    /* STACK LAYOUT */
     .layout {
         flex-direction: column !important;
         gap: 12px;

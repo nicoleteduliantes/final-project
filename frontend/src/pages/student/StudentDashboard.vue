@@ -272,7 +272,6 @@ h1 {
 
 /* MOBILE RESPONSIVE */
 
-/* Global student layout improvements */
 @media (max-width: 1024px) {
     .student-layout,
     .dashboard,
@@ -281,15 +280,12 @@ h1 {
     }
 }
 
-/* ===== DASHBOARD / FEED LAYOUT ===== */
 @media (max-width: 768px) {
-    /* Page spacing */
     .page {
         padding: 20px !important;
         margin-left: 20px;
     }
 
-    /* Headers */
     .header {
         margin-bottom: 16px;
     }
@@ -302,12 +298,10 @@ h1 {
         font-size: 0.8rem !important;
     }
 
-    /* Org badges */
     .org-badge {
         font-size: 0.9rem;
     }
 
-    /* Announcement / Event stacks */
     .announcement-stack,
     .poster-grid {
         display: flex !important;
@@ -315,7 +309,6 @@ h1 {
         gap: 12px;
     }
 
-    /* Cards */
     .poster,
     .announcement-card,
     .card {
@@ -323,17 +316,14 @@ h1 {
         border-radius: 10px;
     }
 
-    /* Card content spacing */
     .poster-content {
         padding: 12px !important;
     }
 
-    /* Titles */
     .title {
         font-size: 0.5rem !important;
     }
 
-    /* Text */
     .desc,
     .posted-by,
     .location {
@@ -341,7 +331,7 @@ h1 {
     }
 }
 
-/* ===== SMALL PHONES ===== */
+/* EXTRA SMALL PHONES */
 @media (max-width: 480px) {
     .header h1 {
         font-size: 1.2rem !important;
@@ -359,7 +349,6 @@ h1 {
         font-size: 0.9rem !important;
     }
 
-    /* Announcement / Event stacks */
     .announcement-stack,
     .poster-grid {
         display: flex !important;
@@ -367,7 +356,6 @@ h1 {
         gap: 10px;
     }
 
-    /* Cards */
     .poster,
     .announcement-card,
     .card {

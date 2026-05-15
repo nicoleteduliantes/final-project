@@ -44,7 +44,6 @@
             </div>
 
             <!-- TOGGLE -->
-            <!-- TOGGLE BUTTONS -->
             <div class="auth-actions">
                 <button
                     v-if="!isRegister"
@@ -76,11 +75,9 @@ const auth = useAuthStore();
 
 const isRegister = ref(false);
 
-// LOGIN
 const email = ref('');
 const password = ref('');
 
-// REGISTER
 const degreePrograms = ref([]);
 
 const form = reactive({
@@ -92,7 +89,7 @@ const form = reactive({
     password: '',
 });
 
-// STUDENT ID VALIDATION LOGIC
+/* STUDENT ID VALIDATION LOGIC */
 const isIdValid = computed(() => {
     const currentYear = new Date().getFullYear();
     const regex = /^20\d{2}-\d{5}$/; // Matches 20XX-XXXXX
@@ -103,7 +100,7 @@ const isIdValid = computed(() => {
     return inputYear <= currentYear;
 });
 
-// RESET FORM FUNCTION
+/* RESET FORM FUNCTION */
 const resetForm = () => {
     // Reset Login fields
     email.value = '';
@@ -120,7 +117,7 @@ const resetForm = () => {
     });
 };
 
-// FETCH DEGREE PROGRAMS
+/* FETCH DEGREE PROGRAMS */
 const fetchDegreePrograms = async () => {
     try {
         const res = await get('/degree-programs');
@@ -130,13 +127,13 @@ const fetchDegreePrograms = async () => {
     }
 };
 
-// TOGGLE
+/* TOGGLE */
 const toggleAuth = () => {
     isRegister.value = !isRegister.value;
     resetForm();
 };
 
-// LOGIN
+/* LOGIN */
 const login = async () => {
     try {
         const res = await post('/student-login', {
@@ -156,7 +153,7 @@ const login = async () => {
     }
 };
 
-// REGISTER
+/* REGISTER */
 const register = async () => {
     try {
         const response = await post('/register-student', form);
@@ -187,7 +184,6 @@ onMounted(fetchDegreePrograms);
     justify-content: center;
 }
 
-/* secondary button (for toggle) */
 .secondary {
     background: transparent;
     border: 2px solid #064e3b;
@@ -253,7 +249,7 @@ input {
 button {
     width: 100%;
     padding: 12px;
-    background: #7f1d1d; /* maroon */
+    background: #7f1d1d;
     color: white;
     border: none;
     border-radius: 6px;

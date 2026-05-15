@@ -213,14 +213,12 @@ h1 {
     border: 2px solid gold;
 }
 
-/* GRID - MATCHES STUDENT VIEW */
 .poster-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
     gap: 20px;
 }
 
-/* POSTER - MATCHES STUDENT VIEW */
 .poster {
     background: white;
     border-radius: 16px;
@@ -237,7 +235,6 @@ h1 {
     box-shadow: 0 18px 35px rgba(0, 0, 0, 0.12);
 }
 
-/* IMAGE - MATCHES STUDENT VIEW (180px) */
 .poster-image {
     width: 100%;
     height: 180px;
@@ -250,7 +247,6 @@ h1 {
     object-fit: cover;
 }
 
-/* CONTENT - MATCHES STUDENT VIEW */
 .poster-content {
     padding: 16px;
     flex: 1;
@@ -302,7 +298,7 @@ h1 {
     margin-bottom: 16px;
 }
 
-/* ACTIONS (ORG SPECIFIC) */
+/* ACTIONS (ORG) */
 .actions {
     display: flex;
     gap: 10px;

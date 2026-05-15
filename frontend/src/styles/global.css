@@ -26,7 +26,7 @@ body {
     min-width: 0;
 }
 
-/* HEADINGS (ACADEMIC STYLE) */
+/* HEADINGS */
 
 h1,
 h2,
@@ -92,7 +92,7 @@ button:hover {
     transform: translateY(-1px);
 }
 
-/* LINKS (FIXED) */
+/* LINKS */
 
 a {
     color: #064e3b;

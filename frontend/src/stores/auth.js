@@ -6,7 +6,7 @@ export const useAuthStore = defineStore('auth', () => {
     const role = ref('student');
     const isAuthenticated = ref(false);
 
-    // LOGIN FUNCTIONS
+    /* LOGIN FUNCTIONS */
     function loginStudent(data, token) {
         user.value = data;
         role.value = 'student';
@@ -37,7 +37,7 @@ export const useAuthStore = defineStore('auth', () => {
         localStorage.setItem('AUTH_TOKEN', token);
     }
 
-    // LOAD SESSION (REFRESH FIX)
+    /* LOAD SESSION (REFRESH FIX) */
 
     function loadUser() {
         const savedUser = localStorage.getItem('user');
@@ -53,7 +53,7 @@ export const useAuthStore = defineStore('auth', () => {
         }
     }
 
-    // LOGOUT
+    /* LOGOUT */
 
     function logout() {
         user.value = null;
@@ -65,7 +65,7 @@ export const useAuthStore = defineStore('auth', () => {
         localStorage.removeItem('AUTH_TOKEN');
     }
 
-    // EXPORT
+    /* EXPORT */
 
     return {
         user,

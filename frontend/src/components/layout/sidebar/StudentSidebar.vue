@@ -173,7 +173,6 @@ a.router-link-active,
 
 /* MOBILE */
 @media (max-width: 480px) {
-    /* prevent page background peeking */
     html,
     body {
         overflow-x: hidden;

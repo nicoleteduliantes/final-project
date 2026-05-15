@@ -87,7 +87,7 @@ import { useRouter } from 'vue-router';
 
 const router = useRouter();
 
-/* Helper: format YYYY-MM-DD */
+/* HELPER: format YYYY-MM-DD */
 const formatDate = (date) => {
     return date.toISOString().split('T')[0];
 };
@@ -104,7 +104,7 @@ const org = reactive({
     description: '',
     password: '',
 
-    // NEW FIELDS
+    /* NEW FIELDS */
     status: 'Registered',
     expiration: formatDate(expiry),
 });

@@ -174,13 +174,13 @@ const handleView = (org) => {
     line-height: 1;
 }
 
-/* hover */
+/* HOVER */
 .row-focus-btn:hover {
     transform: scale(1.15);
     color: #1e293b;
 }
 
-/* animation */
+/* ANIMATION */
 .icon-fade-enter-active,
 .icon-fade-leave-active {
     transition: all 0.18s ease;

@@ -3,8 +3,6 @@
         <component :is="sidebarComponent" v-model:collapsed="collapsed" />
 
         <div class="main" :class="{ collapsed }">
-            <!-- <Navbar /> -->
-
             <div class="content">
                 <router-view />
             </div>
@@ -14,8 +12,6 @@
 
 <script setup>
 import { ref, computed } from 'vue';
-
-// import Navbar from '@/components/layout/Navbar.vue';
 
 import StudentSidebar from '@/components/layout/sidebar/StudentSidebar.vue';
 import OrgSidebar from '@/components/layout/sidebar/OrgSidebar.vue';

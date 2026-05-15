@@ -19,7 +19,6 @@
             </div>
         </div>
 
-        <!-- IMPORTANT FIX HERE -->
         <button class="stall-btn" @click="$emit('view', org)">Details</button>
     </div>
 </template>
@@ -98,7 +97,7 @@ defineEmits(['view']);
 
 @media (max-width: 768px) {
     .stall {
-        width: 150px; /* ↓ smaller fixed size for grid feel */
+        width: 150px;
         padding: 10px;
         border-radius: 10px;
     }

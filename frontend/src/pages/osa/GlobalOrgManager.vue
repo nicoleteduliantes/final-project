@@ -76,7 +76,7 @@ const fetchData = async () => {
     }
 };
 
-// Filtering Logic
+/* FILTER */
 const filteredOrgs = computed(() => {
     return organizations.value.filter((org) => {
         const orgName = org.org_name.toLowerCase();

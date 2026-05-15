@@ -248,7 +248,7 @@ defineEmits(['close', 'apply']);
     }
 
     .banner-wrapper {
-        height: 140px; /* ↓ smaller banner */
+        height: 140px;
     }
 
     .modal-body {
@@ -257,7 +257,7 @@ defineEmits(['close', 'apply']);
     }
 
     .title {
-        font-size: 18px; /* ↓ shrink title */
+        font-size: 18px;
     }
 
     .modal-cat {

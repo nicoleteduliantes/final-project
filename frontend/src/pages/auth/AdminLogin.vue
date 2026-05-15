@@ -24,7 +24,7 @@
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/auth';
-import { post } from '@/services/apiService'; //bridge to Laravel
+import { post } from '@/services/apiService';
 
 const email = ref('');
 const type = ref('org');
@@ -89,7 +89,7 @@ input {
 /* BUTTON */
 button {
     padding: 12px;
-    background: #7f1d1d; /* maroon */
+    background: #7f1d1d;
     color: white;
     border: none;
     border-radius: 6px;

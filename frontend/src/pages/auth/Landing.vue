@@ -289,14 +289,12 @@ onUnmounted(() => {
     z-index: 1;
 }
 
-/* top left */
 .sticker1 {
     top: 14%;
     left: 8%;
     font-size: 36px;
 }
 
-/* top right */
 .sticker2 {
     top: 18%;
     right: 10%;
