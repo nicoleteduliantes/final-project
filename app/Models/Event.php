@@ -3,9 +3,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
+/* events table */
 class Event extends Model
 {
-    /* primary key */
     protected $primaryKey = 'event_id';
 
     protected $fillable = [
@@ -18,7 +18,6 @@ class Event extends Model
         'event_logo'
     ];
 
-    /* Relationship: An event belongs to an Organization */
     public function organization()
     {
         return $this->belongsTo(Organization::class, 'org_id');

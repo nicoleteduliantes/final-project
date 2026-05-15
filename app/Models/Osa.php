@@ -4,6 +4,7 @@ namespace App\Models;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
+/* osa table */
 class Osa extends Authenticatable
 {
     use HasApiTokens;
